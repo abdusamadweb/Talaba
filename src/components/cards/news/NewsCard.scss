@@ -1,0 +1,35 @@
+
+
+.news-card {
+  border-radius: 15px;
+  background: #fff;
+
+  &__img {
+    border-radius: 15px 15px 0 0;
+  }
+
+  .body {
+    padding: 12px 12px 15px;
+
+    &__txt {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    &__desc {
+      font-size: 12px;
+      margin-bottom: 22px;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &__btn {
+      font-size: 14px;
+      margin-right: 6px;
+      color: #0063F2;
+    }
+  }
+}
