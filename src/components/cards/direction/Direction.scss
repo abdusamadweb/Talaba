@@ -1,4 +1,4 @@
-
+@use '/src/scss' as *;
 
 .direction-card {
   padding: 15px;
@@ -19,6 +19,6 @@
     display: block;
     font-weight: 500;
     font-size: 15px;
-    color: #000;
+    color: $txt-color;
   }
 }

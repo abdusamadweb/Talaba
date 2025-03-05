@@ -1,0 +1,97 @@
+@use '/src/scss' as *;
+
+.home {
+
+  .container {
+    padding: 0;
+  }
+
+  &__head {
+    padding-block: 12px 20px;
+    padding-inline: 15px;
+    border-radius: 0 0 25px 25px;
+    background: $main-color;
+
+    .titles {
+      margin-bottom: 12px;
+      color: #fff;
+
+      &__title {
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 1.4;
+      }
+      &__desc {
+        font-size: 22px;
+      }
+    }
+  }
+
+  &__search {
+
+    .ant-input-affix-wrapper {
+      border-radius: 10px;
+      background: #fff;
+
+      input {
+        padding-bottom: 2px;
+      }
+      input::placeholder {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        padding-left: 4px;
+        color: $secondary-color;
+      }
+    }
+  }
+
+  .university {
+    padding-block: 20px;
+    padding-inline: 15px;
+
+    &-list {
+      display: flex;
+      flex-flow: column;
+      gap: 10px;
+    }
+
+    &__btn {
+      display: block;
+      width: 100%;
+      font-weight: 600;
+      text-align: center;
+      padding: 15px 12px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid $main-color;
+      color: $main-color;
+      background: #DCE6F4;
+    }
+  }
+
+  .apply {
+    text-align: center;
+    padding-block: 50px;
+    background: $main-color;
+
+    &__title {
+      font-weight: 500;
+      font-size: 24px;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+
+    &__btn {
+      font-weight: 600;
+      font-size: 18px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      color: $main-color;
+      background: #fff;
+    }
+  }
+
+  .direction {
+
+  }
+}

@@ -4,7 +4,7 @@ import overlay from '../../../assets/images/overlay.png'
 
 const UniCard = ({ logo, name, city, img, desc }) => {
     return (
-        <div className='uni-card'>
+        <li className='uni-card'>
             <div className="head row align-center r1">
                 <div className="head__img">
                     <img src={logo} alt="univercity-logo"/>
@@ -19,7 +19,7 @@ const UniCard = ({ logo, name, city, img, desc }) => {
                 <img className='img' src={img} alt="image"/>
                 <p className="body__desc">{ desc }</p>
             </div>
-        </div>
+        </li>
     );
 };
 

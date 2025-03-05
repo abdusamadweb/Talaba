@@ -1,8 +1,8 @@
-
+@use '/src/scss' as *;
 
 .header {
   padding: 15px 0;
-  background: #0063F2;
+  background: $main-color;
 
   .container {
     gap: 1rem;
@@ -13,6 +13,6 @@
     height: 40px;
     padding: 6px;
     border-radius: 8px;
-    background: #4C91F6;
+    background: $secondary-color;
   }
 }

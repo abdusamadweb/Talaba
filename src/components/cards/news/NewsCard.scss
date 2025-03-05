@@ -1,11 +1,14 @@
-
+@use '/src/scss' as *;
 
 .news-card {
   border-radius: 15px;
   background: #fff;
 
   &__img {
+    max-height: 200px;
+    width: 100%;
     border-radius: 15px 15px 0 0;
+    object-fit: cover;
   }
 
   .body {
@@ -14,6 +17,11 @@
     &__txt {
       font-weight: 600;
       margin-bottom: 8px;
+
+      //display: -webkit-box;
+      //-webkit-line-clamp: 1;
+      //-webkit-box-orient: vertical;
+      //overflow: hidden;
     }
 
     &__desc {
@@ -28,8 +36,13 @@
 
     &__btn {
       font-size: 14px;
-      margin-right: 6px;
-      color: #0063F2;
+      color: $main-color;
+
+      img {
+        position: relative;
+        top: 1.5px;
+        margin-left: 4px;
+      }
     }
   }
 }
