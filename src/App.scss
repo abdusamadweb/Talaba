@@ -50,20 +50,50 @@
   }
 
   .ant-drawer {
+    
 
     &-body {
       padding: 15px;
     }
+  }
 
-    .ant-slider {
+  .range {
+    margin-bottom: 20px;
 
-      &-track {
-        background: $main-color !important;
+    .txt {
+      font-weight: 500;
+      font-size: 14px;
+    }
 
-        &:hover {
-          background: $main-color !important;
-        }
-      }
+    .ant-slider-track {
+      height: 5px;
+      background: $main-color !important;
+    }
+
+    .ant-slider-rail {
+      height: 5px;
+      border-radius: 20px;
+    }
+
+    .ant-slider-handle::after {
+        //background: $main-color;
+        box-shadow: 0 0 0 2px $main-color;
+    }
+
+    .ant-tooltip-open {
+      display: none !important;
+    }
+  }
+
+  .select {
+    
+    &__txt {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .ant-select {
+      width: 100%;
     }
   }
 }

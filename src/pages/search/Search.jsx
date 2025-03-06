@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Search.scss'
-import {Drawer, Input, Slider} from "antd";
+import {Drawer, Input, Select, Slider} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import filterIcon from "../../assets/images/filter-icon.svg";
 import ApplyCard from "../../components/cards/apply/ApplyCard.jsx";
@@ -13,13 +13,17 @@ const Search = () => {
 
     const [modal, setModal] = useState(false)
     const [ranges, setRanges] = useState({
-        from: 0,
-        to: 0,
+        from: 5000000,
+        to: 100000000,
     })
 
     const changeRange = (val) => {
         return setRanges({from: val[0]*1000000, to: val[1]*1000000});
     }
+
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
+    };
 
 
     return (
@@ -69,13 +73,30 @@ const Search = () => {
                     <Slider
                         range
                         step={5}
-                        defaultValue={[1, 100]}
+                        defaultValue={[5, 100]}
                         onChange={changeRange}
                     />
                     <div className="row between">
                         <span className='txt'>{ formatPrice(ranges.from) || 0 } UZS</span>
                         <span className='txt'>{ formatPrice(ranges.to) || 0 } UZS</span>
                     </div>
+                </div>
+                <div className="select">
+                    <span className='select__txt'>Manzil</span>
+                    <Select
+                        defaultValue="lucy"
+                        onChange={handleChange}
+                        options={[
+                            {
+                                value: 'jack',
+                                label: 'Jack',
+                            },
+                            {
+                                value: 'lucy',
+                                label: 'Lucy',
+                            },
+                        ]}
+                    />
                 </div>
             </Drawer>
         </div>
