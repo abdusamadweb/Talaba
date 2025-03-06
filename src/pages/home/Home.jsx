@@ -1,12 +1,14 @@
 import React from 'react';
 import './Home.scss'
-import {Input} from "antd";
+import {Carousel, Input} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import UniCard from "../../components/cards/univercity/UniCard.jsx";
 import ulogo from "../../assets/images/test-icon.svg";
 import uimg from "../../assets/images/test.jpg";
 import DirectionCard from "../../components/cards/direction/DirectionCard.jsx";
 import dirimg from "../../assets/images/direction/dir-muhandislik.svg";
+import NewsCard from "../../components/cards/news/NewsCard.jsx";
+import newsimg from '../../assets/images/news-test.png'
 
 const Home = () => {
     return (
@@ -17,7 +19,7 @@ const Home = () => {
                         <h2 className="titles__title">Talaba Portal bilan</h2>
                         <p className='titles__desc'>o’zingiz hohlagan OTMni toping!</p>
                     </div>
-                    <div className='home__search'>
+                    <div className='search-filter'>
                         <Input
                             size="large"
                             prefix={<img src={searchIcon} alt='icon'></img>}
@@ -61,6 +63,25 @@ const Home = () => {
                         <DirectionCard img={dirimg} txt='Biznes, menejment va moliya' />
                         <DirectionCard img={dirimg} txt='Biznes, menejment va moliya' />
                     </ul>
+                </div>
+                <div className="news">
+                    <h2 className="news__title">So’ngi yangliklar</h2>
+                    <div className="news__slider">
+                        <Carousel arrows infinite autoplay autoplaySpeed={5000}>
+                            <NewsCard
+                                img={newsimg}
+                                txt='Chet tili imtihoni uchun ruxsatnomalar taqdim etildi.'
+                                desc='Chet tili (turk tili)ni bilish darajasini
+                                aniqlash bo‘yicha bo‘lib o‘tadigan.....'
+                            />
+                            <NewsCard
+                                img={uimg}
+                                txt='Chet tili imtihoni uchun ruxsatnomalar taqdim etildi.'
+                                desc='Chet tili (turk tili)ni bilish darajasini
+                                aniqlash bo‘yicha bo‘lib o‘tadigan.....'
+                            />
+                        </Carousel>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,3 +10,60 @@
   margin: 0 auto;
   background: $bg-color;
 }
+
+.search-filter {
+
+  .ant-input-affix-wrapper {
+    border-radius: 10px;
+    border-color: #0063F290;
+    background: #fff;
+
+    input {
+      padding-left: 4px;
+      padding-bottom: 2px;
+      color: $txt-color;
+    }
+    input::placeholder {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      color: #0063F290;
+    }
+  }
+}
+
+.filter-modal {
+  font-family: "Poppins", sans-serif;
+  background: #000;
+
+  .line {
+    width: 135px;
+    height: 5px;
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 10px;
+    background: $txt-color;
+  }
+  .title {
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 25px;
+  }
+
+  .ant-drawer {
+
+    &-body {
+      padding: 15px;
+    }
+
+    .ant-slider {
+
+      &-track {
+        background: $main-color !important;
+
+        &:hover {
+          background: $main-color !important;
+        }
+      }
+    }
+  }
+}

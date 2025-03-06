@@ -3,12 +3,12 @@ import './Direction.scss'
 
 const DirectionCard = ({ img, txt }) => {
     return (
-        <div className='direction-card'>
+        <li className='direction-card'>
             <span className='img'>
                 <img src={img} alt="direction-img"/>
             </span>
             <span className='txt'>{txt}</span>
-        </div>
+        </li>
     );
 };
 

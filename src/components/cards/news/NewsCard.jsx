@@ -11,7 +11,7 @@ const NewsCard = ({ img, txt, desc }) => {
                 <span className='body__txt'>{ txt }</span>
                 <p className="body__desc">{ desc }</p>
                 <Link className='body__btn' to='/news/'>
-                    Batafsil
+                    <span>Batafsil</span>
                     <img src={arrow} alt="arrow"/>
                 </Link>
             </div>
