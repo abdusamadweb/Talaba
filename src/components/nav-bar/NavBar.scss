@@ -9,6 +9,7 @@
   margin: 0 auto;
   border-radius: 40px 40px 0 0;
   background: #fff;
+  box-shadow: 0px -5px 40px -5px #33333395;
 
   @include breakpoint-down(310px) {
     padding-inline: 0;

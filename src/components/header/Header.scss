@@ -16,3 +16,30 @@
     background: $secondary-color;
   }
 }
+
+.header-modal {
+
+  .ant-drawer-content-wrapper {
+    max-width: 600px;
+    width: 100% !important;
+  }
+
+  .ant-drawer-body {
+    padding: 35px 15px;
+  }
+  
+  &__head {
+    display: grid;
+    grid-template-columns: 1fr 90%;
+    gap: 10px;
+
+    .btn {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid $txt-color;
+    }
+  }
+}

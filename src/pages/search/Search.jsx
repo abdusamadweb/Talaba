@@ -8,6 +8,18 @@ import logo from "../../assets/images/apply-logo-test.png";
 import bgtest from "../../assets/images/apply-bgi-test.jpg";
 import adImg from "../../assets/images/ad-img.png";
 import {formatPrice} from "../../assets/scripts/global.js";
+import {CaretDownOutlined} from '@ant-design/icons'
+
+const Option = ({ txt }) => {
+    return (
+        <div className='option-wrapper'>
+            <span>{ txt }</span>
+            <div className='circle'>
+                <span className='dot' />
+            </div>
+        </div>
+    )
+}
 
 const Search = () => {
 
@@ -60,6 +72,7 @@ const Search = () => {
                 </div>
             </div>
             <Drawer
+                rootClassName='filter-modal-up'
                 className='filter-modal'
                 placement='bottom'
                 closable={false}
@@ -82,21 +95,95 @@ const Search = () => {
                     </div>
                 </div>
                 <div className="select">
-                    <span className='select__txt'>Manzil</span>
-                    <Select
-                        defaultValue="lucy"
-                        onChange={handleChange}
-                        options={[
-                            {
-                                value: 'jack',
-                                label: 'Jack',
-                            },
-                            {
-                                value: 'lucy',
-                                label: 'Lucy',
-                            },
-                        ]}
-                    />
+                    <div className='select-wrapper'>
+                        <span className='select__txt'>Manzil</span>
+                        <Select
+                            size='large'
+                            suffixIcon={<CaretDownOutlined/>}
+                            onChange={handleChange}
+                            placeholder="Manzil"
+                            options={[
+                                {
+                                    value: 'Toshkent shaxri',
+                                    label: <Option txt='Toshkent shaxri'/>,
+                                },
+                                {
+                                    value: 'Jizzax shaxri',
+                                    label: <Option txt='Jizzax shaxri'/>,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <div className='select-wrapper'>
+                        <span className='select__txt'>Ta’lim yo’nalishlari</span>
+                        <Select
+                            size='large'
+                            suffixIcon={<CaretDownOutlined/>}
+                            onChange={handleChange}
+                            placeholder="Ta’lim yo’nalishlari"
+                            options={[
+                                {
+                                    value: "Ta’lim yo’nalishlari",
+                                    label: <Option txt="Ta’lim yo’nalishlari"/>,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <div className='select-wrapper'>
+                        <span className='select__txt'>Ta’lim turi</span>
+                        <Select
+                            size='large'
+                            suffixIcon={<CaretDownOutlined/>}
+                            onChange={handleChange}
+                            placeholder="Ta’lim turi"
+                            options={[
+                                {
+                                    value: 'Kunduzgi',
+                                    label: <Option txt='Kunduzgi'/>,
+                                },
+                                {
+                                    value: 'Sirtqi',
+                                    label: <Option txt='Sirtqi'/>,
+                                },
+                                {
+                                    value: 'Kechki',
+                                    label: <Option txt='Kechki'/>,
+                                },
+                                {
+                                    value: 'Masofaviy',
+                                    label: <Option txt='Masofaviy'/>,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <div className='select-wrapper'>
+                        <span className='select__txt'>Ta’lim tili</span>
+                        <Select
+                            size='large'
+                            suffixIcon={<CaretDownOutlined/>}
+                            onChange={handleChange}
+                            placeholder="Ta’lim tili"
+                            options={[
+                                {
+                                    value: "O'zbek tili",
+                                    label: <Option txt="O'zbek tili"/>,
+                                },
+                                {
+                                    value: 'Ingliz tili',
+                                    label: <Option txt='Ingliz tili'/>,
+                                },
+                                {
+                                    value: 'Rus tili',
+                                    label: <Option txt='Rus tili'/>,
+                                },
+                                {
+                                    value: 'Turkman tili',
+                                    label: <Option txt='Turkman tili'/>,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <button className='select__btn'>Qidirish</button>
                 </div>
             </Drawer>
         </div>
