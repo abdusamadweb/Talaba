@@ -1,0 +1,135 @@
+@use "/src/scss" as *;
+
+.applications {
+
+  .container {
+    padding: 0;
+  }
+
+  .d404 {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+
+    .wrapper {
+      position: relative;
+      top: -20px;
+      text-align: center;
+      margin: auto;
+    }
+
+    &__titles {
+      margin-bottom: 20px;
+
+      .title {
+        font-weight: 500;
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .desc {
+        font-size: 14px;
+      }
+    }
+
+    &__btn {
+      padding: 13px 25px;
+      border-radius: 12px;
+      color: #fff;
+      background: $main-color;
+    }
+  }
+
+  &__list {
+    padding: 35px 15px;
+
+    .apply-card {
+
+      &__body {
+        .item {
+          padding-left: 25px;
+
+          &__title {
+            display: block;
+            padding-top: 5px;
+            padding-left: 0;
+          }
+        }
+
+        .btn2-red {
+          width: 100%;
+          border-color: #F42C2C;
+          color: #F42C2C;
+          background: #F42C2C20;
+        }
+      }
+    }
+
+    .status {
+      padding-block: 10px 20px;
+
+      .ant-steps {
+        position: relative;
+        left: -8px;
+        width: 100% !important;
+        display: flex;
+      }
+
+      .ant-steps-item {
+        flex: 1;
+
+        &-icon {
+          position: relative;
+          top: -4px;
+          z-index: 1;
+          width: 15px;
+          height: 15px;
+          border: 2px solid #CFD9FE;
+          background: #fff;
+        }
+
+        &-tail::after {
+          background-color: #CFD9FE !important;
+        }
+      }
+
+      .ant-steps-item-active, .ant-steps-item-finish {
+        .ant-steps-item-icon {
+          top: -7px;
+          width: 20px;
+          height: 20px;
+          border-color: #F1CD00;
+          background: #F1CD00;
+        }
+
+        .ant-steps-icon-dot {
+          position: relative;
+          width: 10px;
+          height: 5px;
+          display: inline-block;
+          border-radius: 0;
+          border-top: none !important;
+          border-right: none !important;
+          border-bottom: 2px solid #fff !important;
+          border-left: 2px solid #fff !important;
+          background: transparent !important;
+          transform: rotate(-45deg);
+        }
+      }
+
+      &__title {
+        font-weight: 500;
+        font-size: 14px;
+        margin-top: 5px;
+
+        span {
+          font-weight: 400;
+          padding-left: 4px;
+          color: #F1CD00;
+        }
+      }
+    }
+  }
+}

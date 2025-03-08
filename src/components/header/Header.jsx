@@ -11,6 +11,7 @@ import {CloseCircleOutlined} from "@ant-design/icons";
 const Header = () => {
 
     const [modal, setModal] = useState(false)
+    const [search, setSearch] = useState('')
 
 
     return (
@@ -32,15 +33,15 @@ const Header = () => {
                 key='right'
             >
                 <div className="header-modal__head">
-                    <button className='btn'>
+                    <button className='btn' onClick={() => setModal(false)}>
                         <img src={arrowIcon} alt="icon"/>
                     </button>
                     <div className='search-filter'>
                         <Input
                             size="large"
                             prefix={<img src={searchIcon} alt='icon'></img>}
-                            suffix={<CloseCircleOutlined />}
-                            placeholder="OTM yoki ta’lim yo’nalishlarini qidiring..."
+                            suffix={<CloseCircleOutlined onClick={() => setSearch('')} />}
+                            placeholder="OTM yoki ta’lim yo’nalishi..."
                         />
                     </div>
                 </div>
@@ -51,11 +52,23 @@ const Header = () => {
                             <li className="item">
                                 <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
                             </li>
+                            <li className="item">
+                                <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
+                            </li>
+                            <li className="item">
+                                <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="uni-dir">
                         <h3 className="uni-dir__title">Ko’p qidirilgan OTMlar</h3>
                         <ul className="uni-dir__list">
+                            <li className="item">
+                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
+                            </li>
+                            <li className="item">
+                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
+                            </li>
                             <li className="item">
                                 <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
                             </li>

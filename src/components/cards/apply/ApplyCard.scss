@@ -6,15 +6,15 @@
 
   &__head {
     position: relative;
-    height: 80px;
+    height: 90px;
     border-radius: 12px 12px 0 0;
-
     background-size: cover;
     background-repeat: no-repeat;
 
     .index {
       position: relative;
-      padding: 10px 20px 5px;
+      height: 100%;
+      padding: 15px 20px 5px;
       z-index: 2;
     }
     .overlay::before {
@@ -60,7 +60,7 @@
 
     .img {
       position: absolute;
-      top: 65%;
+      top: 72%;
       left: 10px;
       width: 50px;
       height: 50px;
@@ -77,7 +77,7 @@
     .list {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px 10px;
+      gap: 20px 10px;
     }
 
     .item {
@@ -102,27 +102,27 @@
       display: grid;
       grid-template-columns: 40% auto;
       gap: 10px;
+    }
 
-      .btn {
-        text-align: center;
-        font-weight: 500;
-        padding: 10px 25px;
-        border-radius: 10px;
-        border: 2px solid $main-color;
-      }
+    .btn {
+      text-align: center;
+      font-weight: 500;
+      padding: 10px 25px;
+      border-radius: 10px;
+      border: 2px solid $main-color;
+    }
 
-      .btn1 {
-        color: $main-color;
-        background: #0071FF20;
-      }
-      .btn2 {
-        color: #fff;
-        background: $main-color;
-      }
-      .btn2-red {
-        border-color: transparent;
-        background: #FF2C2C50;
-      }
+    .btn1 {
+      color: $main-color;
+      background: #0071FF20;
+    }
+    .btn2 {
+      color: #fff;
+      background: $main-color;
+    }
+    .btn2-red {
+      border-color: transparent;
+      background: #FF2C2C50;
     }
   }
 }
