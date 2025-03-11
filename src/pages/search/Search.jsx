@@ -65,7 +65,6 @@ const Search = () => {
                             lang='O’zbek tili'
                             edu='Kunduzgi / Sirtqi'
                             contract={35000000}
-                            close
                         />
                         <ApplyCard ad={adImg}/>
                     </ul>

@@ -54,7 +54,7 @@
 .filter-modal-up {
 
   .ant-drawer-content-wrapper {
-    height: 75vh !important;
+    height: 80vh !important;
     border-radius: 25px 25px 0 0;
   }
 
@@ -166,6 +166,58 @@
   }
 }
 
+.select {
+  display: flex;
+  flex-flow: column;
+  gap: 15px;
+
+  &__txt {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .ant-select {
+    font-family: "Poppins", sans-serif;
+    width: 100%;
+
+    &-selector {
+      background: #F8F8F8;
+    }
+
+    &-selection-item {
+      font-weight: 500;
+      font-size: 16px;
+
+      .circle {
+        display: none;
+      }
+    }
+
+    &-arrow {
+      font-size: 16px;
+      color: $txt-color;
+      transition: transform 0.2s ease;
+    }
+    &-open {
+      .ant-select-arrow {
+        color: $main-color;
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  &__btn {
+    display: block;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 15px;
+    margin-block: 10px;
+    border-radius: 10px;
+    color: #fff;
+    background: $main-color;
+  }
+}
 .ant-select-dropdown {
   padding: 0;
 
@@ -232,6 +284,174 @@
     &-thumb {
       right: 3px;
       background: $main-color !important;
+    }
+  }
+}
+
+.apply-card-modal {
+  .ant-modal-content {
+    font-family: "Poppins", sans-serif;
+    padding: 12px 12px 1px;
+
+    .titles {
+      text-align: center;
+      padding-block: 10px;
+
+      .imgs {
+        width: 66px;
+        height: 66px;
+        display: inline-block;
+        padding: 2px;
+        margin-bottom: 6px;
+        border-radius: 50%;
+        border: 1px solid $main-color;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .name {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      .desc {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+    }
+    
+    .apply-card-form {
+      font-family: "Poppins", sans-serif;
+
+      .ant-form-item {
+        margin-bottom: 10px;
+
+        .ant-row {
+          //flex-flow: column;
+        }
+
+        .ant-form-item-explain-error {
+          display: none;
+        }
+
+        &.padding .ant-form-item-label {
+          padding-block: 3px 10px;
+
+          label {
+            line-height: 1.2;
+          }
+        }
+
+        &-required::before {
+          display: none !important;
+        }
+        .ant-upload-wrapper, .ant-upload {
+          width: 100%;
+
+          input {
+            font-family: "Poppins", sans-serif;
+          }
+        }
+
+        .ant-input {
+          visibility: hidden;
+        }
+        .ant-input-prefix {
+          font-family: "Poppins", sans-serif;
+          color: rgba(0, 0, 0, 0.25);
+        }
+      }
+
+      .ant-input-affix-wrapper {
+        background: #F8F8F8;
+      }
+
+      .ant-col {
+        padding-bottom: 0;
+      }
+
+      .ant-form-item-label {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .ant-select {
+        font-family: "Poppins", sans-serif;
+        width: 100%;
+
+        &-selector {
+          background: #F8F8F8;
+        }
+
+        &-selection-item {
+          font-weight: 500;
+          font-size: 16px;
+
+          .circle {
+            display: none;
+          }
+        }
+
+        &-arrow {
+          font-size: 16px;
+          color: $txt-color;
+          transition: transform 0.2s ease;
+        }
+        &-open {
+          .ant-select-arrow {
+            color: $main-color;
+            transform: rotate(-90deg);
+          }
+        }
+      }
+
+      .price {
+        text-align: center;
+        font-weight: 600;
+        font-size: 26px;
+        padding-block: 10px 15px;
+      }
+
+      .btn {
+        width: 100%;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-size: 18px;
+        padding-block: 20px;
+        color: #fff;
+        background: $main-color;
+      }
+    }
+  }
+}
+
+.apply-card-modal-success {
+
+  .ant-modal {
+    max-width: calc(100vw - 30px);
+  }
+
+  .titles {
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    padding-block: 20px;
+
+    .img {
+      margin-bottom: 10px;
+    }
+
+    .txt {
+      font-weight: 500;
+      font-size: 24px;
+      //margin-bottom: 10px;
+      color: $main-color;
+    }
+    .name {
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
   }
 }
