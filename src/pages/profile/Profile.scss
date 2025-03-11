@@ -1,5 +1,87 @@
 @use "/src/scss" as *;
 
 .profile {
+  background: $main-color;
 
+  .container {
+    padding: 0;
+  }
+
+  &__head {
+    text-align: center;
+    padding-block: 10px 20px;
+
+    .imgs {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 10px;
+
+      .btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+    }
+  }
+
+  &__body {
+    position: relative;
+    min-height: calc(100vh - 395px);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    padding: 30px 15px 20px;
+    border-radius: 35px 35px 0 0;
+    background: #fff;
+
+    .bg {
+      position: absolute;
+      top: 99%;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: #fff;
+    }
+
+    .list {
+      display: flex;
+      flex-flow: column;
+      gap: 15px;
+    }
+
+    .link {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      padding: 12px 10px;
+      border-radius: 12px;
+      border: 1px solid #EBE9E6;
+      background: #F8F8F8;
+      color: $txt-color;
+      
+      &.logout {
+        justify-content: left;
+        gap: 10px;
+        margin-top: 40px;
+        color: #EA2A2A;
+      }
+
+      .row {
+        align-items: center;
+        gap: 6px;
+      }
+
+      .width {
+        width: 24px;
+      }
+    }
+  }
 }

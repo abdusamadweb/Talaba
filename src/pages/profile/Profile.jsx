@@ -24,38 +24,47 @@ const Profile = () => {
                     <p className="title">Ism Familya</p>
                 </div>
                 <div className="profile__body">
+                    <div className='bg'/>
                     <ul className="list">
                         <li>
                             <Link className='link' to=''>
                                 <div className="row">
-                                    <img className='link__prefix' src={userIcon} alt="icon"/>
+                                    <div className='width grid-center'>
+                                        <img className='link__prefix' src={userIcon} alt="icon"/>
+                                    </div>
                                     <span className='link__txt'>Shahsiy ma’lumotlar</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
                             </Link>
                         </li>
                         <li>
-                            <Link className='link' to=''>
+                        <Link className='link' to=''>
                                 <div className="row">
-                                    <img className='link__prefix' src={clipboardIcon} alt="icon"/>
+                                    <div className='width grid-center'>
+                                        <img className='link__prefix' src={clipboardIcon} alt="icon"/>
+                                    </div>
                                     <span className='link__txt'>Mening arizalarim</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
                             </Link>
                         </li>
                         <li>
-                            <Link className='link' to=''>
+                        <Link className='link' to=''>
                                 <div className="row">
-                                    <img className='link__prefix' src={aloqaIcon} alt="icon"/>
+                                    <div className='width grid-center'>
+                                        <img className='link__prefix' src={aloqaIcon} alt="icon"/>
+                                    </div>
                                     <span className='link__txt'>Aloqa markazi</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
                             </Link>
                         </li>
                         <li>
-                            <Link className='link' to=''>
+                        <Link className='link' to=''>
                                 <div className="row">
-                                    <img className='link__prefix' src={iIcon} alt="icon"/>
+                                    <div className='width grid-center'>
+                                        <img className='link__prefix' src={iIcon} alt="icon"/>
+                                    </div>
                                     <span className='link__txt'>Ilova haqida</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
