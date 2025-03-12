@@ -1,11 +1,15 @@
-import React, {use, useState} from 'react';
+import React, {useState} from 'react';
 import './UniversityId.scss'
 import arrow from '../../assets/images/arrow-icon.svg'
 import file from '../../assets/images/file-icoc.svg'
 import img from '../../assets/images/news-test.png'
 import {Link, useNavigate} from "react-router";
-import {Carousel, Segmented, Tabs, Image} from "antd";
+import {Carousel, Drawer, Image, Segmented, Tabs} from "antd";
 import {CaretDownOutlined, CaretUpOutlined} from "@ant-design/icons";
+import langIcon from "../../assets/images/language-icon.svg";
+import eduIcon from "../../assets/images/book-icon.svg";
+import conIcon from "../../assets/images/dollar-icon.svg";
+import teacherIcon from "../../assets/images/teacher-icon.svg";
 
 const About = () => {
 
@@ -59,7 +63,7 @@ const Grand = () => {
     )
 }
 
-const Direction = () => {
+const Direction = ({ setModal }) => {
 
     const [show, setShow] = useState(false)
     const [tab, setTab] = useState(false)
@@ -76,12 +80,12 @@ const Direction = () => {
                             onChange={() => setTab(!tab)}
                         />
                         <ul className={`content__list ${show ? 'show' : ''}`}>
-                            <li className="item">Bank ishi va auditi</li>
-                            <li className="item">Bank ishi va auditi</li>
-                            <li className="item">Bank ishi va auditi</li>
-                            <li className="item">Iqtisodiyot (tarmoqlar va saholar bo'yicha)</li>
-                            <li className="item">Iqtisodiyot (tarmoqlar va saholar bo'yicha)</li>
-                            <li className="item">Iqtisodiyot (tarmoqlar va saholar bo'yicha)</li>
+                            <li
+                                className="item"
+                                onClick={() => setModal(true)}
+                            >
+                                Bank ishi va auditi
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -111,6 +115,8 @@ const Gallery = () => {
 
 const UniversityId = () => {
 
+    const [modal, setModal] = useState(false)
+
     const navigate = useNavigate()
     const tabs = [
         {
@@ -126,7 +132,7 @@ const UniversityId = () => {
         {
             key: '3',
             label: 'Yo’nalishlar',
-            children: <Direction />,
+            children: <Direction setModal={setModal} />,
         },
         {
             key: '4',
@@ -173,6 +179,85 @@ const UniversityId = () => {
                     />
                 </div>
             </div>
+
+            <Drawer
+                rootClassName='filter-modal-up'
+                className='filter-modal about-modal'
+                placement='bottom'
+                closable={false}
+                onClose={() => setModal(false)}
+                open={modal}
+                key='bottom'
+            >
+                <div className='sticky'>
+                    <span className='line'/>
+                    <h3 className="title">Boshkang’ich ta’lim</h3>
+                </div>
+                <ul className="list row">
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={langIcon} alt="icon"/>
+                            <span className='txt'>Ta’lim tili</span>
+                        </div>
+                        <span className='item__title'>{'lang'}</span>
+                    </li>
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={eduIcon} alt="icon"/>
+                            <span className='txt'>Ta’lim shakli</span>
+                        </div>
+                        <span className='item__title'>{'edu'}</span>
+                    </li>
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={conIcon} alt="icon"/>
+                            <span className='txt'>Kunduzgi</span>
+                        </div>
+                        <span className='item__title'>{'formatPrice(contract)'} so’mdan boshlab</span>
+                    </li>
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={conIcon} alt="icon"/>
+                            <span className='txt'>Sirtqi</span>
+                        </div>
+                        <span className='item__title'>{'formatPrice(contract)'} so’mdan boshlab</span>
+                    </li>
+
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={teacherIcon} alt="icon"/>
+                            <span className='txt'>Kunduzgi</span>
+                        </div>
+                        <span className='item__title'>{'4 yil'}</span>
+                    </li>
+                    <li className='item'>
+                        <div className='row align-center'>
+                            <img className='item__img' src={teacherIcon} alt="icon"/>
+                            <span className='txt'>Sirtqi</span>
+                        </div>
+                        <span className='item__title'>{'5 yil'}</span>
+                    </li>
+                </ul>
+                <div className="titles">
+                    <span className='title'>Yo'nalish haqida</span>
+                    <p className="desc">
+                        Boshlang‘ich ta’lim sohasida kamida 5 yillik
+                        tajribaga ega bo'lish (Sirtqi uchun)
+                        Boshlang‘ich ta’lim - Boshlang‘ich ta’lim ta’lim
+                        yo‘nalishi bo‘yicha bakalavrlar tayyorlovchi oliy
+                        ta’limning dasturi asosida amalga oshiriladi,
+                        uning nazariy va amaliy mashg‘ulotlarini to‘liq
+                        o‘zlashtirgan, yakuniy davlat attestatsiyasidan
+                        muvaffaqiyatli o‘tgan shaxsga «bakalavr»
+                        malakasi (darajasi) hamda oliy ma’lumot
+                        to‘g‘risidagi davlat namunasidagi rasmiy
+                        hujjat(lar) beriladi
+                    </p>
+                </div>
+                <div className='btns'>
+                    <button className='btn'>Hujjat topshirish</button>
+                </div>
+            </Drawer>
         </div>
     );
 };

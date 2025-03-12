@@ -108,7 +108,7 @@ const ApplyCard = ({
                         </ul>
                     </div>
                     <div className="btns align-center">
-                        <Link className='btn btn1' to='/'>Batafsil</Link>
+                        <Link className='btn btn1' to='/university/1'>Batafsil</Link>
                         <button className={`btn btn2 ${close ? 'btn2-red' : ''} `} onClick={() => setModal(true)}>
                             {!close ? 'Hujjat topshirish' : 'Qabul yopilgan'}
                         </button>
