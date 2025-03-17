@@ -8,7 +8,5 @@ export const $resp = axios.create({
     headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem('token'),
-        Lang: userLang,
-        "Accept-Language": userLang
     }
 })

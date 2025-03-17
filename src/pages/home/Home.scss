@@ -120,7 +120,7 @@
       background: $main-color;
     }
     .slick-next {
-      left: 99%;
+      right: -25px;
 
       &::after {
         top: 50%;
@@ -130,11 +130,11 @@
       }
 
       @include breakpoint-down(320px) {
-        left: 93%;
+        //left: 93%;
       }
     }
     .slick-prev {
-      left: -8%;
+      left: -25px;
 
       &::after {
         top: 50%;

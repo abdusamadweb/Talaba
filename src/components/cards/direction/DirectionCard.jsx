@@ -1,7 +1,7 @@
 import React from 'react';
 import './Direction.scss'
 
-const DirectionCard = ({ img, txt }) => {
+const DirectionCard = ({ id, img, txt }) => {
     return (
         <li className='direction-card'>
             <span className='img'>

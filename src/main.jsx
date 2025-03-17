@@ -1,9 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
-
-
 import { init, miniApp } from '@telegram-apps/sdk';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 
 const initializeTelegramSDK = async () => {
@@ -25,9 +24,13 @@ const initializeTelegramSDK = async () => {
 
 initializeTelegramSDK();
 
+const queryClient = new QueryClient()
+
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <App />
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
     </StrictMode>,
 )

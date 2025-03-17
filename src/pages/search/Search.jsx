@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import './Search.scss'
-import {Collapse, Input, Select, Slider} from "antd";
+import {Button, Collapse, Empty, Input, Select, Slider} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import ApplyCard from "../../components/cards/apply/ApplyCard.jsx";
-import logo from "../../assets/images/apply-logo-test.png";
-import bgtest from "../../assets/images/apply-bgi-test.jpg";
 import adImg from "../../assets/images/ad-img.png";
 import {formatPrice} from "../../assets/scripts/global.js";
 import {CaretDownOutlined, CaretRightOutlined} from '@ant-design/icons'
+import $api from "../../api/apiConfig.js";
+import {useQuery} from "@tanstack/react-query";
+import {$resp} from "../../api/apiResp.js";
 
 const Option = ({ txt }) => {
     return (
@@ -20,7 +21,35 @@ const Option = ({ txt }) => {
     )
 }
 
+const fetchRegions = async () => {
+    const { data } = await $api.get('/regions/all')
+    return data
+}
+const fetchLang = async () => {
+    const { data } = await $api.get('/edu-lang/all')
+    return data
+}
+const fetchDirection = async () => {
+    const { data } = await $api.get('/main-direction/all')
+    return data
+}
+
+const fetchFilteredData = async ({ queryKey }) => {
+    const [, params, body] = queryKey
+    const { data } = await $resp.post('/main-direction/filter', body, { params })
+    return data
+}
+
+
 const Search = () => {
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    const [size, setSize] = useState(10)
+    const [q, setQ] = useState('')
+    const [sRegion, setSRegion] = useState(null)
+    const [sLang, setSLang] = useState(null)
+    const [sDir, setSDir] = useState(null)
 
     const [ranges, setRanges] = useState({
         from: 5000000,
@@ -28,12 +57,75 @@ const Search = () => {
     })
 
     const changeRange = (val) => {
-        return setRanges({from: val[0]*1000000, to: val[1]*1000000});
+        return setRanges({from: val[0]*1000000, to: val[1]*1000000})
     }
 
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    };
+    // Fetch regions
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: fetchRegions
+    })
+    const rOptions = regions?.regions?.map(i => ({
+        value: i.id,
+        label: <Option txt={i.name} />
+    })) || []
+
+    // Fetch langs
+    const { data: langs } = useQuery({
+        queryKey: ['langs'],
+        queryFn: fetchLang
+    })
+    const lOptions = langs?.map(i => ({
+        value: i.id,
+        label: <Option txt={i.name} />
+    })) || []
+
+    // Fetch directions
+    const { data: directions } = useQuery({
+        queryKey: ['directions'],
+        queryFn: fetchDirection
+    })
+    const dOptions = directions?.map(i => ({
+        value: i.id,
+        label: <Option txt={i.name} />
+    })) || []
+
+
+    // filter data
+    const [params, setParams] = useState({ page: 1, size: 10 })
+    const [body, setBody] = useState({
+        q: null,
+        region_id: null,
+        lang_id: null,
+        main_direction_id: null,
+        edu_type: null,
+        from_price: null,
+        to_price: null,
+    })
+
+    const { data, refetch } = useQuery({
+        queryKey: ['filteredData', params, body],
+        queryFn: fetchFilteredData,
+        keepPreviousData: true,
+    })
+
+    const updateFilters = () => {
+        setIsLoading(true)
+
+        setParams({ page: 1, size: size })
+        setBody({
+            q: q,
+            region_id: sRegion,
+            lang_id: sLang,
+            main_direction_id: sDir,
+            edu_type: null,
+            from_price: ranges.from,
+            to_price: ranges.to,
+        })
+        refetch()
+
+        setTimeout(() => setIsLoading(false), 1000)
+    }
 
 
     return (
@@ -45,6 +137,7 @@ const Search = () => {
                             size="large"
                             prefix={<img src={searchIcon} alt='icon'></img>}
                             placeholder="OTM yoki ta’lim yo’nalishlarini qidiring..."
+                            onChange={(e) => setQ(e.target.value)}
                         />
                     </div>
                 </div>
@@ -76,18 +169,9 @@ const Search = () => {
                                             <Select
                                                 size='large'
                                                 suffixIcon={<CaretDownOutlined/>}
-                                                onChange={handleChange}
+                                                onChange={(e) => setSRegion(e)}
                                                 placeholder="Manzil"
-                                                options={[
-                                                    {
-                                                        value: 'Toshkent shaxri',
-                                                        label: <Option txt='Toshkent shaxri'/>,
-                                                    },
-                                                    {
-                                                        value: 'Jizzax shaxri',
-                                                        label: <Option txt='Jizzax shaxri'/>,
-                                                    },
-                                                ]}
+                                                options={rOptions}
                                             />
                                         </div>
                                         <div className='select-wrapper'>
@@ -95,71 +179,55 @@ const Search = () => {
                                             <Select
                                                 size='large'
                                                 suffixIcon={<CaretDownOutlined/>}
-                                                onChange={handleChange}
+                                                onChange={(e) => setSDir(e)}
                                                 placeholder="Ta’lim yo’nalishlari"
-                                                options={[
-                                                    {
-                                                        value: "Ta’lim yo’nalishlari",
-                                                        label: <Option txt="Ta’lim yo’nalishlari"/>,
-                                                    },
-                                                ]}
+                                                options={dOptions}
                                             />
                                         </div>
-                                        <div className='select-wrapper'>
-                                            <span className='select__txt'>Ta’lim turi</span>
-                                            <Select
-                                                size='large'
-                                                suffixIcon={<CaretDownOutlined/>}
-                                                onChange={handleChange}
-                                                placeholder="Ta’lim turi"
-                                                options={[
-                                                    {
-                                                        value: 'Kunduzgi',
-                                                        label: <Option txt='Kunduzgi'/>,
-                                                    },
-                                                    {
-                                                        value: 'Sirtqi',
-                                                        label: <Option txt='Sirtqi'/>,
-                                                    },
-                                                    {
-                                                        value: 'Kechki',
-                                                        label: <Option txt='Kechki'/>,
-                                                    },
-                                                    {
-                                                        value: 'Masofaviy',
-                                                        label: <Option txt='Masofaviy'/>,
-                                                    },
-                                                ]}
-                                            />
-                                        </div>
+                                        {/*<div className='select-wrapper'>*/}
+                                        {/*    <span className='select__txt'>Ta’lim turi</span>*/}
+                                        {/*    <Select*/}
+                                        {/*        size='large'*/}
+                                        {/*        suffixIcon={<CaretDownOutlined/>}*/}
+                                        {/*        onChange={handleChange}*/}
+                                        {/*        placeholder="Ta’lim turi"*/}
+                                        {/*        options={[*/}
+                                        {/*            {*/}
+                                        {/*                value: 'Kunduzgi',*/}
+                                        {/*                label: <Option txt='Kunduzgi'/>,*/}
+                                        {/*            },*/}
+                                        {/*            {*/}
+                                        {/*                value: 'Sirtqi',*/}
+                                        {/*                label: <Option txt='Sirtqi'/>,*/}
+                                        {/*            },*/}
+                                        {/*            {*/}
+                                        {/*                value: 'Kechki',*/}
+                                        {/*                label: <Option txt='Kechki'/>,*/}
+                                        {/*            },*/}
+                                        {/*            {*/}
+                                        {/*                value: 'Masofaviy',*/}
+                                        {/*                label: <Option txt='Masofaviy'/>,*/}
+                                        {/*            },*/}
+                                        {/*        ]}*/}
+                                        {/*    />*/}
+                                        {/*</div>*/}
                                         <div className='select-wrapper'>
                                             <span className='select__txt'>Ta’lim tili</span>
                                             <Select
                                                 size='large'
                                                 suffixIcon={<CaretDownOutlined/>}
-                                                onChange={handleChange}
+                                                onChange={(e) => setSLang(e)}
                                                 placeholder="Ta’lim tili"
-                                                options={[
-                                                    {
-                                                        value: "O'zbek tili",
-                                                        label: <Option txt="O'zbek tili"/>,
-                                                    },
-                                                    {
-                                                        value: 'Ingliz tili',
-                                                        label: <Option txt='Ingliz tili'/>,
-                                                    },
-                                                    {
-                                                        value: 'Rus tili',
-                                                        label: <Option txt='Rus tili'/>,
-                                                    },
-                                                    {
-                                                        value: 'Turkman tili',
-                                                        label: <Option txt='Turkman tili'/>,
-                                                    },
-                                                ]}
+                                                options={lOptions}
                                             />
                                         </div>
-                                        <button className='select__btn'>Qidirish</button>
+                                        <Button
+                                            className='select__btn'
+                                            onClick={updateFilters}
+                                            loading={isLoading}
+                                        >
+                                            Qidirish
+                                        </Button>
                                     </div>
                                 </div>,
                             },
@@ -167,15 +235,24 @@ const Search = () => {
                     />
 
                     <ul className="apply__list">
-                        <ApplyCard
-                            title='Iqtisodiyot va pedagogika universiteti'
-                            name='Biznes boshqaruvi'
-                            logo={logo}
-                            bgImg={bgtest}
-                            lang='O’zbek tili'
-                            edu='Kunduzgi / Sirtqi'
-                            contract={35000000}
-                        />
+                        {
+                            data?.data.length ?
+                                data?.data.map((i, index) => (
+                                    <ApplyCard key={index} i={i} />
+                                ))
+                                : <Empty description={false} />
+                        }
+                        {
+                            data?.data.length > 9 &&
+                            <Button
+                                className='more-btn'
+                                loading={isLoading}
+                                size='large'
+                                onClick={() => setSize(+size + 10)}
+                            >
+                                Ko'proq ko'rsatish
+                            </Button>
+                        }
                         <ApplyCard ad={adImg}/>
                     </ul>
                 </div>
