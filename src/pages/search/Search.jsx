@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Search.scss'
-import {Button, Collapse, Empty, Input, Select, Slider} from "antd";
+import {Button, Collapse, Empty, Input, Select, Skeleton, Slider} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import ApplyCard from "../../components/cards/apply/ApplyCard.jsx";
 import adImg from "../../assets/images/ad-img.png";
@@ -48,7 +48,7 @@ const Search = () => {
     const [size, setSize] = useState(10)
     const [q, setQ] = useState('')
     const [sRegion, setSRegion] = useState(null)
-    const [sLang, setSLang] = useState(null)
+    const [sLang, setSLang] = useState([])
     const [sDir, setSDir] = useState(null)
 
     const [ranges, setRanges] = useState({
@@ -96,14 +96,14 @@ const Search = () => {
     const [body, setBody] = useState({
         q: null,
         region_id: null,
-        lang_id: null,
+        lang_ids: null,
         main_direction_id: null,
         edu_type: null,
         from_price: null,
         to_price: null,
     })
 
-    const { data, refetch } = useQuery({
+    const { data, isLoading: loading, refetch } = useQuery({
         queryKey: ['filteredData', params, body],
         queryFn: fetchFilteredData,
         keepPreviousData: true,
@@ -116,14 +116,13 @@ const Search = () => {
         setBody({
             q: q,
             region_id: sRegion,
-            lang_id: sLang,
+            lang_ids: [sLang],
             main_direction_id: sDir,
             edu_type: null,
             from_price: ranges.from,
             to_price: ranges.to,
         })
         refetch()
-
         setTimeout(() => setIsLoading(false), 1000)
     }
 
@@ -236,11 +235,17 @@ const Search = () => {
 
                     <ul className="apply__list">
                         {
-                            data?.data.length ?
-                                data?.data.map((i, index) => (
-                                    <ApplyCard key={index} i={i} />
-                                ))
-                                : <Empty description={false} />
+                            loading ? <div className='p1 pb3'>
+                                    <Skeleton active/> <br/>
+                                    <Skeleton active/> <br/>
+                                    <Skeleton active/>
+                                </div>
+                                :
+                                data?.data.length ?
+                                    data?.data.map((i, index) => (
+                                        <ApplyCard key={index} i={i}/>
+                                    ))
+                                    : <Empty description={false}/>
                         }
                         {
                             data?.data.length > 9 &&

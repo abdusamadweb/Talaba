@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './Header.scss'
 import logo from '../../assets/images/logo.svg'
 import menu from '../../assets/images/menu-icon.svg'
-import {Link} from "react-router";
+import {Link, useHref} from "react-router";
 import {Drawer, Input} from "antd";
 import arrowIcon from '../../assets/images/arrow-icon.svg'
 import searchIcon from "../../assets/images/search-icon.svg";
@@ -13,9 +13,11 @@ const Header = () => {
     const [modal, setModal] = useState(false)
     const [search, setSearch] = useState('')
 
+    const href = useHref({})
+
 
     return (
-        <div className='header'>
+        <div className={`header ${href.includes('profile') ? 'd-none' : ''}`}>
             <div className="container row between align-center">
                 <Link className='header__logo' to='/'>
                     <img src={logo} alt="logo"/>

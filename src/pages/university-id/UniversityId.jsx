@@ -3,15 +3,17 @@ import './UniversityId.scss'
 import arrow from '../../assets/images/arrow-icon.svg'
 import file from '../../assets/images/file-icoc.svg'
 import img from '../../assets/images/news-test.png'
-import {Link, useNavigate} from "react-router";
-import {Carousel, Drawer, Image, Segmented, Tabs} from "antd";
+import {Link, useNavigate, useParams} from "react-router";
+import {Carousel, Drawer, Image, Segmented, Skeleton, Tabs} from "antd";
 import {CaretDownOutlined, CaretUpOutlined} from "@ant-design/icons";
 import langIcon from "../../assets/images/language-icon.svg";
 import eduIcon from "../../assets/images/book-icon.svg";
 import conIcon from "../../assets/images/dollar-icon.svg";
 import teacherIcon from "../../assets/images/teacher-icon.svg";
+import {$resp} from "../../api/apiResp.js";
+import {useQuery} from "@tanstack/react-query";
 
-const About = () => {
+const About = ({ data }) => {
 
     const [show, setShow] = useState(false)
 
@@ -21,12 +23,7 @@ const About = () => {
             <div className="about__info">
                 <div className="titless">
                     <span className='title'>Universitet haqida :</span>
-                    <p className={`desc ${show ? 'show' : ''}`}>Universitetning asosiy vazifasi ilm-fan
-                        va ishlab chiqarish o‘rtasidagi
-                        hamkorlikni mustahkamlash orqali
-                        ijtimoiy-iqtisodiy barqaror rivojlanishni
-                        hamkorlikni mustahkamlash orqali
-                        ijtimoiy iqtisodiy barqaror rivojlanishni</p>
+                    <p className={`desc ${show ? 'show' : ''}`}>{data?.data.desc}</p>
                 </div>
                 <button className='btn' onClick={() => setShow(!show)}>
                     { !show ? 'Ko’proq ko’rish' : 'Yopish' }
@@ -37,7 +34,7 @@ const About = () => {
     )
 }
 
-const Grand = () => {
+const Grand = ({ data }) => {
 
     const [show, setShow] = useState(false)
 
@@ -63,9 +60,9 @@ const Grand = () => {
     )
 }
 
-const Direction = ({ setModal }) => {
+const Direction = ({ setModal, data }) => {
 
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState(true)
     const [tab, setTab] = useState(false)
 
     return (
@@ -90,15 +87,15 @@ const Direction = ({ setModal }) => {
                     </div>
                 </div>
                 <button className='btn' onClick={() => setShow(!show)}>
-                    { !show ? 'Ko’proq ko’rish' : 'Yopish' }
-                    { !show ? <CaretDownOutlined/> : <CaretUpOutlined/> }
+                    {!show ? 'Ko’proq ko’rish' : 'Yopish'}
+                    {!show ? <CaretDownOutlined/> : <CaretUpOutlined/>}
                 </button>
             </div>
         </div>
     )
 }
 
-const Gallery = () => {
+const Gallery = ({data}) => {
     return (
         <div className='about tab gallery'>
             <p className="about__title">Galereya</p>
@@ -113,31 +110,49 @@ const Gallery = () => {
     )
 }
 
+// fetch data
+const fetchUniversity = async (id) => {
+    const { data } = await $resp.get(`/university/get/${id}`)
+    return data
+}
+
 const UniversityId = () => {
 
-    const [modal, setModal] = useState(false)
+    const { id } = useParams()
 
+    const [modal, setModal] = useState(false)
     const navigate = useNavigate()
+
+
+    // fetch university
+    const { data, isLoading } = useQuery({
+        queryKey: ['universityId', id],
+        queryFn: () => fetchUniversity(id),
+        enabled: !!id,
+        keepPreviousData: true
+    })
+
+
     const tabs = [
         {
             key: '1',
             label: 'OTM haqida',
-            children: <About />,
+            children: <About data={data} />,
         },
         {
             key: '2',
-            label: 'Grandlar',
-            children: <Grand />,
+            label: 'Yo’nalishlar',
+            children: <Direction setModal={setModal} data={data} />,
         },
         {
             key: '3',
-            label: 'Yo’nalishlar',
-            children: <Direction setModal={setModal} />,
+            label: 'Grandlar',
+            children: <Grand data={data} />,
         },
         {
             key: '4',
             label: 'Galereya',
-            children: <Gallery />,
+            children: <Gallery data={data} />,
         },
     ]
 
@@ -151,33 +166,42 @@ const UniversityId = () => {
                     </button>
                     <span className="txt">Ortga</span>
                 </div>
-                <div className="university__head">
-                    <div className="titles row align-center">
-                        <div className="imgs grid-center">
-                            <img src={1} alt="logo"/>
+                {
+                    isLoading ? <div className='p1 pb3'>
+                            <Skeleton active/> <br/>
+                            <Skeleton active/> <br/>
+                            <Skeleton active/> <br/>
+                            <Skeleton active title={false}/>
                         </div>
-                        <div>
-                            <p className="name fw500">Iqtisodiyot va pedagogika universiteti</p>
-                            <span className="city">Qarshi shahri</span>
-                        </div>
-                    </div>
-                    <div className="license">
-                        <div className="row">
-                            <img className='img' src={file} alt="icon"/>
-                            <div>
-                                <span className='txt'>OTM litsenziyasi</span>
-                                <Link className='link' to=''>Litsenziyani ko’rish</Link>
+                        :
+                        <div className="university__head">
+                                <div className="titles row align-center">
+                                    <div className="imgs grid-center">
+                                        <img src={1} alt="logo"/>
+                                    </div>
+                                    <div>
+                                        <p className="name fw500">{data?.data.name}</p>
+                                        <span className="city">{data?.data.address}</span>
+                                    </div>
+                                </div>
+                                <div className="license">
+                                    <div className="row">
+                                        <img className='img' src={file} alt="icon"/>
+                                        <div>
+                                            <span className='txt'>OTM litsenziyasi</span>
+                                            <a className='link' href={data?.data.site} target='_blank'>Litsenziyani ko’rish</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Tabs
+                                    rootClassName='tabs'
+                                    defaultActiveKey="1"
+                                    items={tabs}
+                                    centered={true}
+                                    // onChange={onChange}
+                                />
                             </div>
-                        </div>
-                    </div>
-                    <Tabs
-                        rootClassName='tabs'
-                        defaultActiveKey="1"
-                        items={tabs}
-                        centered={true}
-                        // onChange={onChange}
-                    />
-                </div>
+                }
             </div>
 
             <Drawer

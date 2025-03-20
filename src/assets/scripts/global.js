@@ -1,5 +1,7 @@
 
 // site language
+import {$resp} from "../../api/apiResp.js";
+
 export const lang = localStorage.getItem('lang') || 'en'
 export const changeLang = (lang) => {
     localStorage.setItem('lang', lang)
@@ -28,5 +30,18 @@ export const formatPhone = (str) => {
     })
     return formatted.join("")
 }
+
+// upload file
+export const uploadFile = async (file) => {
+    const formData = new FormData()
+    formData.append('file', file) // Важно: 'file' — это ключ, который ждёт API
+
+    const { data } = await $resp.post('/upload-file', formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    })
+
+    return data
+}
+
 
 

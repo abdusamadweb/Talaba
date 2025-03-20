@@ -503,6 +503,11 @@
       .ant-input-affix-wrapper {
         background: #F8F8F8;
       }
+      .change-icon {
+        .ant-input-suffix path {
+          fill: $main-color;
+        }
+      }
 
       .ant-col {
         padding-bottom: 0;

@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import './Applications.scss'
 import img404 from '../../assets/images/applications404-icon.svg'
 import {formatPrice} from "../../assets/scripts/global.js";
-import {Button, message, Modal, Steps} from "antd";
+import {Button, Modal, Skeleton, Steps} from "antd";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
+import {Link} from "react-router";
+import toast from "react-hot-toast";
 
 const app404 = <div className="d404">
             <div className="wrapper">
@@ -13,7 +15,7 @@ const app404 = <div className="d404">
                     <p className="title">Arizalar mavjud emas</p>
                     <p className="desc">Siz hali hech qanday arizalar mavjud emas</p>
                 </div>
-                <button className='d404__btn'>Hujjat topshirish</button>
+                <Link className='d404__btn' to='/search'>Hujjat topshirish</Link>
             </div>
         </div>
 
@@ -37,25 +39,9 @@ const Applications = () => {
     const degree = '-----'
 
 
-    // toast
-    const [messageApi, contextHolder] = message.useMessage();
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Bekor qilindi !',
-        });
-    }
-    const error = () => {
-        messageApi.open({
-            type: 'error',
-            content: 'Xato !',
-        });
-    }
-
-
     // Fetch regions
-    const { data, refetch } = useQuery({
-        queryKey: ['regions'],
+    const { data, isLoading, refetch } = useQuery({
+        queryKey: ['applications'],
         queryFn: fetchApps
     })
 
@@ -63,21 +49,20 @@ const Applications = () => {
     const mutation = useMutation({
         mutationFn: rejectApplication,
         onSuccess: () => {
-            success()
+            toast.success("Bekor qilindi!")
             setCancelLoad(false)
             setModal(false)
-
             refetch()
         },
         onError: () => {
-            error()
+            toast.error("Xato!")
             setCancelLoad(false)
+            refetch()
         }
     })
 
     const handleReject = (id) => {
         setCancelLoad(true)
-
         mutation.mutate(id)
     }
 
@@ -85,67 +70,72 @@ const Applications = () => {
     return (
         <div className='applications'>
             <div className="container">
-                {contextHolder}
                 {
-                    data?.data && true ?
-                        <ul className="applications__list">
-                            {
-                                data?.data?.map((i, index) => (
-                                    <li className='apply-card' key={index}>
-                                        <div className="apply-card__head" style={{backgroundImage: `url(${bgImg})`}}>
-                                            <div className='index'>
-                                                <h3 className="title">{i.university.name}</h3>
-                                                <span className='name'>{i.edu_direction_name}</span>
-                                                <div className='img'>
-                                                    <img src={logo} alt="logo"/>
+                    isLoading ? <div className='p1 pb3'>
+                            <Skeleton active /> <br/>
+                            <Skeleton active /> <br/>
+                            <Skeleton active />
+                        </div>
+                        :
+                        data?.data && true ?
+                            <ul className="applications__list">
+                                {
+                                    data?.data?.map((i, index) => (
+                                        <li className='apply-card' key={index}>
+                                            <div className="apply-card__head" style={{backgroundImage: `url(${bgImg})`}}>
+                                                <div className='index'>
+                                                    <h3 className="title">{i.university.name}</h3>
+                                                    <span className='name'>{i.edu_direction_name}</span>
+                                                    <div className='img'>
+                                                        <img src={logo} alt="logo"/>
+                                                    </div>
                                                 </div>
+                                                <div className='overlay'/>
                                             </div>
-                                            <div className='overlay'/>
-                                        </div>
-                                        <div className="apply-card__body">
-                                            <div className="mb1">
-                                                <ul className="list">
-                                                    <li className='item'>
-                                                        <span className='txt'>Daraja</span>
-                                                        <span className='item__title'>{degree}</span>
-                                                    </li>
-                                                    <li className='item'>
-                                                        <span className='txt'>Ta’lim tili</span>
-                                                        <span className='item__title'>{i.edu_lang.name}</span>
-                                                    </li>
-                                                    <li className='item'>
-                                                        <span className='txt'>Ta’lim shakli</span>
-                                                        <span className='item__title'>{i.edu_type}</span>
-                                                    </li>
-                                                    <li className='item'>
-                                                        <span className='txt'>Kontrakt to’lovi</span>
-                                                        <span className='item__title'>{formatPrice(i.edu_direction.contract_price)} UZS</span>
-                                                    </li>
-                                                </ul>
+                                            <div className="apply-card__body">
+                                                <div className="mb1">
+                                                    <ul className="list">
+                                                        <li className='item'>
+                                                            <span className='txt'>Daraja</span>
+                                                            <span className='item__title'>{degree}</span>
+                                                        </li>
+                                                        <li className='item'>
+                                                            <span className='txt'>Ta’lim tili</span>
+                                                            <span className='item__title'>{i.edu_lang.name}</span>
+                                                        </li>
+                                                        <li className='item'>
+                                                            <span className='txt'>Ta’lim shakli</span>
+                                                            <span className='item__title'>{i.edu_type}</span>
+                                                        </li>
+                                                        <li className='item'>
+                                                            <span className='txt'>Kontrakt to’lovi</span>
+                                                            <span className='item__title'>{formatPrice(i.edu_direction.contract_price)} UZS</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div className="status">
+                                                    <Steps
+                                                        size="small"
+                                                        type="inline"
+                                                        responsive={false}
+                                                        current={+i.status_order-1}
+                                                        items={[{title: '',}, {title: '',}, {title: ''},{title: ''}, {title: ''},]}
+                                                    />
+                                                    <p className="status__title">
+                                                        Holati:
+                                                        <span>{i.status}</span>
+                                                    </p>
+                                                </div>
+                                                <button className='btn btn2-red' onClick={() => {
+                                                    setModal(true)
+                                                    setSItem(i)
+                                                }}>Arizani bekor qilish</button>
                                             </div>
-                                            <div className="status">
-                                                <Steps
-                                                    size="small"
-                                                    type="inline"
-                                                    responsive={false}
-                                                    current={+i.status_order-1}
-                                                    items={[{title: '',}, {title: '',}, {title: ''},{title: ''}, {title: ''},]}
-                                                />
-                                                <p className="status__title">
-                                                    Holati:
-                                                    <span>{i.status}</span>
-                                                </p>
-                                            </div>
-                                            <button className='btn btn2-red' onClick={() => {
-                                                setModal(true)
-                                                setSItem(i)
-                                            }}>Arizani bekor qilish</button>
-                                        </div>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                        : app404
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                            : app404
                 }
             </div>
             <Modal

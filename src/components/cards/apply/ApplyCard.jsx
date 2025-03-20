@@ -6,8 +6,12 @@ import conIcon from '../../../assets/images/dollar-icon.svg'
 import successIcon from '../../../assets/images/apply-success.svg'
 import {Link} from "react-router";
 import {formatPrice} from "../../../assets/scripts/global.js";
-import {Button, Form, Input, message, Modal, Select, Upload} from "antd";
-import {CaretDownOutlined, UploadOutlined} from "@ant-design/icons";
+import {Button, Form, Input, Modal, Select, Upload} from "antd";
+import {CaretDownOutlined} from "@ant-design/icons";
+import {API_TEST} from "../../../api/apiConfig.js";
+import toast from "react-hot-toast";
+import {useMutation} from "@tanstack/react-query";
+import {$resp} from "../../../api/apiResp.js";
 
 const Option = ({ txt }) => {
     return (
@@ -33,39 +37,82 @@ const UploadIcon = () => {
     )
 }
 
+// upload files
 const uploadProps = {
     name: 'file',
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    maxCount: 1,
+    action: API_TEST + '/upload-file',
     headers: {
-        authorization: 'authorization-text',
+        Authorization: localStorage.getItem('token'),
     },
     onChange(info) {
         if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
+            console.log(info.file);
         }
+
         if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
+            toast.success(`${info.file.name} yuklandi! ✅`);
         } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            toast.error(`${info.file.name} xatolik! ❌`);
         }
     },
 }
 
+// fetch
+const createApplication = async (body) => {
+    const { data } = await $resp.post('/application/create', body)
+    return data
+}
+
 const ApplyCard = ({
    i,
-   title,
-   name,
    bgImg,
    logo,
-   lang,
-   edu,
-   contract,
-   close,
    ad
 }) => {
 
     const [modal, setModal] = useState(false)
     const [modalSuccess, setModalSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const [form] = Form.useForm()
+
+    const [file1, setFile1] = useState(null)
+    const [file2, setFile2] = useState(null)
+
+
+    // form finish
+    const mutation = useMutation({
+        mutationFn: createApplication,
+        onSuccess: () => {
+            toast.success('Ariza yuborildi!')
+            form.resetFields() // Очищаем форму после успешной отправки
+
+            setFile1(null)
+            setFile2(null)
+
+            setModalSuccess(true)
+            setModal(false)
+            setLoading(false)
+        },
+        onError: (error) => {
+            toast.error(`Xato: ${error.message}`)
+            setLoading(false)
+        }
+    })
+
+    const onFinish = (items) => {
+        const body = {
+            edu_direction_id: i.id,
+            edu_lang_id: items.language,
+            edu_type: items.type,
+            diploma_id: items.docs.file.response?.files[0].id,
+            photo_id: items.image.file.response?.files[0].id
+        }
+
+        setLoading(true)
+        mutation.mutate(body)
+    }
 
 
     return (
@@ -95,7 +142,7 @@ const ApplyCard = ({
                                     <img className='item__img' src={langIcon} alt="icon"/>
                                     <span className='txt'>Ta’lim tili</span>
                                 </div>
-                                <span className='item__title'>{i.edu_lang.name}</span>
+                                <span className='item__title'>{i.edu_langs.name}</span>
                             </li>
                             <li className='item'>
                                 <div className='row align-center'>
@@ -133,14 +180,14 @@ const ApplyCard = ({
                         <div className="imgs">
                             <img src={logo} alt="logo"/>
                         </div>
-                        <p className="name">Iqtisodiyot va pedagogika universiteti</p>
-                        <p className="desc">Iqtisodiyot (tarmoqlar va sohalar bo‘yocha)</p>
+                        <p className="name">{ i.university.name }</p>
+                        <p className="desc">{ i.main_direction.name }</p>
                     </div>
                     <Form
                         rootClassName='apply-card-form'
-                        initialValues={{remember: true,}}
-                        // onFinish={onFinish}
-                        // onFinishFailed={onFinishFailed}
+                        initialValues={{remember: true}}
+                        form={form}
+                        onFinish={onFinish}
                         autoComplete="off"
                     >
                         <Form.Item
@@ -151,18 +198,11 @@ const ApplyCard = ({
                             <Select
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
-                                // onChange={handleChange}
                                 placeholder="Manzil"
-                                options={[
-                                    {
-                                        value: 'Toshkent shaxri',
-                                        label: <Option txt='Toshkent shaxri'/>,
-                                    },
-                                    {
-                                        value: 'Jizzax shaxri',
-                                        label: <Option txt='Jizzax shaxri'/>,
-                                    },
-                                ]}
+                                options={i.edu_type?.map(i => ({
+                                    value: i,
+                                    label: <Option txt={i}/>
+                                }))}
                             />
                         </Form.Item>
 
@@ -174,18 +214,11 @@ const ApplyCard = ({
                             <Select
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
-                                // onChange={handleChange}
                                 placeholder="Manzil"
-                                options={[
-                                    {
-                                        value: 'Toshkent shaxri',
-                                        label: <Option txt='Toshkent shaxri'/>,
-                                    },
-                                    {
-                                        value: 'Jizzax shaxri',
-                                        label: <Option txt='Jizzax shaxri'/>,
-                                    },
-                                ]}
+                                options={i.edu_langs?.map(i => ({
+                                    value: i.id,
+                                    label: <Option txt={i.name}/>
+                                }))}
                             />
                         </Form.Item>
 
@@ -195,11 +228,12 @@ const ApplyCard = ({
                             name="docs"
                             rules={[{required: true}]}
                         >
-                            <Upload {...uploadProps}>
+                            <Upload {...uploadProps} onChange={(e) => setFile1(e.file.percent)}>
                                 <Input
+                                    rootClassName={file1 !== null && 'change-icon'}
                                     size='large'
                                     suffix={<UploadIcon />}
-                                    prefix='Yuklash'
+                                    prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
                         </Form.Item>
@@ -209,19 +243,20 @@ const ApplyCard = ({
                             name="image"
                             rules={[{required: true}]}
                         >
-                            <Upload {...uploadProps}>
+                            <Upload {...uploadProps} onChange={(e) => setFile2(e.file.percent)}>
                                 <Input
+                                    rootClassName={file2 !== null && 'change-icon'}
                                     size='large'
                                     suffix={<UploadIcon />}
-                                    prefix='Yuklash'
+                                    prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
                         </Form.Item>
 
-                        <p className='price'> {formatPrice(contract) || 0} UZS</p>
+                        <p className='price'> {formatPrice(i.contract_price) || 0} UZS</p>
                         <Button
                             className='btn'
-                            // loading={true}
+                            loading={loading}
                             type="submit"
                             htmlType='submit'
                         >

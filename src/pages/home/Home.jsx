@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Home.scss'
-import {Button, Carousel, Empty, Input} from "antd";
+import {Button, Carousel, Empty, Input, Skeleton} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import UniCard from "../../components/cards/univercity/UniCard.jsx";
 import uimg from "../../assets/images/test.jpg";
@@ -61,11 +61,17 @@ const Home = () => {
                 <div className="university">
                     <ul className="university-list">
                         {
-                            data?.data.length ?
-                                data?.data.map((i, index) => (
-                                    <UniCard key={index} i={i} />
-                                ))
-                                : <Empty description={false} />
+                            isLoading ? <div className='p1 pb3'>
+                                    <Skeleton active/> <br/>
+                                    <Skeleton active/> <br/>
+                                    <Skeleton active/>
+                                </div>
+                                :
+                                data?.data.length ?
+                                    data?.data.map((i, index) => (
+                                        <UniCard key={index} i={i}/>
+                                    ))
+                                    : <Empty description={false}/>
                         }
                     </ul>
                     {

@@ -27,7 +27,7 @@ const Profile = () => {
                     <div className='bg'/>
                     <ul className="list">
                         <li>
-                            <Link className='link' to=''>
+                            <Link className='link' to='/profile/me'>
                                 <div className="row">
                                     <div className='width grid-center'>
                                         <img className='link__prefix' src={userIcon} alt="icon"/>

@@ -5,6 +5,7 @@
   background: #fff;
 
   .head {
+    position: relative;
     padding: 10px;
 
     &__img {
@@ -39,6 +40,15 @@
     &__city {
       font-size: 14px;
       color: $main-color;
+    }
+
+    .icon {
+      left: unset;
+      right: 10px;
+
+      path {
+        fill: $main-color;
+      }
     }
   }
 
