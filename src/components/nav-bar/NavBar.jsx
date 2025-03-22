@@ -1,10 +1,14 @@
 import React from 'react';
 import './NavBar.scss'
-import {NavLink} from "react-router";
+import {NavLink, useHref} from "react-router";
 
 const NavBar = () => {
+
+    const href = useHref({})
+
+
     return (
-        <nav className="nav-bar">
+        <nav className={`nav-bar ${href.includes('login') ? 'd-none' : ''}`}>
             <ul className="nav-bar__list">
                 <li className="item">
                     <NavLink className='item__link' to='/'>

@@ -11,6 +11,7 @@ import UniversityId from "./pages/university-id/UniversityId.jsx";
 import MyProfile from "./pages/profile/MyProfile.jsx";
 import {Toaster} from "react-hot-toast";
 import {useLayoutEffect} from "react";
+import Login from "./pages/login/Login.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -24,7 +25,7 @@ const Wrapper = ({ children }) => {
 function App() {
 
   return (
-    <div className='App'>
+    <div className={`App ${window.location.pathname.includes('login') ? 'pb0' : ''}`}>
         <BrowserRouter>
             <Wrapper>
 
@@ -38,7 +39,7 @@ function App() {
                     <Route path='/profile/me' element={<MyProfile />} />
                     <Route path='/university/:id' element={<UniversityId />} />
 
-                    <Route path='/university' element={<UniversityId />} />
+                    <Route path='/login' element={<Login />} />
 
                 </Routes>
                 <NavBar />

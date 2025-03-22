@@ -14,10 +14,12 @@ const Header = () => {
     const [search, setSearch] = useState('')
 
     const href = useHref({})
+    const hiddenRoutes = ['/profile', '/login']
+    const isHidden = hiddenRoutes.some(route => href.includes(route))
 
 
     return (
-        <div className={`header ${href.includes('profile') ? 'd-none' : ''}`}>
+        <div className={`header ${isHidden ? 'd-none' : ''}`}>
             <div className="container row between align-center">
                 <Link className='header__logo' to='/'>
                     <img src={logo} alt="logo"/>

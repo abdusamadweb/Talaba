@@ -1,0 +1,61 @@
+@use "/src/scss" as *;
+
+.login {
+  min-height: 100vh;
+  padding-block: 1rem;
+  background: #fff;
+
+  &__imgs {
+    width: 210px;
+    margin: 0 auto 30px;
+  }
+
+  &__titles {
+    margin-bottom: 15px;
+
+    .title {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+    .desc {
+      font-weight: 300;
+      color: #AEAEAE;
+    }
+  }
+
+  .ant-input {
+    font-family: "Poppins", sans-serif;
+
+    &-affix-wrapper {
+      padding-block: 12px;
+      border: none;
+      background: #F8F8F8;
+
+      .ant-input-prefix::after {
+        content: '';
+        width: 1px;
+        height: 28px;
+        margin-left: 8px;
+        margin-right: 5px;
+        background: #D8D8D8;
+      }
+    }
+  }
+
+  .btn {
+    width: 100%;
+    height: unset;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    padding-block: 15px;
+    border: none;
+    color: #fff !important;
+    background: $main-color !important;
+
+    &.load {
+      opacity: 0.8;
+    }
+  }
+}
