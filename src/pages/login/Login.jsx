@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Login.scss'
 import logo from '../../assets/images/big-logo.svg'
+import back from '../../assets/images/auth-arrow.svg'
 import {Button, Form, Input} from "antd"
 import {useMutation} from "@tanstack/react-query";
 import $api from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
+import {formatPhone} from "../../assets/scripts/global.js";
+import {useNavigate, useParams} from "react-router";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -22,61 +25,120 @@ const uz =
 
 // fetch
 const sendPhoneAuth = async (phone) => {
-    const { data } = await $api.post("/auth/auth-phone", { phone_number: phone, chat_id: 1 })
+    const { data } = await $api.post("/auth/auth-phone", { phone_number: phone, chat_id: 868148631 })
+    return data
+}
+const checkSmsAuth = async ({ sms_id, code }) => {
+    const { data } = await $api.post("/auth/check-sms-code", { sms_id, code })
     return data
 }
 
 
 const Login = () => {
 
+    const navigate = useNavigate()
     const [form] = Form.useForm()
+
+    const [nav, setNav] = useState(0)
+    const [sms, setSms] = useState(null)
 
     const mutation = useMutation({
         mutationFn: sendPhoneAuth,
-        onSuccess: () => {
-            toast.success("Код успешно отправлен!")
-            form.resetFields() // Очищаем форму после успешной отправки
+        onSuccess: (res) => {
+            toast.success(res.message)
+
+            setNav(1)
+            setSms(res.data)
         },
-        onError: (error) => {
-            toast.error(`Ошибка: ${error.response?.data?.message || error.message}`)
+        onError: (err) => {
+            toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
         }
     })
 
     const onFinish = (values) => {
-        mutation.mutate(values.phoneNumber) // Отправляем данные
+        mutation.mutate(values.phoneNumber)
+    }
+
+    const mutationSms = useMutation({
+        mutationFn: checkSmsAuth,
+        onSuccess: (res) => {
+            toast.success(res.message)
+
+            localStorage.setItem('token', res?.token)
+            localStorage.setItem('user', JSON.stringify(res?.user))
+            localStorage.setItem('user-state', res?.user.state)
+
+            navigate(`/login/auth?phone=${res?.user.phone_number}`)
+        },
+        onError: (err) => {
+            toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
+        }
+    })
+
+    const onFinishSms = (values) => {
+        console.log(values)
+        mutationSms.mutate({ sms_id: sms.sms_id, code: values.code })
     }
 
 
     return (
-        <div className='login grid-center'>
+        <div className='login'>
             <div className="container">
-                <div className="login__content">
+                <div className="login__content relative">
+                    {
+                        nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
+                            <img src={back} alt="icon"/>
+                        </button> : <></>
+                    }
                     <div className='login__imgs'>
                         <img src={logo} alt="logo"/>
                     </div>
-                    <div className="login__titles">
-                        <h2 className="title">Telefon raqamingizni kiriting!</h2>
-                        <p className="desc">O’zingiz ishlatadigan telefon raqamingiz!</p>
-                    </div>
+                    {
+                        nav === 0 ?
+                            <div className="login__titles">
+                                <h2 className="title">Telefon raqamingizni kiriting!</h2>
+                                <p className="desc">O’zingiz ishlatadigan telefon raqamingiz!</p>
+                            </div>
+                            :
+                            <div className="login__titles">
+                                <h2 className="title">SMS kodini tasdiqlang!</h2>
+                                <p className="desc">{ formatPhone(sms.phone_number) } ga SMS yuborlidi.</p>
+                            </div>
+                    }
                     <Form
                         layout='vertical'
                         form={form}
-                        onFinish={onFinish}
+                        onFinish={nav === 0 ? onFinish : onFinishSms}
                     >
-                        <Form.Item
-                            name="phoneNumber"
-                            rules={[{ required: true, message: "" }]}
-                        >
-                            <Input
-                                size="large"
-                                prefix={uz}
-                                placeholder='+998 -- --- -- --'
-                                type='tel'
-                            />
-                        </Form.Item>
+                        {
+                            nav === 0 ?
+                                <Form.Item
+                                    name="phoneNumber"
+                                    rules={[{ required: true, message: "" }]}
+                                >
+                                    <Input
+                                        size="large"
+                                        prefix={uz}
+                                        placeholder='+998 -- --- -- --'
+                                        type='tel'
+                                    />
+                                </Form.Item>
+                                :
+                                <Form.Item
+                                    className='otp'
+                                    name="code"
+                                    rules={[{ required: true, message: "" }]}
+                                >
+                                    <Input.OTP
+                                        length={4}
+                                        type='number'
+                                        size='large'
+                                    />
+                                </Form.Item>
+                        }
                         <Button
-                            className={`btn ${mutation.isPending ? 'load' : ''}`}
-                            loading={mutation.isPending}
+                            className={`btn ${mutation.isPending || mutationSms.isPending ? 'load' : ''}`}
+                            loading={mutation.isPending || mutationSms.isPending}
                             size='large'
                             htmlType="submit"
                         >

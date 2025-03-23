@@ -2,8 +2,17 @@
 
 .login {
   min-height: 100vh;
-  padding-block: 1rem;
+  padding-block: 3rem 1rem;
   background: #fff;
+
+  .back {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
 
   &__imgs {
     width: 210px;
@@ -25,7 +34,7 @@
     }
   }
 
-  .ant-input {
+  .ant-input  {
     font-family: "Poppins", sans-serif;
 
     &-affix-wrapper {
@@ -44,6 +53,35 @@
     }
   }
 
+  .otp {
+    .ant-form-item-control-input {
+      justify-content: center;
+
+      &-content {
+        max-width: 275px;
+      }
+
+      .ant-otp {
+        column-gap: 15px;
+
+        .ant-input {
+          width: 54px;
+          height: 48px;
+          font-weight: 500;
+          font-size: 18px;
+          border-radius: 12px;
+          border-color: transparent;
+          background: #F8F8F8;
+
+          &:focus-within {
+            border-color: $main-color;
+            background: #CCE0FC;
+          }
+        }
+      }
+    }
+  }
+
   .btn {
     width: 100%;
     height: unset;
@@ -56,6 +94,99 @@
 
     &.load {
       opacity: 0.8;
+    }
+  }
+
+  .form {
+
+    .hide {
+      position: absolute;
+      visibility: hidden;
+    }
+
+    &-inp {
+      margin-bottom: 0;
+
+      .ant-form-item-label {
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+        font-size: 16px;
+        padding-bottom: 0 !important;
+
+        label {
+          color: #AEAEAE;
+
+          &::before {
+            display: none !important;
+          }
+        }
+      }
+
+      .ant-form-item-control {
+        margin-bottom: 12px;
+      }
+      .ant-form-item-explain-error {
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .ant-form-item-control-input {
+        font-family: "Poppins", sans-serif;
+
+        input {
+          height: 52px;
+          padding: 16px 15px;
+          margin-top: 3px;
+          border-radius: 12px;
+          border: none;
+          background: #F8F8F8;
+          outline: none;
+        }
+      }
+      
+      &.docs {
+
+        .ant-upload-wrapper {
+          width: 100%;
+        }
+        .ant-upload {
+          width: 100%;
+
+          .change-icon svg path {
+            fill: $main-color;
+          }
+        }
+        .ant-upload-list-item {
+          padding-left: 4px;
+          margin-top: 4px;
+          border-radius: 6px;
+          background: #f8f8f8;
+        }
+        .ant-upload-list-item-name {
+          font-family: "Poppins", sans-serif;
+          font-size: 12px;
+          color: #D0CFCB;
+        }
+        .ant-input-affix-wrapper {
+          height: 52px;
+          padding-block: 0;
+          border-radius: 12px;
+        }
+        .ant-input-prefix {
+          font-family: "Poppins", sans-serif !important;
+          font-size: 16px;
+          color: #D0CFCB;
+
+          &::after {
+            display: none;
+          }
+        }
+        .ant-input {
+          padding: 0;
+          margin: 0;
+          background: transparent;
+        }
+      }
     }
   }
 }

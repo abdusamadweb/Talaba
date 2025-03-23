@@ -12,6 +12,8 @@ import MyProfile from "./pages/profile/MyProfile.jsx";
 import {Toaster} from "react-hot-toast";
 import {useLayoutEffect} from "react";
 import Login from "./pages/login/Login.jsx";
+import Login2 from "./pages/login/Login2.jsx";
+import Auth from "./components/auth/Auth.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -32,14 +34,20 @@ function App() {
                 <Header />
                 <Routes>
 
-                    <Route path='/' element={<Home />} />
-                    <Route path='/search' element={<Search />} />
-                    <Route path='/applications' element={<Applications />} />
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/profile/me' element={<MyProfile />} />
-                    <Route path='/university/:id' element={<UniversityId />} />
+                    <Route element={<Auth />}>
+
+                        <Route path='/' element={<Home />} />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/applications' element={<Applications />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/me' element={<MyProfile />} />
+                        <Route path='/profile/me/edit' element={<MyProfile />} />
+                        <Route path='/university/:id' element={<UniversityId />} />
+
+                    </Route>
 
                     <Route path='/login' element={<Login />} />
+                    <Route path='/login/auth' element={<Login2 />} />
 
                 </Routes>
                 <NavBar />

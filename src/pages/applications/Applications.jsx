@@ -77,7 +77,7 @@ const Applications = () => {
                             <Skeleton active />
                         </div>
                         :
-                        data?.data && true ?
+                        data?.data.length ?
                             <ul className="applications__list">
                                 {
                                     data?.data?.map((i, index) => (

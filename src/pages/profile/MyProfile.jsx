@@ -5,7 +5,7 @@ import profile from '../../assets/images/user-img.svg'
 import editIcon from '../../assets/images/edit-icon-profile.svg'
 import addIcon from '../../assets/images/add-icon-profile.svg'
 import {useNavigate} from "react-router";
-import {Image, message, Upload} from "antd";
+import {Image, Upload} from "antd";
 import {API_TEST} from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
 
