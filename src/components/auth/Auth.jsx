@@ -1,22 +1,15 @@
-import React from 'react'
-import {Navigate, Outlet} from "react-router-dom"
+import React from "react"
+import { Navigate, Outlet } from "react-router-dom"
 
 const Auth = () => {
 
-    const user = JSON.parse(localStorage.getItem('user'))
+    const state = localStorage.getItem("user-state")
 
-    const token = localStorage.getItem('token')
-    const state = localStorage.getItem('user-state')
+    if (state === "system-active") {
+        return <Outlet />
+    }
 
-    return (
-        state ? (
-            <Outlet />
-        ) : token ? (
-            <Navigate to={`/login/auth?phone=${user?.phone_number}`} />
-        ) : (
-            <Navigate to="/login" />
-        )
-    )
-}
+    return <Navigate to="/login" />
+};
 
 export default Auth

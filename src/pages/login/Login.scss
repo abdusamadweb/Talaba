@@ -54,6 +54,8 @@
   }
 
   .otp {
+    margin-bottom: 10px;
+
     .ant-form-item-control-input {
       justify-content: center;
 
@@ -79,6 +81,22 @@
           }
         }
       }
+    }
+  }
+
+  .sms-retry {
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 20px;
+
+    .txt {
+      font-size: 12px;
+      color: #AEAEAE;
+    }
+    .sms-btn {
+      font-weight: 500;
+      font-size: 12px;
+      color: $main-color;
     }
   }
 
@@ -165,7 +183,7 @@
         .ant-upload-list-item-name {
           font-family: "Poppins", sans-serif;
           font-size: 12px;
-          color: #D0CFCB;
+          color: #bebebc;
         }
         .ant-input-affix-wrapper {
           height: 52px;
@@ -175,7 +193,7 @@
         .ant-input-prefix {
           font-family: "Poppins", sans-serif !important;
           font-size: 16px;
-          color: #D0CFCB;
+          color: #bebebc;
 
           &::after {
             display: none;

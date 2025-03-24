@@ -1,17 +1,17 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './Login.scss'
 import logo from '../../assets/images/big-logo.svg'
 import back from '../../assets/images/auth-arrow.svg'
 import {Button, Form, Input} from "antd"
-import {useMutation} from "@tanstack/react-query";
-import $api from "../../api/apiConfig.js";
-import toast from "react-hot-toast";
-import {formatPhone} from "../../assets/scripts/global.js";
-import {useNavigate, useParams} from "react-router";
+import {useMutation} from "@tanstack/react-query"
+import $api from "../../api/apiConfig.js"
+import toast from "react-hot-toast"
+import {formatPhone} from "../../assets/scripts/global.js"
+import {useNavigate} from "react-router"
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+         xmlns:xlink="http://www.w3.org/1999/xlink">
         <rect width="29" height="20" fill="url(#pattern0_912_3031)"/>
         <defs>
             <pattern id="pattern0_912_3031" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -25,11 +25,11 @@ const uz =
 
 // fetch
 const sendPhoneAuth = async (phone) => {
-    const { data } = await $api.post("/auth/auth-phone", { phone_number: phone, chat_id: 868148631 })
+    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: 868148631})
     return data
 }
-const checkSmsAuth = async ({ sms_id, code }) => {
-    const { data } = await $api.post("/auth/check-sms-code", { sms_id, code })
+const checkSmsAuth = async ({sms_id, code}) => {
+    const {data} = await $api.post("/auth/check-sms-code", {sms_id, code})
     return data
 }
 
@@ -42,6 +42,10 @@ const Login = () => {
     const [nav, setNav] = useState(0)
     const [sms, setSms] = useState(null)
 
+    // sms timer
+    const [active, setActive] = useState(false)
+    const [timeLeft, setTimeLeft] = useState(120)
+
     const mutation = useMutation({
         mutationFn: sendPhoneAuth,
         onSuccess: (res) => {
@@ -49,6 +53,8 @@ const Login = () => {
 
             setNav(1)
             setSms(res.data)
+
+            startTimer()
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
@@ -68,7 +74,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(res?.user))
             localStorage.setItem('user-state', res?.user.state)
 
-            navigate(`/login/auth?phone=${res?.user.phone_number}`)
+            window.location.href = `/login/auth?phone=${res?.user.phone_number}`
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
@@ -77,7 +83,41 @@ const Login = () => {
 
     const onFinishSms = (values) => {
         console.log(values)
-        mutationSms.mutate({ sms_id: sms.sms_id, code: values.code })
+        mutationSms.mutate({sms_id: sms.sms_id, code: values.code})
+    }
+
+
+    // timer
+    useEffect(() => {
+        if (!active) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer)
+                    setActive(false)
+                    return 0
+                }
+                return prev - 1
+            })
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [active])
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60)
+        const secs = seconds % 60
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`
+    }
+
+    function startTimer() {
+        setTimeLeft(120)
+        setActive(true)
+    }
+
+    const retryOnFinish = () => {
+        mutation.mutate(sms.phone_number)
     }
 
 
@@ -102,7 +142,7 @@ const Login = () => {
                             :
                             <div className="login__titles">
                                 <h2 className="title">SMS kodini tasdiqlang!</h2>
-                                <p className="desc">{ formatPhone(sms.phone_number) } ga SMS yuborlidi.</p>
+                                <p className="desc">{formatPhone(sms.phone_number) || '000'} ga SMS yuborlidi.</p>
                             </div>
                     }
                     <Form
@@ -114,7 +154,6 @@ const Login = () => {
                             nav === 0 ?
                                 <Form.Item
                                     name="phoneNumber"
-                                    rules={[{ required: true, message: "" }]}
                                 >
                                     <Input
                                         size="large"
@@ -124,17 +163,28 @@ const Login = () => {
                                     />
                                 </Form.Item>
                                 :
-                                <Form.Item
-                                    className='otp'
-                                    name="code"
-                                    rules={[{ required: true, message: "" }]}
-                                >
-                                    <Input.OTP
-                                        length={4}
-                                        type='number'
-                                        size='large'
-                                    />
-                                </Form.Item>
+                                <>
+                                    <Form.Item
+                                        className='otp'
+                                        name="code"
+                                        rules={[{required: true, message: ""}]}
+                                    >
+                                        <Input.OTP
+                                            length={4}
+                                            type='number'
+                                            size='large'
+                                        />
+                                    </Form.Item>
+                                    <div className='sms-retry'>
+                                        <p className='txt'>SMS ni qayta yuborish</p>
+                                        {
+                                            active ? <span className='sms-btn'>{formatTime(timeLeft)}</span>
+                                                :
+                                                <button className='sms-btn' onClick={retryOnFinish} type='button'>Qayta
+                                                    yuborish</button>
+                                        }
+                                    </div>
+                                </>
                         }
                         <Button
                             className={`btn ${mutation.isPending || mutationSms.isPending ? 'load' : ''}`}
@@ -148,7 +198,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

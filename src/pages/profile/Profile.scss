@@ -225,3 +225,174 @@
     }
   }
 }
+
+.profile-edit {
+  background: #fff;
+
+  &__content {
+    padding-top: 10px;
+    padding-inline: 15px;
+
+    .imgs {
+      gap: 15px;
+      margin-bottom: 25px;
+
+      .img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid $main-color;
+      }
+      .camera-upload {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        border: 1px solid #fff;
+        background: $main-color;
+
+        & > * {
+          width: 14px !important;
+          height: 14px !important;
+        }
+        .ant-upload {
+          position: relative;
+          top: 1.2px;
+        }
+      }
+
+      .txts {
+        max-width: 72%;
+      }
+      .txt {
+        font-weight: 500;
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+      .desc {
+        font-size: 12px;
+        color: #555555;
+      }
+    }
+
+    .form {
+
+      &-inp {
+        margin-bottom: 0;
+
+        .ant-form-item-label {
+          font-family: "Poppins", sans-serif;
+          font-weight: 300;
+          font-size: 16px;
+          padding-bottom: 0 !important;
+
+          label {
+            color: $txt-color;
+
+            &::before {
+              display: none !important;
+            }
+          }
+        }
+
+        .ant-input {
+          font-family: "Poppins", sans-serif;
+        }
+
+        .ant-form-item-control {
+          margin-bottom: 12px;
+        }
+        .ant-form-item-control-input-content input::placeholder {
+          color: #D0CFCB;
+        }
+        .ant-form-item-explain-error {
+          font-family: "Poppins", sans-serif;
+          font-size: 14px;
+          margin-top: 4px;
+        }
+        .ant-form-item-control-input {
+          font-family: "Poppins", sans-serif;
+
+          input {
+            height: 52px;
+            padding: 16px 15px;
+            margin-top: 3px;
+            border-radius: 12px;
+            border: none;
+            background: #F8F8F8;
+            outline: none;
+          }
+        }
+        
+        .ant-input-affix-wrapper {
+          border-color: transparent;
+          background: #F8F8F8;
+        }
+
+        &.docs {
+
+          .ant-upload-wrapper {
+            width: 100%;
+          }
+          .ant-upload {
+            width: 100%;
+
+            .change-icon svg path {
+              fill: $main-color;
+            }
+          }
+          .ant-upload-list-item {
+            padding-left: 4px;
+            margin-top: 4px;
+            border-radius: 6px;
+            background: #f8f8f8;
+          }
+          .ant-upload-list-item-name {
+            font-family: "Poppins", sans-serif;
+            font-size: 12px;
+            color: #D0CFCB;
+          }
+          .ant-input-affix-wrapper {
+            height: 52px;
+            padding-block: 0;
+            border-radius: 12px;
+          }
+          .ant-input-prefix {
+            font-family: "Poppins", sans-serif !important;
+            font-size: 16px;
+            color: #D0CFCB;
+
+            &::after {
+              display: none;
+            }
+          }
+          .ant-input {
+            padding: 0;
+            margin: 0;
+            background: transparent;
+          }
+        }
+      }
+
+      .btn {
+        width: 100%;
+        height: unset;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        padding-block: 15px;
+        margin-top: 30px;
+        border: none;
+        color: #fff !important;
+        background: $main-color !important;
+
+        &.load {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

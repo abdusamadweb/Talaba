@@ -17,9 +17,9 @@ const Profile = () => {
                 <div className="profile__head">
                     <div className="imgs">
                         <img className='img' src={profileImg} alt="profile"/>
-                        <button className='btn'>
-                            <img src={camera} alt="camera"/>
-                        </button>
+                        {/*<button className='btn'>*/}
+                        {/*    <img src={camera} alt="camera"/>*/}
+                        {/*</button>*/}
                     </div>
                     <p className="title">Ism Familya</p>
                 </div>
@@ -74,7 +74,7 @@ const Profile = () => {
 
                     <button className='logout link'>
                         <img className='link__prefix' src={logout} alt="icon"/>
-                        <span className='link__txt'>Ilova haqida</span>
+                        <span className='link__txt'>Ilovadan chiqish</span>
                     </button>
                 </div>
             </div>

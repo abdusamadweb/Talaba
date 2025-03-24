@@ -3,11 +3,11 @@ import './Login.scss'
 import logo from '../../assets/images/big-logo.svg'
 import {Button, Form, Input, Upload} from "antd"
 import {useMutation} from "@tanstack/react-query";
-import $api, {API_TEST} from "../../api/apiConfig.js";
+import {API_TEST} from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import {IMaskInput} from "react-imask";
 import back from "../../assets/images/auth-arrow.svg";
-import {Link, useHref, useNavigate, useSearchParams} from "react-router";
+import {Link, useNavigate, useSearchParams} from "react-router";
 import {$resp} from "../../api/apiResp.js";
 
 const UploadIcon = () => {
@@ -24,20 +24,11 @@ const UploadIcon = () => {
 }
 
 
-// fetch
-const sendPhoneAuth = async (body) => {
-    const { data } = await $resp.post("/update-profile", body)
-    return data
-}
-
 // upload files
 const uploadProps = {
     name: 'file',
     maxCount: 1,
     action: API_TEST + '/upload-file',
-    headers: {
-        Authorization: localStorage.getItem('token'),
-    },
     onChange(info) {
         if (info.file.status !== 'uploading') {
             console.log(info.file);
@@ -52,11 +43,17 @@ const uploadProps = {
 }
 
 
+// fetch
+const sendPhoneAuth = async (body) => {
+    const { data } = await $resp.post("/update-profile", body)
+    return data
+}
+
+
 const Login2 = () => {
 
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams();
-    const phone = searchParams.get('phone').slice(1)
+    const [searchParams] = useSearchParams()
+    const phone = searchParams.get('phone')?.slice(1)
 
     const [form] = Form.useForm()
     const [nav, setNav] = useState(0)
@@ -68,11 +65,12 @@ const Login2 = () => {
     const mutation = useMutation({
         mutationFn: sendPhoneAuth,
         onSuccess: (res) => {
-
             toast.success(res.message)
 
             localStorage.setItem('user', JSON.stringify(res.data))
-            navigate('/')
+            localStorage.setItem('user-state', res.data.state)
+
+            window.location.href = '/'
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
@@ -82,7 +80,7 @@ const Login2 = () => {
     const onFinish = (values) => {
         const body = {
             ...values,
-            birth_date: '11223333', // ----------------- togrlaw kere
+            birth_date: new Date(values.birth_date).getTime(),
             phone_number: '+' + phone,
             diploma_file_id: values?.diploma_file_id?.fileList[0].response.files[0].id,
             passport_file_id: values?.passport_file_id?.fileList[0].response.files[0].id
@@ -99,14 +97,24 @@ const Login2 = () => {
     }
 
 
+    // back to login
+    const backToLogin = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('user-state')
+
+        window.location.href = '/login'
+    }
+
+
     return (
         <div className='login login2'>
             <div className="container">
                 <div className="login__content relative">
                     {
-                        nav === 0 ? <Link className='back' to="/login">
+                        nav === 0 ? <button className='back' onClick={backToLogin}>
                                 <img src={back} alt="icon"/>
-                            </Link>
+                            </button>
                             : <button className='back' onClick={() => setNav(0)}>
                                 <img src={back} alt="icon"/>
                             </button>
@@ -131,7 +139,7 @@ const Login2 = () => {
                                 rules={[{required: true, message: "Iltimos to'ldiring!"}]}
                             >
                                 <IMaskInput
-                                    mask="AA0000000"
+                                    mask="AA 0000000"
                                     definitions={{
                                         A: /[A-Z]/, // Только заглавные буквы
                                         0: /\d/,     // Только цифры
@@ -146,9 +154,9 @@ const Login2 = () => {
                                 rules={[{required: true, message: "Iltimos to'ldiring!"}]}
                             >
                                 <IMaskInput
-                                    mask="00-00-0000"
+                                    mask="0000-00-00"
                                     definitions={{ 0: /\d/ }}
-                                    placeholder="kk-oo-yyyy"
+                                    placeholder="yyyy-oo-kk"
                                 />
                             </Form.Item>
                         </div>
