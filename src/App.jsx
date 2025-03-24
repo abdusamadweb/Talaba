@@ -40,8 +40,8 @@ function App() {
 
                 <Header />
 
-                <AuthRedirect />
                 <Routes>
+                    <AuthRedirect />
 
                     <Route element={<Auth />}>
 
