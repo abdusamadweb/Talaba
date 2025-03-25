@@ -5,7 +5,7 @@ import {formatPrice} from "../../assets/scripts/global.js";
 import {Button, Modal, Skeleton, Steps} from "antd";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
-import {Link} from "react-router";
+import {Link} from "react-router-dom"
 import toast from "react-hot-toast";
 
 const app404 = <div className="d404">

@@ -2,7 +2,7 @@ import React from 'react';
 import './UniCard.scss'
 import overlay from '../../../assets/images/overlay.png'
 import {SelectOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 
 const UniCard = ({ i }) => {
 

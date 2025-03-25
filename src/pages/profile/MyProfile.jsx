@@ -4,8 +4,8 @@ import arrow from "../../assets/images/arrow-icon-white.svg";
 import profile from '../../assets/images/user-img.svg'
 import editIcon from '../../assets/images/edit-icon-profile.svg'
 import addIcon from '../../assets/images/add-icon-profile.svg'
-import {Link, useNavigate} from "react-router";
-import {Image, Skeleton, Upload} from "antd";
+import {Link, useNavigate} from "react-router-dom";
+import {Skeleton, Upload} from "antd";
 import {API_TEST} from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import GetFile from "../../components/get-file/GetFile.jsx";

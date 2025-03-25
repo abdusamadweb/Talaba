@@ -4,7 +4,7 @@ import langIcon from '../../../assets/images/language-icon.svg'
 import eduIcon from '../../../assets/images/book-icon.svg'
 import conIcon from '../../../assets/images/dollar-icon.svg'
 import successIcon from '../../../assets/images/apply-success.svg'
-import {Link} from "react-router";
+import {Link} from "react-router-dom"
 import {formatPrice} from "../../../assets/scripts/global.js";
 import {Button, Form, Input, Modal, Select, Upload} from "antd";
 import {CaretDownOutlined} from "@ant-design/icons";

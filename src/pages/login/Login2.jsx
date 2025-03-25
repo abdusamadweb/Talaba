@@ -7,7 +7,7 @@ import {API_TEST} from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import {IMaskInput} from "react-imask";
 import back from "../../assets/images/auth-arrow.svg";
-import {Link, useNavigate, useSearchParams} from "react-router";
+import {useSearchParams} from "react-router-dom";
 import {$resp} from "../../api/apiResp.js";
 
 const UploadIcon = () => {

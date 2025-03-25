@@ -1,6 +1,6 @@
 import React from 'react';
 import './NewsCard.scss'
-import {Link} from "react-router";
+import {Link} from "react-router-dom"
 import arrow from '../../../assets/images/arrow-link-icon.svg'
 
 const NewsCard = ({ img, txt, desc }) => {

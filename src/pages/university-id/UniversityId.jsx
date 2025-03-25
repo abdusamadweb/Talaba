@@ -3,7 +3,7 @@ import './UniversityId.scss'
 import arrow from '../../assets/images/arrow-icon.svg'
 import file from '../../assets/images/file-icoc.svg'
 import img from '../../assets/images/news-test.png'
-import {Link, useNavigate, useParams} from "react-router";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {Carousel, Drawer, Image, Segmented, Skeleton, Tabs} from "antd";
 import {CaretDownOutlined, CaretUpOutlined} from "@ant-design/icons";
 import langIcon from "../../assets/images/language-icon.svg";

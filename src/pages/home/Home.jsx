@@ -8,7 +8,7 @@ import DirectionCard from "../../components/cards/direction/DirectionCard.jsx";
 import dirimg from "../../assets/images/direction/dir-muhandislik.svg";
 import NewsCard from "../../components/cards/news/NewsCard.jsx";
 import newsimg from '../../assets/images/news-test.png'
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
 

@@ -1,16 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Profile.scss'
 import profileImg from '../../assets/images/user-img.svg'
-import camera from '../../assets/images/camera.svg'
 import userIcon from '../../assets/images/user-icon.svg'
 import arrow from '../../assets/images/arrow-menu-icon.svg'
 import clipboardIcon from '../../assets/images/clipboard-icon.svg'
 import aloqaIcon from '../../assets/images/aloqa.svg'
 import iIcon from '../../assets/images/i-icon.svg'
 import logout from '../../assets/images/logout-icon.svg'
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router-dom"
+import toast from "react-hot-toast";
 
 const Profile = () => {
+
+    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
+    const [modal, setModal] = useState(false)
+
+    const logOut = () => {
+        setIsLoading(true)
+
+        localStorage.removeItem('user')
+        localStorage.removeItem('user-state')
+        localStorage.removeItem('token')
+
+        setTimeout(() => {
+            setIsLoading(false)
+            navigate('/login')
+        }, 1000)
+
+        toast.success("Siz ilovadan chiqdingiz!")
+    }
+
+
     return (
         <div className='profile'>
             <div className="container">

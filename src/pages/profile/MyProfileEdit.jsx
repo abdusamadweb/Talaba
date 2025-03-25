@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import arrow from "../../assets/images/arrow-icon-white.svg";
 import profile from '../../assets/images/user-img.svg'
 import camera from '../../assets/images/camera.svg'
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 import GetFile from "../../components/get-file/GetFile.jsx";
 import {Button, Form, Input, Upload} from "antd";
 import toast from "react-hot-toast";
@@ -53,7 +53,7 @@ const MyProfileEdit = () => {
         if (userData) {
             form.setFieldsValue(userData)
         }
-    }, [userData])
+    }, [])
 
 
     // mutate
@@ -73,8 +73,8 @@ const MyProfileEdit = () => {
         const body = {
             ...values,
             birth_date: new Date(values.birth_date).getTime(),
-            diploma_file_id: typeof values?.diploma_file_id !== "number" ? values?.diploma_file_id?.fileList[0].response.files[0].id : values?.diploma_file_id,
-            passport_file_id: typeof values?.passport_file_id !== "number" ? values?.passport_file_id?.fileList[0].response.files[0].id : values?.passport_file_id,
+            diploma_file_id: file1 ? file1?.file.response.files[0].id : values?.diploma_file_id,
+            passport_file_id: file2 ? file2?.file.response.files[0].id : values?.passport_file_id,
         }
         mutation.mutate(body)
     }
@@ -161,16 +161,17 @@ const MyProfileEdit = () => {
                         >
                             <Upload
                                 {...props}
-                                onChange={(e) => setFile1(e.file.percent)}
+                                onChange={(e) => setFile1(e)}
                                 listType="picture"
                             >
                                 <Input
-                                    rootClassName={file1 !== null && 'change-icon'}
+                                    rootClassName={file1?.file.percent !== null && 'change-icon'}
                                     size='large'
                                     suffix={<UploadIcon />}
-                                    prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
+                                    prefix={file1 ? file1?.file.percent?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
+                            <GetFile className='abs-img' id={userData?.diploma_file_id} />
                         </Form.Item>
                         <Form.Item
                             className='form-inp docs'
@@ -179,25 +180,26 @@ const MyProfileEdit = () => {
                         >
                             <Upload
                                 {...props}
-                                onChange={(e) => setFile2(e.file.percent)}
+                                onChange={(e) => setFile2(e)}
                                 listType="picture"
                             >
                                 <Input
-                                    rootClassName={file2 !== null && 'change-icon'}
+                                    rootClassName={file2?.file.percent !== null && 'change-icon'}
                                     size='large'
                                     suffix={<UploadIcon />}
-                                    prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
+                                    prefix={file2 ? file2?.file.percent?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
-                            <Button
-                                className={`btn mt1 ${mutation.isPending ? 'load' : ''}`}
-                                loading={mutation.isPending}
-                                size='large'
-                                htmlType="submit"
-                            >
-                                Saqlash
-                            </Button>
+                            <GetFile className='abs-img' id={userData?.passport_file_id} />
                         </Form.Item>
+                        <Button
+                            className={`btn mt1 ${mutation.isPending ? 'load' : ''}`}
+                            loading={mutation.isPending}
+                            size='large'
+                            htmlType="submit"
+                        >
+                            Saqlash
+                        </Button>
                     </Form>
                 </div>
             </div>

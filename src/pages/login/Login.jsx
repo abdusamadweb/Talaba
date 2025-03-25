@@ -7,7 +7,7 @@ import {useMutation} from "@tanstack/react-query"
 import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
-import {useNavigate} from "react-router"
+import {useNavigate} from "react-router-dom"
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"

@@ -10,7 +10,6 @@ const GetFile = ({ id, className, defImg }) => {
         queryFn: () => getFile(id),
         enabled: !!id, // Отключает запрос, если id = null или undefined
     })
-    console.log(className)
 
 
     return !id ? (

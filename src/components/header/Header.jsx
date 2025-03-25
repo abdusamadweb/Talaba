@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './Header.scss'
 import logo from '../../assets/images/logo.svg'
 import menu from '../../assets/images/menu-icon.svg'
-import {Link, useHref} from "react-router";
+import {Link, useHref} from "react-router-dom";
 import {Drawer, Input} from "antd";
 import arrowIcon from '../../assets/images/arrow-icon.svg'
 import searchIcon from "../../assets/images/search-icon.svg";
