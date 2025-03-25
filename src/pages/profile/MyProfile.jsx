@@ -81,37 +81,38 @@ const MyProfile = () => {
                                         <span className="item__label">Passport yoki ID karta seriya raqami</span>
                                         <span className="item__title">{data?.passport_code || 'Mavjud emas'}</span>
                                     </li>
-                                    <li className="item">
-                                        <span className="item__label">JSHSHIR (PINFL)</span>
-                                        <span className="item__title">{data?.passport_pinfl || 'Mavjud emas'}</span>
-                                    </li>
+                                    {/*<li className="item">*/}
+                                    {/*    <span className="item__label">JSHSHIR (PINFL)</span>*/}
+                                    {/*    <span className="item__title">{data?.passport_pinfl || 'Mavjud emas'}</span>*/}
+                                    {/*</li>*/}
                                     <li className="item">
                                         <span className="item__label">Tug’ilgan kun</span>
                                         <span
                                             className="item__title">{new Date(data?.birth_date).toLocaleDateString()}</span>
                                     </li>
-                                    <li className="item">
-                                        <span className="item__label">Jinsi</span>
-                                        <span className="item__title">{data?.gender || 'Mavjud emas'}</span>
-                                    </li>
+                                    {/*<li className="item">*/}
+                                    {/*    <span className="item__label">Jinsi</span>*/}
+                                    {/*    <span className="item__title">{data?.gender || 'Mavjud emas'}</span>*/}
+                                    {/*</li>*/}
                                     <li className="item">
                                         <span className="item__label">Telefon raqam</span>
                                         <span className="item__title">{formatPhone(data?.phone_number || '000')}</span>
                                     </li>
-                                    <li className="item">
-                                        <span className="item__label">Email</span>
-                                        <span className="item__title">{data?.email || 'Mavjud emas'}</span>
-                                    </li>
+                                    {/*<li className="item">*/}
+                                    {/*    <span className="item__label">Email</span>*/}
+                                    {/*    <span className="item__title">{data?.email || 'Mavjud emas'}</span>*/}
+                                    {/*</li>*/}
+                                    <li></li>
                                     <li className="item">
                                         <span className="item__label">Passport yoki ID karta nusxasi</span>
                                         <div className="item__imgs">
-                                            <GetFile className='ant-image-img' id={data?.passport_files_id}/>
+                                            <GetFile className='ant-image-img' id={data?.passport_file_id}/>
                                         </div>
                                     </li>
                                     <li className="item">
                                         <span className="item__label">Diplom, shahodatnoma nusxasi</span>
                                         <div className="item__imgs">
-                                            <GetFile className='ant-image-img' id={data?.diploma_files_id}/>
+                                            <GetFile className='ant-image-img' id={data?.diploma_file_id}/>
                                         </div>
                                     </li>
                                 </ul>
