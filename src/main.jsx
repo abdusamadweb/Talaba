@@ -3,26 +3,24 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { init, miniApp } from '@telegram-apps/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {BrowserRouter} from "react-router";
 
 
 const initializeTelegramSDK = async () => {
     try {
-        await init();
-
+        await init()
 
         if (miniApp.ready.isAvailable()) {
-            await miniApp.ready();
-            console.log('Mini App готово');
+            await miniApp.ready()
+            console.log('Mini App готово')
         }
 
-
     } catch (error) {
-        console.error('Ошибка инициализации:', error);
+        console.error('Ошибка инициализации:', error)
     }
-};
+}
 
-
-initializeTelegramSDK();
+initializeTelegramSDK()
 
 const queryClient = new QueryClient()
 
@@ -30,7 +28,9 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
-            <App />
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
         </QueryClientProvider>
     </StrictMode>,
 )
