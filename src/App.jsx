@@ -2,7 +2,7 @@
 import './assets/styles/global.css'
 import './App.scss'
 
-import {Route, Routes, useLocation} from "react-router"
+import {Route, Routes, useLocation} from "react-router-dom"
 import Header from "./components/header/Header.jsx"
 import Home from "./pages/home/Home.jsx"
 import NavBar from "./components/nav-bar/NavBar.jsx"
@@ -18,6 +18,7 @@ import Login2 from "./pages/login/Login2.jsx"
 import Auth from "./components/auth/Auth.jsx"
 import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
+import AuthRedirect from "./components/auth/AuthRedirect.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -40,6 +41,7 @@ function App() {
 
             <Header />
 
+            <AuthRedirect />
             <Routes>
 
                 <Route element={<Auth />}>
