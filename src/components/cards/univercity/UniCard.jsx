@@ -3,6 +3,8 @@ import './UniCard.scss'
 import overlay from '../../../assets/images/overlay.png'
 import {SelectOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
+import GetFile from "../../get-file/GetFile.jsx";
+import GetFileDef from "../../get-file/GetFileDef.jsx";
 
 const UniCard = ({ i }) => {
 
@@ -13,7 +15,7 @@ const UniCard = ({ i }) => {
         <li className='uni-card'>
             <div className="head row align-center r1" onClick={() => navigate(`/university/${i.id}`)}>
                 <div className="head__img">
-                    <img src={i.logo} alt="univercity-logo"/>
+                    <GetFile id={i.logo_id} />
                 </div>
                 <div>
                     <span className='head__name'>{i.name}</span>
@@ -23,7 +25,7 @@ const UniCard = ({ i }) => {
             </div>
             <div className="body">
                 <img className="body__overlay" src={overlay} alt='overlay'/>
-                <img className='img' src={i.img} alt="image"/>
+                <GetFileDef className='img' id={i.photo_id} odiy />
                 <p className="body__desc">{ i.desc }</p>
             </div>
         </li>

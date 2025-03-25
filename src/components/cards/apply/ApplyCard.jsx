@@ -12,6 +12,8 @@ import {API_TEST} from "../../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import {useMutation} from "@tanstack/react-query";
 import {$resp} from "../../../api/apiResp.js";
+import GetFile from "../../get-file/GetFile.jsx";
+import GetFileDef from "../../get-file/GetFileDef.jsx";
 
 const Option = ({ txt }) => {
     return (
@@ -118,11 +120,12 @@ const ApplyCard = ({
     return (
         !ad ?
             <li className='apply-card'>
-                <div className="apply-card__head" style={{backgroundImage: `url(${bgImg})`}}>
+                <div className="apply-card__head">
+                    <GetFileDef className='bg-img' id={72} odiy />
                     <div className='index'>
                         <h3 className="title">{i.university.name}</h3>
                         <div className='img'>
-                            <img src={logo} alt="logo"/>
+                            <GetFile id={i.university.logo_id} />
                         </div>
                     </div>
                     <div className='overlay'/>
@@ -178,7 +181,7 @@ const ApplyCard = ({
                 >
                     <div className="titles">
                         <div className="imgs">
-                            <img src={logo} alt="logo"/>
+                            <GetFile id={i.university.logo_id} />
                         </div>
                         <p className="name">{ i.university.name }</p>
                         <p className="desc">{ i.main_direction.name }</p>

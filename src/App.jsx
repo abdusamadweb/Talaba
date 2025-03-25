@@ -41,7 +41,7 @@ function App() {
 
             <Header />
 
-            <AuthRedirect />
+            {/*<AuthRedirect />*/}
             <Routes>
 
                 <Route element={<Auth />}>

@@ -9,6 +9,7 @@ import iIcon from '../../assets/images/i-icon.svg'
 import logout from '../../assets/images/logout-icon.svg'
 import {Link, useNavigate} from "react-router-dom"
 import toast from "react-hot-toast";
+import {Button, Modal} from "antd";
 
 const Profile = () => {
 
@@ -93,12 +94,33 @@ const Profile = () => {
                         </li>
                     </ul>
 
-                    <button className='logout link'>
+                    <button className='logout link' onClick={() => setModal(true)}>
                         <img className='link__prefix' src={logout} alt="icon"/>
                         <span className='link__txt'>Ilovadan chiqish</span>
                     </button>
                 </div>
             </div>
+            <Modal
+                rootClassName='cancel-modal'
+                open={modal}
+                centered
+                footer={false}
+                onCancel={() => setModal(false)}
+            >
+                <p className="title pt2">Ilovadan chiqishni xoxlaysizmi?</p>
+                <p className="desc">Siz ilovadan chiqishni rostan xoxlaysizmi!?</p>
+                <div className="btns">
+                    <button className='btn' onClick={() => setModal(false)}>Yoq</button>
+                    <Button
+                        className="btn red"
+                        size="large"
+                        loading={isLoading}
+                        onClick={logOut}
+                    >
+                        Ha
+                    </Button>
+                </div>
+            </Modal>
         </div>
     );
 };

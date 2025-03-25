@@ -7,7 +7,7 @@ import {useMutation} from "@tanstack/react-query"
 import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
-import {useNavigate} from "react-router-dom"
+import {miniApp} from "@telegram-apps/sdk";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ const uz =
 
 // fetch
 const sendPhoneAuth = async (phone) => {
-    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: 868148631})
+    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: miniApp.initDataUnsafe?.chat?.id || null})
     return data
 }
 const checkSmsAuth = async ({sms_id, code}) => {
@@ -36,7 +36,6 @@ const checkSmsAuth = async ({sms_id, code}) => {
 
 const Login = () => {
 
-    const navigate = useNavigate()
     const [form] = Form.useForm()
 
     const [nav, setNav] = useState(0)
@@ -74,7 +73,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(res?.user))
             localStorage.setItem('user-state', res?.user.state)
 
-            window.location.href = `/login/auth?phone=${res?.user.phone_number}`
+            window.location.href = '/'
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)

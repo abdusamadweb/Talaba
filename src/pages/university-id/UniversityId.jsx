@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import './UniversityId.scss'
 import arrow from '../../assets/images/arrow-icon.svg'
 import file from '../../assets/images/file-icoc.svg'
-import img from '../../assets/images/news-test.png'
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {Carousel, Drawer, Image, Segmented, Skeleton, Tabs} from "antd";
+import {useNavigate, useParams} from "react-router-dom";
+import {Carousel, Drawer, Empty, Segmented, Skeleton} from "antd";
 import {CaretDownOutlined, CaretUpOutlined} from "@ant-design/icons";
 import langIcon from "../../assets/images/language-icon.svg";
 import eduIcon from "../../assets/images/book-icon.svg";
@@ -12,13 +11,15 @@ import conIcon from "../../assets/images/dollar-icon.svg";
 import teacherIcon from "../../assets/images/teacher-icon.svg";
 import {$resp} from "../../api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
+import GetFile from "../../components/get-file/GetFile.jsx";
+import GetFileDef from "../../components/get-file/GetFileDef.jsx";
 
 const About = ({ data }) => {
 
     const [show, setShow] = useState(false)
 
     return (
-        <div className='about tab'>
+        <div className='about tab' id='about'>
             <p className="about__title">OTM haqida</p>
             <div className="about__info">
                 <div className="titless">
@@ -39,17 +40,12 @@ const Grand = ({ data }) => {
     const [show, setShow] = useState(false)
 
     return (
-        <div className='about tab'>
+        <div className='about tab' id='grand'>
             <p className="about__title">Grandlar haqida</p>
             <div className="about__info">
                 <div className="titless">
                     <span className='title'>Grandlar haqida :</span>
-                    <p className={`desc ${show ? 'show' : ''}`}>Universitetning asosiy vazifasi ilm-fan
-                        va ishlab chiqarish o‘rtasidagi
-                        hamkorlikni mustahkamlash orqali
-                        ijtimoiy-iqtisodiy barqaror rivojlanishni
-                        hamkorlikni mustahkamlash orqali
-                        ijtimoiy iqtisodiy barqaror rivojlanishni</p>
+                    <p className={`desc ${show ? 'show' : ''}`}>{ data?.data.grands || 'Mavjud emas' }</p>
                 </div>
                 <button className='btn' onClick={() => setShow(!show)}>
                     { !show ? 'Ko’proq ko’rish' : 'Yopish' }
@@ -63,32 +59,39 @@ const Grand = ({ data }) => {
 const Direction = ({ setModal, data }) => {
 
     const [show, setShow] = useState(true)
-    const [tab, setTab] = useState(false)
+
+    const [selectedTab, setSelectedTab] = useState(data?.[0]?.name || "")
+    const selectedDirections = data?.find(i => i.name === selectedTab)?.edu_directions || []
 
     return (
-        <div className='about tab'>
+        <div className='about tab' id='direction'>
             <p className="about__title">Yo'nalishlar haqida</p>
             <div className="about__info">
                 <div className="titless">
                     <span className='title'>Yo'nalishlar haqida :</span>
                     <div className='content'>
                         <Segmented
-                            options={[`Bakalavr ${(33)}`, `Magistratura ${(8)}`]}
-                            onChange={() => setTab(!tab)}
+                            options={data?.map(i => `${i.name} (${i.edu_directions?.length || 0})`)}
+                            onChange={value => setSelectedTab(value.split(" (")[0])} // Убираем число из строки
                         />
-                        <ul className={`content__list ${show ? 'show' : ''}`}>
-                            <li
-                                className="item"
-                                onClick={() => setModal(true)}
-                            >
-                                Bank ishi va auditi
-                            </li>
+                        <ul className={`content__list listDir ${show ? 'showDir' : ''}`}>
+                            {selectedDirections.map(dir => (
+                                <li key={dir.id} className="item" onClick={() => setModal(true)}>
+                                    {dir.name}
+                                </li>
+                            ))}
+                            <li className="item">1</li>
+                            <li className="item">1</li>
+                            <li className="item">1</li>
+                            <li className="item">1</li>
+                            <li className="item">1</li>
+                            <li className="item">1</li>
                         </ul>
                     </div>
                 </div>
                 <button className='btn' onClick={() => setShow(!show)}>
-                    {!show ? 'Ko’proq ko’rish' : 'Yopish'}
-                    {!show ? <CaretDownOutlined/> : <CaretUpOutlined/>}
+                    {show ? 'Ko’proq ko’rish' : 'Yopish'}
+                    {show ? <CaretDownOutlined/> : <CaretUpOutlined/>}
                 </button>
             </div>
         </div>
@@ -97,14 +100,20 @@ const Direction = ({ setModal, data }) => {
 
 const Gallery = ({data}) => {
     return (
-        <div className='about tab gallery'>
+        <div className='about tab gallery' id='gallery'>
             <p className="about__title">Galereya</p>
             <div className="about__info">
-                <Carousel arrows infinite dots={false}>
-                    <Image src={img} />
-                    <Image src={img} />
-                    <Image src={img} />
-                </Carousel>
+                {
+                    data?.data.length > 0 ?
+                        <Carousel arrows infinite dots={false}>
+                            {
+                                data?.data.map((i, index) => (
+                                    <GetFileDef key={index} id={i} />
+                                ))
+                            }
+                        </Carousel>
+                        : <Empty description='Rasmlar yoq'/>
+                }
             </div>
         </div>
     )
@@ -115,6 +124,15 @@ const fetchUniversity = async (id) => {
     const { data } = await $resp.get(`/university/get/${id}`)
     return data
 }
+const fetchDirection = async (id) => {
+    const { data } = await $resp.get(`/edu-d-group/all-by-unv/${id}`)
+    return data
+}
+const fetchGallery = async (id) => {
+    const { data } = await $resp.get(`/gallery/get-by-unv/${id}`)
+    return data
+}
+
 
 const UniversityId = () => {
 
@@ -132,33 +150,37 @@ const UniversityId = () => {
         keepPreviousData: true
     })
 
+    // fetch gallery
+    const { data: gallery, isLoading: isLoadingGallery } = useQuery({
+        queryKey: ['gallery', id],
+        queryFn: () => fetchGallery(id),
+        enabled: !!id,
+        keepPreviousData: true
+    })
+
+    // fetch direction
+    const { data: direction, isLoading: isLoadingDirection } = useQuery({
+        queryKey: ['direction', id],
+        queryFn: () => fetchDirection(id),
+        enabled: !!id,
+        keepPreviousData: true
+    })
+    console.log(direction)
+
+
+    // tabs
+    const [activeTab, setActiveTab] = useState("#about")
 
     const tabs = [
-        {
-            key: '1',
-            label: 'OTM haqida',
-            children: <About data={data} />,
-        },
-        {
-            key: '2',
-            label: 'Yo’nalishlar',
-            children: <Direction setModal={setModal} data={data} />,
-        },
-        {
-            key: '3',
-            label: 'Grandlar',
-            children: <Grand data={data} />,
-        },
-        {
-            key: '4',
-            label: 'Galereya',
-            children: <Gallery data={data} />,
-        },
+        { id: "#about", label: "OTM haqida" },
+        { id: "#grand", label: "Grandlar" },
+        { id: "#direction", label: "Yo’nalishlar" },
+        { id: "#gallery", label: "Galereya" }
     ]
 
 
     return (
-        <div className="university">
+        <div className="university page">
             <div className="container">
                 <div className="university__back">
                     <button className="btn" onClick={() => navigate(-1)}>
@@ -175,32 +197,44 @@ const UniversityId = () => {
                         </div>
                         :
                         <div className="university__head">
-                                <div className="titles row align-center">
-                                    <div className="imgs grid-center">
-                                        <img src={1} alt="logo"/>
-                                    </div>
-                                    <div>
-                                        <p className="name fw500">{data?.data.name}</p>
-                                        <span className="city">{data?.data.address}</span>
-                                    </div>
+                            <div className="titles row align-center">
+                                <div className="imgs grid-center">
+                                    <GetFile id={data?.data.logo_id} />
                                 </div>
-                                <div className="license">
-                                    <div className="row">
-                                        <img className='img' src={file} alt="icon"/>
-                                        <div>
-                                            <span className='txt'>OTM litsenziyasi</span>
-                                            <a className='link' href={data?.data.site} target='_blank'>Litsenziyani ko’rish</a>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <p className="name fw500">{data?.data.name}</p>
+                                    <span className="city">{data?.data.address}</span>
                                 </div>
-                                <Tabs
-                                    rootClassName='tabs'
-                                    defaultActiveKey="1"
-                                    items={tabs}
-                                    centered={true}
-                                    // onChange={onChange}
-                                />
                             </div>
+                            <div className="license">
+                                <div className="row">
+                                    <img className='img' src={file} alt="icon"/>
+                                    <div>
+                                        <span className='txt'>OTM litsenziyasi</span>
+                                        <a className='link' href={data?.data.site} target='_blank'>Litsenziyani ko’rish</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="tabs">
+                                <ul className='tabs__list'>
+                                    {tabs.map((tab) => (
+                                        <li key={tab.id}>
+                                            <a
+                                                className={`item ${activeTab === tab.id ? "active" : ""}`}
+                                                href={tab.id}
+                                                onClick={() => setActiveTab(tab.id)}
+                                            >
+                                                {tab.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <About data={data} />
+                                <Grand data={data} />
+                                <Direction setModal={setModal} data={direction} />
+                                <Gallery data={gallery} />
+                            </div>
+                        </div>
                 }
             </div>
 

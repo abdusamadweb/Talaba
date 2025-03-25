@@ -57,7 +57,7 @@
     }
 
     .license {
-      padding-block: 2px 20px;
+      padding-block: 2px 10px;
       padding-inline: 15px;
       background: #fff;
 
@@ -105,17 +105,52 @@
         }
       }
 
+      &__list {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        padding-top: 15px;
+        padding-inline: 5px;
+        background: #fff;
+        box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+
+        .item {
+          position: relative;
+          font-size: 14px;
+          padding-bottom: 6px;
+          color: #555555;
+
+          &.active {
+            font-weight: 500;
+            color: $main-color;
+
+            &::before {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 80%;
+              height: 2px;
+              background: $main-color;
+            }
+          }
+        }
+      }
+
       .tab {
         padding-inline: 15px;
       }
 
       .about {
-        margin-bottom: 20px;
+        padding-top: 20px;
 
         &__title {
           font-weight: 500;
           font-size: 18px;
-          margin-bottom: 2px;
+          margin-bottom: 5px;
         }
         
         &__info {
@@ -129,7 +164,7 @@
 
           .title {
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 5px;
           }
           .desc {
             font-weight: 300;
@@ -178,6 +213,23 @@
                   display: none;
                 }
               }
+
+              .ant-segmented-thumb {
+                background: $main-color;
+              }
+              .ant-segmented-thumb-motion {
+                background: $main-color !important;
+              }
+              .ant-segmented-thumb-motion-appear {
+                background: $main-color !important;
+              }
+              .ant-segmented-thumb-motion-appear-active {
+                background: $main-color !important;
+              }
+              .ant-segmented-thumb-motion-appear-active {
+                background: $main-color !important;
+              }
+
               .ant-segmented-item-selected {
                 color: #fff;
                 background: $main-color;
@@ -202,6 +254,14 @@
                 border: 2px solid $main-color;
                 color: $main-color;
                 background: #D2E4FD;
+              }
+            }
+
+            .listDir {
+              height: 80px;
+
+              &.showDir {
+                height: max-content;
               }
             }
           }
