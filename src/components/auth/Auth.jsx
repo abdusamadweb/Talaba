@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 const Auth = () => {
-    const navigate = useNavigate();
-    const [checked, setChecked] = useState(false);
+    const navigate = useNavigate()
+    const [checked, setChecked] = useState(false)
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const token = localStorage.getItem("token");
-        const state = localStorage.getItem("user-state");
+        const user = JSON.parse(localStorage.getItem("user"))
+        const token = localStorage.getItem("token")
+        const state = localStorage.getItem("user-state")
 
         if (state === "system-active") {
-            setChecked(true); // Позволяет рендерить Outlet
+            setChecked(true) // Позволяет рендерить Outlet
         } else if (state === "pre-in-data" || (token && state !== "system-active")) {
-            navigate(`/login/auth?phone=${user?.phone_number}`, { replace: true });
+            navigate(`/login/auth?phone=${user?.phone_number}`, { replace: true })
         } else {
-            navigate("/login", { replace: true });
+            navigate("/login", { replace: true })
         }
-    }, [navigate]);
+    }, [navigate])
 
-    if (!checked) return null; // Не рендерим Outlet, пока не проверили auth
+    if (!checked) return null // Не рендерим Outlet, пока не проверили auth
 
-    return <Outlet />;
+    return <Outlet />
 }
 
-export default Auth;
+export default Auth

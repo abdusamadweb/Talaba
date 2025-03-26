@@ -19,6 +19,7 @@ import Auth from "./components/auth/Auth.jsx"
 import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
 import AuthRedirect from "./components/auth/AuthRedirect.jsx";
+import News from "./pages/news/News.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -53,6 +54,7 @@ function App() {
                     <Route path='/profile/me' element={<MyProfile />} />
                     <Route path='/profile/me/edit' element={<MyProfileEdit />} />
                     <Route path='/university/:id' element={<UniversityId />} />
+                    <Route path='/news/:id' element={<News />} />
 
                 </Route>
 

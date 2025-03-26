@@ -163,18 +163,6 @@ const Login2 = () => {
                         <div className={nav === 0 ? 'hide' : ''}>
                             <Form.Item
                                 className='form-inp'
-                                name="last_name"
-                                label='Familiya'
-                                rules={[{ required: nav, message: "Iltimos to'ldiring!" }]}
-                            >
-                                <Input
-                                    size="large"
-                                    placeholder='Familiya'
-                                    type='text'
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                className='form-inp'
                                 name="first_name"
                                 label='Ism'
                                 rules={[{ required: nav, message: "Iltimos to'ldiring!" }]}
@@ -182,6 +170,18 @@ const Login2 = () => {
                                 <Input
                                     size="large"
                                     placeholder='Ism'
+                                    type='text'
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                className='form-inp'
+                                name="last_name"
+                                label='Familiya'
+                                rules={[{ required: nav, message: "Iltimos to'ldiring!" }]}
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder='Familiya'
                                     type='text'
                                 />
                             </Form.Item>

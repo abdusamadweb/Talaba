@@ -258,7 +258,7 @@
             }
 
             .listDir {
-              height: 80px;
+              height: 93.2px;
 
               &.showDir {
                 height: max-content;
@@ -269,6 +269,11 @@
       }
 
       .gallery {
+
+        .iframe {
+          height: 100%;
+          border-radius: 10px;
+        }
 
         .about__info {
           background: inherit;

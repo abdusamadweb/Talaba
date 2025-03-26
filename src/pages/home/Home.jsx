@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import './Home.scss'
-import {Button, Carousel, Empty, Input, Skeleton} from "antd";
+import {Button, Empty, Input, Skeleton} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import UniCard from "../../components/cards/univercity/UniCard.jsx";
-import uimg from "../../assets/images/test.jpg";
 import DirectionCard from "../../components/cards/direction/DirectionCard.jsx";
 import dirimg from "../../assets/images/direction/dir-muhandislik.svg";
-import NewsCard from "../../components/cards/news/NewsCard.jsx";
-import newsimg from '../../assets/images/news-test.png'
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
+import HomeNews from "./HomeNews.jsx";
 
 
 const fetchUniversity = async (params) => {
@@ -107,25 +105,7 @@ const Home = () => {
                         }
                     </ul>
                 </div>
-                <div className="news">
-                    <h2 className="news__title">So’ngi yangliklar</h2>
-                    <div className="news__slider">
-                        <Carousel arrows infinite autoplay autoplaySpeed={5000}>
-                            <NewsCard
-                                img={newsimg}
-                                txt='Chet tili imtihoni uchun ruxsatnomalar taqdim etildi.'
-                                desc='Chet tili (turk tili)ni bilish darajasini
-                                aniqlash bo‘yicha bo‘lib o‘tadigan.....'
-                            />
-                            <NewsCard
-                                img={uimg}
-                                txt='Chet tili imtihoni uchun ruxsatnomalar taqdim etildi.'
-                                desc='Chet tili (turk tili)ni bilish darajasini
-                                aniqlash bo‘yicha bo‘lib o‘tadigan.....'
-                            />
-                        </Carousel>
-                    </div>
-                </div>
+                <HomeNews />
             </div>
         </div>
     );

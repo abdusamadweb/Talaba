@@ -66,12 +66,7 @@ const createApplication = async (body) => {
     return data
 }
 
-const ApplyCard = ({
-   i,
-   bgImg,
-   logo,
-   ad
-}) => {
+const ApplyCard = ({ i, ad }) => {
 
     const [modal, setModal] = useState(false)
     const [modalSuccess, setModalSuccess] = useState(false)
@@ -81,6 +76,8 @@ const ApplyCard = ({
 
     const [file1, setFile1] = useState(null)
     const [file2, setFile2] = useState(null)
+
+    const userData = JSON.stringify('user')
 
 
     // form finish
@@ -145,7 +142,13 @@ const ApplyCard = ({
                                     <img className='item__img' src={langIcon} alt="icon"/>
                                     <span className='txt'>Ta’lim tili</span>
                                 </div>
-                                <span className='item__title'>{i.edu_langs.name}</span>
+                                <div className='item__title row'>
+                                    {
+                                        i?.edu_langs?.map((i, index) => (
+                                            <span key={index}>{i.name}</span>
+                                        ))
+                                    }
+                                </div>
                             </li>
                             <li className='item'>
                                 <div className='row align-center'>
@@ -160,12 +163,15 @@ const ApplyCard = ({
                                 <img className='item__img' src={conIcon} alt="icon"/>
                                 <span className='txt'>Kontrakt to’lovi</span>
                             </div>
-                            <span className='item__title'>{formatPrice(i.contract_price)} so’mdan boshlab</span>
+                            <div className='item__title row'>
+                            </div>
+                            <span className='item__title'>{formatPrice(i?.edu_types?.[0]?.contract_price || 0)} so’mdan boshlab</span>
                         </div>
                     </div>
                     <div className="btns align-center">
                         <Link className='btn btn1' to={`/university/${i.university.id}`}>Batafsil</Link>
-                        <button className={`btn btn2 ${i.status !== 'active' ? 'btn2-red' : ''} `} onClick={() => setModal(true)}>
+                        <button className={`btn btn2 ${i.status !== 'active' ? 'btn2-red' : ''} `}
+                                onClick={() => setModal(true)}>
                             {!i.status !== 'active' ? 'Hujjat topshirish' : 'Qabul yopilgan'}
                         </button>
                     </div>
@@ -202,9 +208,9 @@ const ApplyCard = ({
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
                                 placeholder="Manzil"
-                                options={i.edu_type?.map(i => ({
-                                    value: i,
-                                    label: <Option txt={i}/>
+                                options={i.edu_types?.map(i => ({
+                                    value: i.id,
+                                    label: <Option txt={i.name}/>
                                 }))}
                             />
                         </Form.Item>
@@ -256,7 +262,7 @@ const ApplyCard = ({
                             </Upload>
                         </Form.Item>
 
-                        <p className='price'> {formatPrice(i.contract_price) || 0} UZS</p>
+                        <p className='price'> {formatPrice(i.contract_price || 0)} UZS</p>
                         <Button
                             className='btn'
                             loading={loading}
@@ -279,9 +285,8 @@ const ApplyCard = ({
                     <div className="titles">
                         <img className='img' src={successIcon} alt="icon"/>
                         <p className="txt">Tabriklaymiz</p>
-                        <p className="name">Ism Familiya</p>
-                        <p className="desc">Siz Iqtisodiyot va pedagogika
-                            universitetiga muvaffaqiyatli hujjat
+                        <p className="name">{userData?.first_name} {userData?.last_name}</p>
+                        <p className="desc">Siz {i.university.name}ga muvaffaqiyatli hujjat
                             topshirdingiz!</p>
                     </div>
                 </Modal>
