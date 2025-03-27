@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from "react-router-dom";
 
 
-
 const initializeTelegramSDK = async () => {
     try {
         await init()
@@ -15,7 +14,6 @@ const initializeTelegramSDK = async () => {
             await miniApp.ready()
             console.log('Mini App готово')
         }
-
     } catch (error) {
         console.error('Ошибка инициализации:', error)
     }
