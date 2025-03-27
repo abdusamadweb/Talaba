@@ -125,6 +125,7 @@ const Login = () => {
             <div className="container">
                 <div className="login__content relative">
                     <div>chat_id: {miniApp.initDataUnsafe?.chat?.id}</div>
+                    <div>{!miniApp.isExpanded.isAvailable() ? 'TG emas' : 'TG'}</div>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
