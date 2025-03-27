@@ -20,6 +20,7 @@ import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
 import News from "./pages/news/News.jsx";
 import {expandApp} from "./telegram/api.js";
+import {miniApp} from "@telegram-apps/sdk";
 
 
 const Wrapper = ({ children }) => {
@@ -34,10 +35,18 @@ function App() {
 
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => expandApp(), [])
+    useEffect(() => {
+        if (miniApp.platform) { // Проверяем, запущено ли в Telegram
+            expandApp();
+        } else {
+            console.warn("Приложение запущено вне Telegram Mini Apps");
+        }
+    }, []);
 
 
-  return (
+
+
+    return (
     <div className={`App ${window.location.pathname.includes('login') ? 'pb0' : ''}`}>
         <Wrapper>
 
