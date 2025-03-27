@@ -7,6 +7,8 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
 import {Link} from "react-router-dom"
 import toast from "react-hot-toast";
+import GetFile from "../../components/get-file/GetFile.jsx";
+import GetFileDef from "../../components/get-file/GetFileDef.jsx";
 
 const app404 = <div className="d404">
             <div className="wrapper">
@@ -65,10 +67,11 @@ const Applications = () => {
         setCancelLoad(true)
         mutation.mutate(id)
     }
+    console.log(data?.data)
 
 
     return (
-        <div className='applications'>
+        <div className='applications page'>
             <div className="container">
                 {
                     isLoading ? <div className='p1 pb3'>
@@ -82,22 +85,25 @@ const Applications = () => {
                                 {
                                     data?.data?.map((i, index) => (
                                         <li className='apply-card' key={index}>
-                                            <div className="apply-card__head" style={{backgroundImage: `url(${bgImg})`}}>
+                                            <div className="apply-card__head">
+                                                <div className="bg-img bg-img2">
+                                                    <GetFileDef id={i.face_photo_id} odiy />
+                                                </div>
                                                 <div className='index'>
                                                     <h3 className="title">{i.university.name}</h3>
                                                     <span className='name'>{i.edu_direction_name}</span>
                                                     <div className='img'>
-                                                        <img src={logo} alt="logo"/>
+                                                        <GetFile id={i.university.logo_id}/>
                                                     </div>
                                                 </div>
                                                 <div className='overlay'/>
                                             </div>
                                             <div className="apply-card__body">
-                                                <div className="mb1">
+                                            <div className="mb1">
                                                     <ul className="list">
                                                         <li className='item'>
-                                                            <span className='txt'>Daraja</span>
-                                                            <span className='item__title'>{degree}</span>
+                                                            <span className='txt'>Tel raqam</span>
+                                                            <span className='item__title'>{formatPrice(i.university.phone_number)}</span>
                                                         </li>
                                                         <li className='item'>
                                                             <span className='txt'>Ta’lim tili</span>

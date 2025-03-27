@@ -128,7 +128,7 @@ const Search = () => {
 
 
     return (
-        <div className='search'>
+        <div className='search page'>
             <div className="container">
                 <div className="search__head">
                     <div className="search-filter ">

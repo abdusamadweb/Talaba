@@ -18,7 +18,6 @@ import Login2 from "./pages/login/Login2.jsx"
 import Auth from "./components/auth/Auth.jsx"
 import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
-import AuthRedirect from "./components/auth/AuthRedirect.jsx";
 import News from "./pages/news/News.jsx";
 
 
@@ -42,7 +41,6 @@ function App() {
 
             <Header />
 
-            {/*<AuthRedirect />*/}
             <Routes>
 
                 <Route element={<Auth />}>

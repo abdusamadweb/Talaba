@@ -1,11 +1,8 @@
 import React from 'react';
 import {Carousel, Empty, Skeleton} from "antd";
 import NewsCard from "../../components/cards/news/NewsCard.jsx";
-import newsimg from "../../assets/images/news-test.png";
-import uimg from "../../assets/images/test.jpg";
 import {$resp} from "../../api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
-import UniCard from "../../components/cards/univercity/UniCard.jsx";
 
 const fetchNews = async (params) => {
     const { data } = await $resp.get('/news/all', { params })
@@ -20,7 +17,6 @@ const HomeNews = () => {
         queryFn: () => fetchNews({ page: 1, size: 20 }),
         keepPreviousData: true
     })
-    console.log(data)
 
 
     return (
@@ -40,6 +36,7 @@ const HomeNews = () => {
                                     data?.data.map((i, index) => (
                                         <NewsCard
                                             key={index}
+                                            id={i?.id}
                                             img={i?.attachments?.[0].id}
                                             txt={i?.title}
                                             desc={i?.desc}
