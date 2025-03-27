@@ -120,12 +120,27 @@ const Login = () => {
     }
 
 
+    // test -----------------------------//
+    console.log(miniApp)
+    const getChatId = () => {
+        if (miniApp.initDataUnsafe?.user) {
+            return miniApp.initDataUnsafe.user.id; // Это chat_id пользователя
+        } else {
+            console.error("Пользователь не найден");
+            return null;
+        }
+    };
+
+    const chatId = getChatId();
+    console.log("Ваш chat_id:", chatId);
+
+
     return (
         <div className='login'>
             <div className="container">
                 <div className="login__content relative">
                     <div>chat_id: {miniApp.initDataUnsafe?.chat?.id}</div>
-                    <div>{!miniApp.isExpanded.isAvailable() ? 'TG emas' : 'TG'}</div>
+                    <div>NEW chat_id: {chatId}</div>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
