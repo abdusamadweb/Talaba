@@ -15,7 +15,7 @@ const Auth = () => {
         } else if (state === "pre-in-data" || (token && state !== "system-active")) {
             navigate(`/login/auth?phone=${user?.phone_number}`, { replace: true })
         } else {
-            navigate("/login", { replace: true })
+            navigate("/login?chat_id=112", { replace: true })
         }
     }, [navigate])
 
