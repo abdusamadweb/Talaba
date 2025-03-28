@@ -8,6 +8,7 @@ import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
 import {miniApp} from "@telegram-apps/sdk";
+import {useSearchParams} from "react-router-dom";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +153,11 @@ const Login = () => {
     const decodedData = JSON.parse(decodeURIComponent(initData))
 
 
+    // new test
+    const [searchParams] = useSearchParams()
+    const chat = searchParams.get('chat_id')
+
+
     return (
         <div className='login'>
             <div className="container">
@@ -161,6 +167,7 @@ const Login = () => {
                     <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
                     <div>id: {chatIdd}</div>
                     <div>initData: {decodedData?.user?.id}</div>
+                    <div>new chat_id: {chat}</div>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
