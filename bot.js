@@ -5,10 +5,13 @@ const TOKEN = "7434516681:AAG5L3L5AKnNNlCBgaDzP0Y-RFO0LRfBIH8"; // Замени 
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Открыть приложение", {
+    const chatId = msg.chat.id;
+    const appUrl = `https://mattress-cabin-afterwards-aerial.trycloudflare.com?chat_id=${chatId}`;
+
+    bot.sendMessage(chatId, "Открыть приложение", {
         reply_markup: {
             inline_keyboard: [[
-                { text: "Открыть Web App---", web_app: { url: "https://mattress-cabin-afterwards-aerial.trycloudflare.com" } }
+                { text: "Открыть Web App", web_app: { url: appUrl } }
             ]]
         }
     });

@@ -154,7 +154,7 @@ const Login = () => {
 
 
     // new test
-    const [searchParams] = new URLSearchParams(window.location.search)
+    const searchParams = new URLSearchParams(window.location.search)
     const chat = searchParams.get('chat_id')
 
 
