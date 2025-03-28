@@ -35,6 +35,17 @@ const checkSmsAuth = async ({sms_id, code}) => {
 }
 
 
+const fakeData = {
+    user: {
+        id: 1,
+        first_name: "John",
+        last_name: "Doe",
+        usernames: "johndoe",
+    },
+    start_param: "ref1",
+};
+
+
 const Login = () => {
 
     const [form] = Form.useForm()
@@ -148,16 +159,15 @@ const Login = () => {
     // console.log(miniApp, 'READY')
 
     const urlParams = new URLSearchParams(window.location.search);
-    const initData = urlParams.get("tgWebAppData")
+    // const initData = urlParams.get("tgWebAppData")
 
-    const decodedData = JSON.parse(decodeURIComponent(initData))
+    // const decodedData = JSON.parse(decodeURIComponent(initData))
 
 
     // new test
     const searchParams = new URLSearchParams(window.location.search)
     const chat = searchParams.get('chat_id')
 
-    // const webApp = window?.Telegram?.WebApp
 
 
     return (
@@ -168,10 +178,9 @@ const Login = () => {
                     <div>NEW user chat_id: {chatId}</div>
                     <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
                     <div>id: {chatIdd}</div>
-                    <div>initData: {decodedData?.user?.id}</div>
+                    {/*<div>initData: {decodedData?.user?.id}</div>*/}
                     <div>new chat_id: {chat}</div>
-                    {/*<div>wenApp: {webApp}</div>*/}
-                    {/*<div>ready: {JSON.parse(miniApp)}</div>*/}
+                    {/*<div>web chat_id: {window.Telegram.WebApp.initData}</div>*/}
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>

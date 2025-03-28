@@ -17,4 +17,8 @@ bot.onText(/\/start/, (msg) => {
     });
 });
 
+bot.on("message", (msg) => {
+    bot.sendMessage(msg.chat.id, `Ваш Chat ID: ${msg.chat.id}`);
+})
+
 console.log("Бот запущен...");
