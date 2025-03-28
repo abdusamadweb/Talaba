@@ -157,6 +157,8 @@ const Login = () => {
     const searchParams = new URLSearchParams(window.location.search)
     const chat = searchParams.get('chat_id')
 
+    const webApp = window.Telegram.WebApp
+
 
     return (
         <div className='login'>
@@ -168,6 +170,7 @@ const Login = () => {
                     <div>id: {chatIdd}</div>
                     <div>initData: {decodedData?.user?.id}</div>
                     <div>new chat_id: {chat}</div>
+                    <div>wenApp: {webApp}</div>
                     {/*<div>ready: {JSON.parse(miniApp)}</div>*/}
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>

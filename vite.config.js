@@ -10,7 +10,7 @@ export default defineConfig({
     allowedHosts: [
       "localhost",
       "127.0.0.1",
-      "mattress-cabin-afterwards-aerial.trycloudflare.com", // ✅ Добавь свой домен
+      "irish-owen-barrel-wallace.trycloudflare.com", // ✅ Добавь свой домен
     ],
   },
 });
