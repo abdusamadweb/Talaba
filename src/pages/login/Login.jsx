@@ -154,7 +154,7 @@ const Login = () => {
 
 
     // new test
-    const [searchParams] = useSearchParams()
+    const [searchParams] = new URLSearchParams(window.location.search)
     const chat = searchParams.get('chat_id')
 
 
@@ -168,6 +168,7 @@ const Login = () => {
                     <div>id: {chatIdd}</div>
                     <div>initData: {decodedData?.user?.id}</div>
                     <div>new chat_id: {chat}</div>
+                    {/*<div>ready: {JSON.parse(miniApp)}</div>*/}
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
