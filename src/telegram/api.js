@@ -4,7 +4,7 @@ export const expandApp = async () => {
     try {
         await init(); // Убедимся, что SDK инициализирован
 
-        if (!miniApp.isExpanded.isAvailable()) {
+        if (!miniApp.ready.isAvailable()) {
             console.warn("Мини-приложение не запущено в Telegram.");
             return;
         }

@@ -121,7 +121,6 @@ const Login = () => {
 
 
     // test -----------------------------//
-    console.log(miniApp)
     const getChatId = () => {
         if (miniApp.initDataUnsafe?.user) {
             return miniApp.initDataUnsafe.user.id; // Это chat_id пользователя
@@ -129,10 +128,28 @@ const Login = () => {
             console.error("Пользователь не найден");
             return null;
         }
-    };
+    }
+
+    const [chatIdd, setChatIdd] = useState()
+    useEffect(() => {
+        if (miniApp.ready.isAvailable()) {
+            miniApp.ready(() => {
+                console.log("initDataUnsafe:", miniApp.initDataUnsafe);
+                const chatId = miniApp.initDataUnsafe?.user?.id || "Нет chat_id";
+                setChatIdd(chatId);
+                console.log("Chat ID:", chatIdd);
+            });
+        }
+    }, []);
 
     const chatId = getChatId();
-    console.log("Ваш chat_id:", chatId);
+    console.log("Ваш chat_id:", chatIdd);
+    // console.log(miniApp, 'READY')
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const initData = urlParams.get("tgWebAppData")
+
+    const decodedData = JSON.parse(decodeURIComponent(initData))
 
 
     return (
@@ -140,7 +157,10 @@ const Login = () => {
             <div className="container">
                 <div className="login__content relative">
                     <div>chat_id: {miniApp.initDataUnsafe?.chat?.id}</div>
-                    <div>NEW chat_id: {chatId}</div>
+                    <div>NEW user chat_id: {chatId}</div>
+                    <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
+                    <div>id: {chatIdd}</div>
+                    <div>initData: {decodedData?.user?.id}</div>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>

@@ -35,16 +35,6 @@ function App() {
 
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        if (miniApp.platform) { // Проверяем, запущено ли в Telegram
-            expandApp();
-        } else {
-            console.warn("Приложение запущено вне Telegram Mini Apps");
-        }
-    }, []);
-
-
-
 
     return (
     <div className={`App ${window.location.pathname.includes('login') ? 'pb0' : ''}`}>
