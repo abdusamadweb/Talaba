@@ -41,7 +41,7 @@ const TelegramChatId = () => {
             {chatId ? (
                 <p>Chat ID: {chatId}</p>
             ) : (
-                <p>Напиши что-нибудь боту, чтобы получить chat_id!</p>
+                <p>{ logs }</p>
             )}
         </div>
     );
