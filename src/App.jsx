@@ -12,15 +12,13 @@ import Profile from "./pages/profile/Profile.jsx"
 import UniversityId from "./pages/university-id/UniversityId.jsx"
 import MyProfile from "./pages/profile/MyProfile.jsx"
 import {Toaster} from "react-hot-toast"
-import {useEffect, useLayoutEffect, useState} from "react"
+import {useLayoutEffect, useState} from "react"
 import Login from "./pages/login/Login.jsx"
 import Login2 from "./pages/login/Login2.jsx"
 import Auth from "./components/auth/Auth.jsx"
 import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
 import News from "./pages/news/News.jsx";
-import {expandApp} from "./telegram/api.js";
-import {miniApp} from "@telegram-apps/sdk";
 
 
 const Wrapper = ({ children }) => {

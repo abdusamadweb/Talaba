@@ -8,6 +8,7 @@ import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
 import {miniApp} from "@telegram-apps/sdk";
+import GetChatId from "../../components/GetChatId.jsx";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -125,11 +126,26 @@ const Login = () => {
     }
 
 
+    // test
+    function toStringSafe(value) {
+        if (typeof value === "function") {
+            return value.toString(); // Для функций
+        }
+        if (value === undefined) {
+            return "undefined"; // Для undefined
+        }
+        return JSON.stringify(value, (_, v) => (typeof v === "undefined" ? "undefined" : v));
+    }
+    console.log(toStringSafe(miniApp.ready))
+
+
     return (
         <div className='login'>
             <div className="container">
                 <div className="login__content relative">
                     <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
+                    {/*<div>miniapp.ready: {toStringSafe(miniApp.ready)}</div>*/}
+                    <GetChatId />
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
