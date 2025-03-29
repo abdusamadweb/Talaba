@@ -23,6 +23,9 @@ importers:
       axios:
         specifier: ^1.8.2
         version: 1.8.2
+      imask:
+        specifier: ^7.6.1
+        version: 7.6.1
       node-telegram-bot-api:
         specifier: ^0.66.0
         version: 0.66.0(request@2.88.2)

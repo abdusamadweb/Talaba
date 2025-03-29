@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import './Login.scss'
 import logo from '../../assets/images/big-logo.svg'
 import back from '../../assets/images/auth-arrow.svg'
@@ -9,6 +9,8 @@ import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
 import {miniApp} from "@telegram-apps/sdk";
 import GetChatId from "../../components/GetChatId.jsx";
+import IMask from "imask";
+import {IMaskInput} from "react-imask";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -31,13 +33,28 @@ const chatId =
 
 // fetch
 const sendPhoneAuth = async (phone) => {
-    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: chatId})
+    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: 5015938026})
     return data
 }
 const checkSmsAuth = async ({sms_id, code}) => {
     const {data} = await $api.post("/auth/check-sms-code", {sms_id, code})
     return data
 }
+
+
+const PhoneInput = React.forwardRef((props, ref) => {
+    return (
+        <IMaskInput
+            {...props}
+            mask="+998 00 000 00 00"
+            lazy={false} // Показывает маску сразу
+            placeholder="-"
+            unmask={true} // Передает в Form чистый номер
+            inputRef={ref} // Ant Design ожидает, что ref будет передан в input
+            render={(inputRef, props) => <Input ref={inputRef} {...props} />}
+        />
+    );
+});
 
 
 const Login = () => {
@@ -136,7 +153,19 @@ const Login = () => {
         }
         return JSON.stringify(value, (_, v) => (typeof v === "undefined" ? "undefined" : v));
     }
-    console.log(toStringSafe(miniApp.ready))
+
+
+    // phone input
+    const inputRef = useRef(null)
+    useEffect(() => {
+        if (inputRef.current?.input) {
+            IMask(inputRef.current.input, {
+                mask: "+998 00 000 00 00",
+                lazy: false, // Показывает маску сразу
+                placeholderChar: "-",
+            })
+        }
+    }, [])
 
 
     return (
@@ -145,7 +174,7 @@ const Login = () => {
                 <div className="login__content relative">
                     <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
                     {/*<div>miniapp.ready: {toStringSafe(miniApp.ready)}</div>*/}
-                    <GetChatId />
+                    <GetChatId/>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
@@ -176,12 +205,18 @@ const Login = () => {
                                 <Form.Item
                                     name="phoneNumber"
                                 >
-                                    <Input
+                                    <PhoneInput
                                         size="large"
                                         prefix={uz}
-                                        placeholder='+998 -- --- -- --'
-                                        type='tel'
+                                        type="tel"
                                     />
+                                    {/*<Input*/}
+                                    {/*    size="large"*/}
+                                    {/*    prefix={uz}*/}
+                                    {/*    ref={inputRef}*/}
+                                    {/*    type="tel"*/}
+                                    {/*    defaultValue="+998 "*/}
+                                    {/*/>*/}
                                 </Form.Item>
                                 :
                                 <>
@@ -193,6 +228,9 @@ const Login = () => {
                                         <Input.OTP
                                             length={4}
                                             type='number'
+                                            itemType='number'
+                                            datatype='number'
+                                            typeof='number'
                                             size='large'
                                         />
                                     </Form.Item>

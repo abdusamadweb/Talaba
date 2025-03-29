@@ -157,6 +157,7 @@ const Login2 = () => {
                                     mask="0000-00-00"
                                     definitions={{ 0: /\d/ }}
                                     placeholder="yyyy-oo-kk"
+                                    type='number'
                                 />
                             </Form.Item>
                         </div>
@@ -189,7 +190,7 @@ const Login2 = () => {
                                 className='form-inp docs'
                                 label="Diplom, shahodatnoma nusxasi"
                                 name="diploma_file_id"
-                                rules={[{required: nav, message: ''}]}
+                                // rules={[{required: nav, message: ''}]}
                             >
                                 <Upload {...uploadProps} onChange={(e) => setFile1(e.file.percent)}>
                                     <Input
@@ -204,7 +205,7 @@ const Login2 = () => {
                                 className='form-inp docs'
                                 label="Passport yoki ID karta nusxasi"
                                 name="passport_file_id"
-                                rules={[{required: nav, message: ''}]}
+                                // rules={[{required: nav, message: ''}]}
                             >
                                 <Upload {...uploadProps} onChange={(e) => setFile2(e.file.percent)}>
                                     <Input
