@@ -10,7 +10,7 @@ export default defineConfig({
     allowedHosts: [
       "localhost",
       "127.0.0.1",
-      "irish-owen-barrel-wallace.trycloudflare.com", // ✅ Добавь свой домен
+      "begin-db-played-hours.trycloudflare.com", // ✅ Добавь свой домен
     ],
   },
 });

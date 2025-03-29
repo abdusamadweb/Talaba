@@ -6,7 +6,7 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
-    const appUrl = `https://irish-owen-barrel-wallace.trycloudflare.com?chat_id=${chatId}`;
+    const appUrl = `https://begin-db-played-hours.trycloudflare.com?chat_id=${chatId}`;
 
     bot.sendMessage(chatId, "Открыть приложение", {
         reply_markup: {

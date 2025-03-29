@@ -14,10 +14,9 @@ const Auth = () => {
         const state = localStorage.getItem("user-state")
 
         const chatId =
-            localStorage.getItem("chat_id") ||
             window.Telegram?.WebApp?.initDataUnsafe?.user?.id ||
             new URLSearchParams(window.location.search).get("chat_id") ||
-            "7";
+            "{null}"
 
         if (state === "system-active") {
             setChecked(true) // Позволяет рендерить Outlet

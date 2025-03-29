@@ -8,7 +8,6 @@ import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
 import {miniApp} from "@telegram-apps/sdk";
-import {useSearchParams} from "react-router-dom";
 
 const uz =
     <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -24,26 +23,20 @@ const uz =
     </svg>
 
 
+const chatId =
+    window.Telegram?.WebApp?.initDataUnsafe?.user?.id ||
+    new URLSearchParams(window.location.search).get("chat_id") ||
+    "{null}"
+
 // fetch
 const sendPhoneAuth = async (phone) => {
-    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: miniApp.initDataUnsafe?.chat?.id || null})
+    const {data} = await $api.post("/auth/auth-phone", {phone_number: phone, chat_id: chatId})
     return data
 }
 const checkSmsAuth = async ({sms_id, code}) => {
     const {data} = await $api.post("/auth/check-sms-code", {sms_id, code})
     return data
 }
-
-
-const fakeData = {
-    user: {
-        id: 1,
-        first_name: "John",
-        last_name: "Doe",
-        usernames: "johndoe",
-    },
-    start_param: "ref1",
-};
 
 
 const Login = () => {
@@ -132,55 +125,11 @@ const Login = () => {
     }
 
 
-    // test -----------------------------//
-    const getChatId = () => {
-        if (miniApp.initDataUnsafe?.user) {
-            return miniApp.initDataUnsafe.user.id; // Это chat_id пользователя
-        } else {
-            console.error("Пользователь не найден");
-            return null;
-        }
-    }
-
-    const [chatIdd, setChatIdd] = useState()
-    useEffect(() => {
-        if (miniApp.ready.isAvailable()) {
-            miniApp.ready(() => {
-                console.log("initDataUnsafe:", miniApp.initDataUnsafe);
-                const chatId = miniApp.initDataUnsafe?.user?.id || "Нет chat_id";
-                setChatIdd(chatId);
-                console.log("Chat ID:", chatIdd);
-            });
-        }
-    }, []);
-
-    const chatId = getChatId();
-    console.log("Ваш chat_id:", chatIdd);
-    // console.log(miniApp, 'READY')
-
-    const urlParams = new URLSearchParams(window.location.search);
-    // const initData = urlParams.get("tgWebAppData")
-
-    // const decodedData = JSON.parse(decodeURIComponent(initData))
-
-
-    // new test
-    const searchParams = new URLSearchParams(window.location.search)
-    const chat = searchParams.get('chat_id')
-
-
-
     return (
         <div className='login'>
             <div className="container">
                 <div className="login__content relative">
-                    <div>chat_id: {miniApp.initDataUnsafe?.chat?.id}</div>
-                    <div>NEW user chat_id: {chatId}</div>
                     <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
-                    <div>id: {chatIdd}</div>
-                    {/*<div>initData: {decodedData?.user?.id}</div>*/}
-                    <div>new chat_id: {chat}</div>
-                    {/*<div>web chat_id: {window.Telegram.WebApp.initData}</div>*/}
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
