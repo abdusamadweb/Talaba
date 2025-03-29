@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const TelegramChatId = () => {
+
     const [chatId, setChatId] = useState(null);
-    const token = "7434516681:AAG5L3L5AKnNNlCBgaDzP0Y-RFO0LRfBIH8"; // Твой токен
+    const [logs, setLogs] = useState('')
+    const token = "7434516681:AAG5L3L5AKnNNlCBgaDzP0Y-RFO0LRfBIH8";
+
+    // Твой токен
 
     useEffect(() => {
         const fetchChatId = async () => {
@@ -18,10 +22,13 @@ const TelegramChatId = () => {
                 if (updates.length > 0) {
                     const latestChatId = updates[updates.length - 1].message.chat.id;
                     setChatId(latestChatId);
+                    setLogs('Chat id is successfully');
                 } else {
                     console.log("Нет сообщений, напиши боту первым!");
+                    setLogs('Chat id is NOT');
                 }
             } catch (error) {
+                setLogs('Ошибка при получении chat_id !!!');
                 console.error("Ошибка при получении chat_id:", error);
             }
         };
