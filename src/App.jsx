@@ -19,6 +19,9 @@ import Auth from "./components/auth/Auth.jsx"
 import Loader from "./components/loader/Loader.jsx"
 import MyProfileEdit from "./pages/profile/MyProfileEdit.jsx";
 import News from "./pages/news/News.jsx";
+import AuthAdmin from "./components/auth/AuthAdmin.jsx";
+import AdminHome from "./pages/admin/home/AdminHome.jsx";
+import AdminLogin from "./pages/admin/login/AdminLogin.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -59,6 +62,15 @@ function App() {
 
                 <Route path='/login' element={<Login />} />
                 <Route path='/login/auth' element={<Login2 />} />
+
+                {/* Admin Routes */}
+                <Route element={<AuthAdmin />}>
+
+                    <Route path='/admin' element={<AdminHome />} />
+
+                </Route>
+
+                <Route path='/admin/login' element={<AdminLogin />} />
 
             </Routes>
 

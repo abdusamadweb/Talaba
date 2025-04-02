@@ -7,7 +7,7 @@ import GetFileDef from "../../get-file/GetFileDef.jsx";
 const NewsCard = ({ id, img, txt, desc }) => {
     return (
         <div className='news-card'>
-            <GetFileDef className='news-card__img' id={img} />
+            <GetFileDef className='news-card__img' id={img} odiy />
             <div className="body">
                 <span className='body__txt'>{ txt }</span>
                 <p className="body__desc">{ desc }</p>
