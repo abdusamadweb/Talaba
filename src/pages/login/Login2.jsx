@@ -232,6 +232,7 @@ const Login2 = () => {
                             >
                                 <Upload {...uploadProps} onChange={(e) => setFile1(e.file.percent)}>
                                     <Input
+                                        disabled
                                         rootClassName={file1 !== null && 'change-icon'}
                                         size='large'
                                         suffix={<UploadIcon />}
@@ -247,6 +248,7 @@ const Login2 = () => {
                             >
                                 <Upload {...uploadProps} onChange={(e) => setFile2(e.file.percent)}>
                                     <Input
+                                        disabled
                                         rootClassName={file2 !== null && 'change-icon'}
                                         size='large'
                                         suffix={<UploadIcon />}
