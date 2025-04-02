@@ -198,10 +198,11 @@ const Login = () => {
                                         <Input.OTP
                                             length={4}
                                             type='number'
-                                            itemType='number'
-                                            datatype='number'
-                                            typeof='number'
                                             size='large'
+                                            onPaste={(e) => e.preventDefault()}
+                                            onCopy={(e) => e.preventDefault()}
+                                            onCut={(e) => e.preventDefault()}
+                                            onContextMenu={(e) => e.preventDefault()}
                                         />
                                     </Form.Item>
                                     <div className='sms-retry'>

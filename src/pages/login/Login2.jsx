@@ -193,16 +193,10 @@ const Login2 = () => {
                             <Form.Item
                                 className='form-inp'
                                 name="birth_date"
-                                label='Tug’ulgan kuni'
+                                label='Tug’ulgan kun (2007-01-30)'
                                 rules={[{required: true, message: "Iltimos to'ldiring!"}]}
                             >
                                 <BirthDateInput />
-                                {/*<IMaskInput*/}
-                                {/*    mask="0000-00-00"*/}
-                                {/*    definitions={{ 0: /\d/ }}*/}
-                                {/*    placeholder="yyyy-oo-kk"*/}
-                                {/*    type='number'*/}
-                                {/*/>*/}
                             </Form.Item>
                         </div>
                         <div className={nav === 0 ? 'hide' : ''}>
