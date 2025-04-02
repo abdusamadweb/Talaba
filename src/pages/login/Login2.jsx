@@ -65,22 +65,14 @@ const PassportInput = React.forwardRef(({ value, onChange }, ref) => {
             value={value}
             onAccept={(val) => onChange(val.toUpperCase())}
             inputRef={ref}
-            render={(inputRef, props) => (
-                <Input
-                    {...props}
-                    ref={inputRef}
-                    size="large"
-                    type="text"
-                />
-            )}
         />
     );
 });
 
-const BirthDateInput = React.forwardRef(({ value, onChange, ...props }, ref) => {
+const BirthDateInput = React.forwardRef(({ value, onChange }, ref) => {
     return (
         <IMaskInput
-            {...props}
+            type='tel'
             mask="0000-00-00" // Формат YYYY-MM-DD
             blocks={{
                 0: {
@@ -95,14 +87,6 @@ const BirthDateInput = React.forwardRef(({ value, onChange, ...props }, ref) => 
             value={value}
             onAccept={onChange} // Обновляет значение в Form
             inputRef={ref}
-            render={(inputRef, props) => (
-                <Input
-                    {...props}
-                    ref={inputRef}
-                    size="large"
-                    type="text"
-                />
-            )}
         />
     );
 });

@@ -42,6 +42,7 @@ const checkSmsAuth = async ({sms_id, code}) => {
 const PhoneInput = React.forwardRef(({ value, onChange }, ref) => {
     return (
         <IMaskInput
+            type="tel"
             mask="+998 00 000 00 00"
             lazy={false} // Показывает маску сразу
             placeholder="-"
@@ -94,6 +95,7 @@ const Login = () => {
             localStorage.setItem('user-state', res?.user.state)
 
             window.location.href = '/'
+            form.resetFields()
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
