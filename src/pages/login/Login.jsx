@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './Login.scss'
 import logo from '../../assets/images/big-logo.svg'
 import back from '../../assets/images/auth-arrow.svg'
@@ -7,9 +7,6 @@ import {useMutation} from "@tanstack/react-query"
 import $api from "../../api/apiConfig.js"
 import toast from "react-hot-toast"
 import {formatPhone} from "../../assets/scripts/global.js"
-import {miniApp} from "@telegram-apps/sdk";
-import GetChatId from "../../components/GetChatId.jsx";
-import IMask from "imask";
 import {IMaskInput} from "react-imask";
 
 const uz =
@@ -42,16 +39,16 @@ const checkSmsAuth = async ({sms_id, code}) => {
 }
 
 
-const PhoneInput = React.forwardRef((props, ref) => {
+const PhoneInput = React.forwardRef(({ value, onChange }, ref) => {
     return (
         <IMaskInput
-            {...props}
             mask="+998 00 000 00 00"
             lazy={false} // Показывает маску сразу
             placeholder="-"
-            unmask={true} // Передает в Form чистый номер
-            inputRef={ref} // Ant Design ожидает, что ref будет передан в input
-            render={(inputRef, props) => <Input ref={inputRef} {...props} />}
+            unmask={true} // Передает "чистый" номер в Form
+            value={value} // Связывает с Form
+            onAccept={onChange} // Передает изменения в Form
+            inputRef={ref} // Ant Design ожидает, что ref будет передан в Input
         />
     );
 });
@@ -84,7 +81,7 @@ const Login = () => {
     })
 
     const onFinish = (values) => {
-        mutation.mutate(values.phoneNumber)
+        mutation.mutate("+998" + values.phoneNumber)
     }
 
     const mutationSms = useMutation({
@@ -143,38 +140,10 @@ const Login = () => {
     }
 
 
-    // test
-    function toStringSafe(value) {
-        if (typeof value === "function") {
-            return value.toString(); // Для функций
-        }
-        if (value === undefined) {
-            return "undefined"; // Для undefined
-        }
-        return JSON.stringify(value, (_, v) => (typeof v === "undefined" ? "undefined" : v));
-    }
-
-
-    // phone input
-    const inputRef = useRef(null)
-    useEffect(() => {
-        if (inputRef.current?.input) {
-            IMask(inputRef.current.input, {
-                mask: "+998 00 000 00 00",
-                lazy: false, // Показывает маску сразу
-                placeholderChar: "-",
-            })
-        }
-    }, [])
-
-
     return (
         <div className='login'>
             <div className="container">
                 <div className="login__content relative">
-                    <div>{miniApp.ready?.isAvailable() ? 'TG' : 'not TG'}</div>
-                    {/*<div>miniapp.ready: {toStringSafe(miniApp.ready)}</div>*/}
-                    <GetChatId/>
                     {
                         nav !== 0 ? <button className='back' onClick={() => setNav((prev) => prev - 1)}>
                             <img src={back} alt="icon"/>
@@ -203,13 +172,12 @@ const Login = () => {
                         {
                             nav === 0 ?
                                 <Form.Item
+                                    className='imask'
                                     name="phoneNumber"
+                                    rules={[{ required: true, message: "" }]}
+                                    initialValue="+998 "
                                 >
-                                    <PhoneInput
-                                        size="large"
-                                        prefix={uz}
-                                        type="tel"
-                                    />
+                                    <PhoneInput />
                                     {/*<Input*/}
                                     {/*    size="large"*/}
                                     {/*    prefix={uz}*/}

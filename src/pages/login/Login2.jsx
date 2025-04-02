@@ -9,6 +9,7 @@ import {IMaskInput} from "react-imask";
 import back from "../../assets/images/auth-arrow.svg";
 import {useSearchParams} from "react-router-dom";
 import {$resp} from "../../api/apiResp.js";
+import IMask from "imask";
 
 const UploadIcon = () => {
     return (
@@ -48,6 +49,63 @@ const sendPhoneAuth = async (body) => {
     const { data } = await $resp.post("/update-profile", body)
     return data
 }
+
+
+// input
+const PassportInput = React.forwardRef(({ value, onChange }, ref) => {
+    return (
+        <IMaskInput
+            mask="aa 0000000" // Две буквы и 7 цифр
+            definitions={{
+                a: /[a-zA-Z]/, // Разрешаем и строчные, и заглавные буквы
+                0: /[0-9]/, // Только цифры
+            }}
+            lazy={false} // Показывает маску сразу
+            unmask={true} // Передает "чистое" значение в Form
+            value={value}
+            onAccept={(val) => onChange(val.toUpperCase())}
+            inputRef={ref}
+            render={(inputRef, props) => (
+                <Input
+                    {...props}
+                    ref={inputRef}
+                    size="large"
+                    type="text"
+                />
+            )}
+        />
+    );
+});
+
+const BirthDateInput = React.forwardRef(({ value, onChange, ...props }, ref) => {
+    return (
+        <IMaskInput
+            {...props}
+            mask="0000-00-00" // Формат YYYY-MM-DD
+            blocks={{
+                0: {
+                    mask: IMask.MaskedRange,
+                    from: 0,
+                    to: 9,
+                },
+            }}
+            lazy={false} // Показывает маску сразу
+            placeholder="yyyy-mm-dd"
+            unmask={false}
+            value={value}
+            onAccept={onChange} // Обновляет значение в Form
+            inputRef={ref}
+            render={(inputRef, props) => (
+                <Input
+                    {...props}
+                    ref={inputRef}
+                    size="large"
+                    type="text"
+                />
+            )}
+        />
+    );
+});
 
 
 const Login2 = () => {
@@ -138,14 +196,15 @@ const Login2 = () => {
                                 label='Passport yoki ID karta seriya raqami'
                                 rules={[{required: true, message: "Iltimos to'ldiring!"}]}
                             >
-                                <IMaskInput
-                                    mask="AA 0000000"
-                                    definitions={{
-                                        A: /[A-Z]/, // Только заглавные буквы
-                                        0: /\d/,     // Только цифры
-                                    }}
-                                    placeholder="-- -------"
-                                />
+                                <PassportInput />
+                                {/*<IMaskInput*/}
+                                {/*    mask="AA 0000000"*/}
+                                {/*    definitions={{*/}
+                                {/*        A: /[A-Z]/, // Только заглавные буквы*/}
+                                {/*        0: /\d/,     // Только цифры*/}
+                                {/*    }}*/}
+                                {/*    placeholder="-- -------"*/}
+                                {/*/>*/}
                             </Form.Item>
                             <Form.Item
                                 className='form-inp'
@@ -153,12 +212,13 @@ const Login2 = () => {
                                 label='Tug’ulgan kuni'
                                 rules={[{required: true, message: "Iltimos to'ldiring!"}]}
                             >
-                                <IMaskInput
-                                    mask="0000-00-00"
-                                    definitions={{ 0: /\d/ }}
-                                    placeholder="yyyy-oo-kk"
-                                    type='number'
-                                />
+                                <BirthDateInput />
+                                {/*<IMaskInput*/}
+                                {/*    mask="0000-00-00"*/}
+                                {/*    definitions={{ 0: /\d/ }}*/}
+                                {/*    placeholder="yyyy-oo-kk"*/}
+                                {/*    type='number'*/}
+                                {/*/>*/}
                             </Form.Item>
                         </div>
                         <div className={nav === 0 ? 'hide' : ''}>

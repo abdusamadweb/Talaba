@@ -53,6 +53,46 @@
     }
   }
 
+  .imask {
+    position: relative;
+    height: 54px;
+    display: grid;
+    grid-template-columns: 29px 1fr;
+    align-items: center;
+    gap: 15px;
+    padding-inline: 15px;
+    border-radius: 12px;
+    border: none;
+    background: #F8F8F8;
+    
+    &::before {
+      content: '';
+      width: 29px;
+      height: 20px;
+      background-image: url('../../assets/images/uz-flag.svg');
+      background-size: cover;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 57px;
+      width: 2px;
+      height: 60%;
+      background: #D8D8D8;
+      transform: translateY(-50%);
+    }
+
+    input {
+      font-family: "Poppins", sans-serif;
+      font-size: 16px;
+      padding: 10px 0 10px 10px;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+  }
+
   .otp {
     margin-bottom: 10px;
 
