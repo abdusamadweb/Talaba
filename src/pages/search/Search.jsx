@@ -65,30 +65,39 @@ const Search = () => {
         queryKey: ['regions'],
         queryFn: fetchRegions
     })
-    const rOptions = regions?.regions?.map(i => ({
-        value: i.id,
-        label: <Option txt={i.name} />
-    })) || []
+    const rOptions = [
+        { value: null, label: <Option txt='Tanlanmadi' /> },
+        ...(regions?.regions?.map(i => ({
+            value: i.id,
+            label: <Option txt={i.name} />
+        })) || [])
+    ]
 
     // Fetch langs
     const { data: langs } = useQuery({
         queryKey: ['langs'],
         queryFn: fetchLang
     })
-    const lOptions = langs?.map(i => ({
-        value: i.id,
-        label: <Option txt={i.name} />
-    })) || []
+    const lOptions = [
+        { value: null, label: <Option txt='Tanlanmadi' /> },
+        ...(langs?.map(i => ({
+            value: i.id,
+            label: <Option txt={i.name} />
+        })) || [])
+    ]
 
     // Fetch directions
     const { data: directions } = useQuery({
         queryKey: ['directions'],
         queryFn: fetchDirection
     })
-    const dOptions = directions?.map(i => ({
-        value: i.id,
-        label: <Option txt={i.name} />
-    })) || []
+    const dOptions = [
+        { value: null, label: <Option txt='Tanlanmadi' /> },
+        ...(directions?.map(i => ({
+            value: i.id,
+            label: <Option txt={i.name} />
+        })) || [])
+    ]
 
 
     // filter data
@@ -183,33 +192,6 @@ const Search = () => {
                                                 options={dOptions}
                                             />
                                         </div>
-                                        {/*<div className='select-wrapper'>*/}
-                                        {/*    <span className='select__txt'>Ta’lim turi</span>*/}
-                                        {/*    <Select*/}
-                                        {/*        size='large'*/}
-                                        {/*        suffixIcon={<CaretDownOutlined/>}*/}
-                                        {/*        onChange={handleChange}*/}
-                                        {/*        placeholder="Ta’lim turi"*/}
-                                        {/*        options={[*/}
-                                        {/*            {*/}
-                                        {/*                value: 'Kunduzgi',*/}
-                                        {/*                label: <Option txt='Kunduzgi'/>,*/}
-                                        {/*            },*/}
-                                        {/*            {*/}
-                                        {/*                value: 'Sirtqi',*/}
-                                        {/*                label: <Option txt='Sirtqi'/>,*/}
-                                        {/*            },*/}
-                                        {/*            {*/}
-                                        {/*                value: 'Kechki',*/}
-                                        {/*                label: <Option txt='Kechki'/>,*/}
-                                        {/*            },*/}
-                                        {/*            {*/}
-                                        {/*                value: 'Masofaviy',*/}
-                                        {/*                label: <Option txt='Masofaviy'/>,*/}
-                                        {/*            },*/}
-                                        {/*        ]}*/}
-                                        {/*    />*/}
-                                        {/*</div>*/}
                                         <div className='select-wrapper'>
                                             <span className='select__txt'>Ta’lim tili</span>
                                             <Select

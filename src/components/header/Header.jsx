@@ -3,18 +3,17 @@ import './Header.scss'
 import logo from '../../assets/images/logo.svg'
 import menu from '../../assets/images/menu-icon.svg'
 import {Link, useHref} from "react-router-dom";
-import {Drawer, Input} from "antd";
-import arrowIcon from '../../assets/images/arrow-icon.svg'
-import searchIcon from "../../assets/images/search-icon.svg";
+import {Drawer} from "antd";
 import {CloseCircleOutlined} from "@ant-design/icons";
+import tel from '../../assets/images/tel-icon.svg'
+import tg from '../../assets/images/tg-icon.svg'
+import {hiddenRoutes} from "../../assets/scripts/mockAPI.js";
 
 const Header = () => {
 
     const [modal, setModal] = useState(false)
-    const [search, setSearch] = useState('')
 
     const href = useHref({})
-    const hiddenRoutes = ['/profile', '/login']
     const isHidden = hiddenRoutes.some(route => href.includes(route))
 
 
@@ -36,48 +35,44 @@ const Header = () => {
                 open={modal}
                 key='right'
             >
-                <div className="header-modal__head">
-                    <button className='btn' onClick={() => setModal(false)}>
-                        <img src={arrowIcon} alt="icon"/>
+                <div className="row between align-center">
+                    <Link className='header__logo' to='/'>
+                        <img src={logo} alt="logo"/>
+                    </Link>
+                    <button className='header-modal__menu' onClick={() => setModal(false)}>
+                        <CloseCircleOutlined />
                     </button>
-                    <div className='search-filter'>
-                        <Input
-                            size="large"
-                            prefix={<img src={searchIcon} alt='icon'></img>}
-                            suffix={<CloseCircleOutlined onClick={() => setSearch('')} />}
-                            placeholder="OTM yoki ta’lim yo’nalishi..."
-                        />
-                    </div>
                 </div>
                 <div className="header-modal__body">
-                    <div className="uni-dir">
-                        <h3 className="uni-dir__title">Ko’p qidirilgan yo’nalishlar</h3>
-                        <ul className="uni-dir__list">
-                            <li className="item">
-                                <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Iqtisodiyot, buxgalteriya hisobi va soliqqa tortish</Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="uni-dir">
-                        <h3 className="uni-dir__title">Ko’p qidirilgan OTMlar</h3>
-                        <ul className="uni-dir__list">
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul className="list">
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/#university'>OTMlar</a>
+                        </li>
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/#directions'>Yo’nalishlar</a>
+                        </li>
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/'>Hamkorlik</a>
+                        </li>
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/'>Grantlar</a>
+                        </li>
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/#news'>Yangliklar</a>
+                        </li>
+                        <li onClick={() => setModal(false)}>
+                            <a className='item' href='/'>Biz haqimizda</a>
+                        </li>
+                    </ul>
+                    <a className='link' href="tel:+998998999777">
+                        <img src={tel} alt="icon"/>
+                        <span>+998 99 899 97 77</span>
+                    </a>
+                    <a className='link' href="https://t.me/nmadr" target='_blank'>
+                        <img src={tg} alt="icon"/>
+                        <span>Telegram orqali bog’lanish</span>
+                    </a>
+                    <Link className='btn' to='/applications'>Hujjat topshirish</Link>
                 </div>
             </Drawer>
         </div>

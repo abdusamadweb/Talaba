@@ -8,6 +8,10 @@
   font-family: "Poppins", sans-serif;
   margin: 0 auto;
   background: $bg-color;
+
+  &.admin {
+    max-width: unset;
+  }
 }
 
 .page {

@@ -20,7 +20,7 @@ const HomeNews = () => {
 
 
     return (
-        <div className="home-news">
+        <div className="home-news" id='news'>
             <h2 className="home-news__title">So’ngi yangliklar</h2>
             <div className="home-news__slider">
                 {

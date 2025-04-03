@@ -1,7 +1,13 @@
-
-// site language
 import {$resp} from "../../api/apiResp.js";
 
+
+// form
+export const validateMessages = {
+    required: '${label} толдирилиши шарт!',
+}
+
+
+// site language
 export const lang = localStorage.getItem('lang') || 'en'
 export const changeLang = (lang) => {
     localStorage.setItem('lang', lang)
@@ -30,6 +36,7 @@ export const formatPhone = (str) => {
     })
     return formatted.join("")
 }
+
 
 // upload file
 export const uploadFile = async (file) => {

@@ -47,11 +47,15 @@
   }
 
   &__list {
+    display: flex;
+    flex-flow: column;
+    gap: 15px;
     padding: 35px 15px;
 
     .apply-card {
 
       &__body {
+
         .item {
           padding-left: 25px;
 

@@ -207,10 +207,10 @@ const ApplyCard = ({ i, ad }) => {
                             <Select
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
-                                placeholder="Manzil"
-                                options={i.edu_types?.map(i => ({
-                                    value: i.id,
-                                    label: <Option txt={i.name}/>
+                                placeholder="Talim turi"
+                                options={i.edu_type?.map(i => ({
+                                    value: i,
+                                    label: <Option txt={i}/>
                                 }))}
                             />
                         </Form.Item>
@@ -223,7 +223,7 @@ const ApplyCard = ({ i, ad }) => {
                             <Select
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
-                                placeholder="Manzil"
+                                placeholder="Talim tili"
                                 options={i.edu_langs?.map(i => ({
                                     value: i.id,
                                     label: <Option txt={i.name}/>

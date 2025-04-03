@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './Applications.scss'
 import img404 from '../../assets/images/applications404-icon.svg'
-import {formatPrice} from "../../assets/scripts/global.js";
+import {formatPhone, formatPrice} from "../../assets/scripts/global.js";
 import {Button, Modal, Skeleton, Steps} from "antd";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
@@ -37,8 +37,6 @@ const Applications = () => {
     const [cancelLoad, setCancelLoad] = useState(false)
 
     const logo = null
-    const bgImg = null
-    const degree = '-----'
 
 
     // Fetch regions
@@ -103,7 +101,7 @@ const Applications = () => {
                                                     <ul className="list">
                                                         <li className='item'>
                                                             <span className='txt'>Tel raqam</span>
-                                                            <span className='item__title'>{formatPrice(i.university.phone_number)}</span>
+                                                            <span className='item__title'>{ formatPhone(i.university.phone_number) }</span>
                                                         </li>
                                                         <li className='item'>
                                                             <span className='txt'>Ta’lim tili</span>
@@ -132,10 +130,18 @@ const Applications = () => {
                                                         <span>{i.status}</span>
                                                     </p>
                                                 </div>
-                                                <button className='btn btn2-red' onClick={() => {
-                                                    setModal(true)
-                                                    setSItem(i)
-                                                }}>Arizani bekor qilish</button>
+                                                {
+                                                    i?.status !== 'Bekor qilindi' &&
+                                                        <button
+                                                            className='btn btn2-red'
+                                                            onClick={() => {
+                                                                setModal(true)
+                                                                setSItem(i)
+                                                            }}
+                                                        >
+                                                            Arizani bekor qilish
+                                                        </button>
+                                                }
                                             </div>
                                         </li>
                                     ))
@@ -151,9 +157,9 @@ const Applications = () => {
                 footer={false}
                 onCancel={() => setModal(false)}
             >
-                <div className="imgs grid-center">
-                    <img src={logo} alt="logo"/>
-                </div>
+                {/*<div className="imgs grid-center">*/}
+                {/*    <img src={logo} alt="logo"/>*/}
+                {/*</div>*/}
                 <p className="title">Arizani bekor qilish</p>
                 <p className="desc">Sizning arizangiz universitet
                     ma’lumotlar bazasidan o’chiriladi.</p>

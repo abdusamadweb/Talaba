@@ -48,7 +48,7 @@ const Home = () => {
                         <h2 className="titles__title">Talaba Portal bilan</h2>
                         <p className='titles__desc'>o’zingiz hohlagan OTMni toping!</p>
                     </div>
-                    <div className='search-filter' onClick={() => navigate('/search')}>
+                    <div className='search-filter' onClick={() => navigate('/searchQ')}>
                         <Input
                             size="large"
                             prefix={<img src={searchIcon} alt='icon'></img>}
@@ -56,7 +56,7 @@ const Home = () => {
                         />
                     </div>
                 </div>
-                <div className="university">
+                <div className="university" id='university'>
                     <ul className="university-list">
                         {
                             isLoading ? <div className='p1 pb3'>
@@ -88,7 +88,7 @@ const Home = () => {
                     <h2 className="apply__title">1 millon nafar universitet talabalariga qo’shiling</h2>
                     <button className='apply__btn' onClick={() => navigate('/search')}>Hujjat topshirish</button>
                 </div>
-                <div className="direction">
+                <div className="direction" id='directions'>
                     <h2 className='direction__title'>Yo’nalishlar</h2>
                     <ul className='direction__list'>
                         {

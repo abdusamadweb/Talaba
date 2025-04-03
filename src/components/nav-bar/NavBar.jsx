@@ -1,14 +1,16 @@
 import React from 'react';
 import './NavBar.scss'
 import {NavLink, useHref} from "react-router-dom";
+import {hiddenRoutesNav} from "../../assets/scripts/mockAPI.js";
 
 const NavBar = () => {
 
     const href = useHref({})
+    const isHidden = hiddenRoutesNav.some(route => href.includes(route))
 
 
     return (
-        <nav className={`nav-bar ${href.includes('login') ? 'd-none' : ''}`}>
+        <nav className={`nav-bar ${isHidden ? 'd-none' : ''}`}>
             <ul className="nav-bar__list">
                 <li className="item">
                     <NavLink className='item__link' to='/'>

@@ -496,7 +496,7 @@
           visibility: hidden;
         }
         .ant-input-prefix {
-          width: 100%;
+          width: 90%;
           font-family: "Poppins", sans-serif;
           color: rgba(0, 0, 0, 0.25);
         }
@@ -594,6 +594,70 @@
       font-weight: 600;
       font-size: 20px;
       margin-bottom: 10px;
+    }
+  }
+}
+
+
+.searchQ {
+  min-height: 100vh;
+  background: #fff;
+
+  .container {
+    padding: 35px 15px;
+  }
+
+  &__head {
+    display: grid;
+    grid-template-columns: 42px auto;
+    gap: 8px;
+    margin-bottom: 25px;
+
+    .btn {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid $txt-color;
+    }
+
+    .ant-input-affix-wrapper {
+      border-color: #F1F2F4;
+      background: #F1F2F4;
+
+      input::placeholder {
+        color: $txt-color;
+      }
+
+      .anticon {
+        font-size: 18px;
+        color: #78AAF3;
+      }
+    }
+  }
+
+  &__body {
+
+    .uni-dir {
+      margin-bottom: 30px;
+
+      &__title {
+        font-weight: 500;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .item__link {
+          font-size: 14px;
+          color: #78797A;
+        }
+      }
     }
   }
 }

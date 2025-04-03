@@ -22,6 +22,8 @@ import News from "./pages/news/News.jsx";
 import AuthAdmin from "./components/auth/AuthAdmin.jsx";
 import AdminHome from "./pages/admin/home/AdminHome.jsx";
 import AdminLogin from "./pages/admin/login/AdminLogin.jsx";
+import SearchQ from "./pages/search/SearchQ.jsx";
+import Other from "./pages/admin/other/Other.jsx";
 
 
 const Wrapper = ({ children }) => {
@@ -35,10 +37,11 @@ const Wrapper = ({ children }) => {
 function App() {
 
     const [loading, setLoading] = useState(true)
+    const path = window.location.pathname
 
 
     return (
-    <div className={`App ${window.location.pathname.includes('login') ? 'pb0' : ''}`}>
+    <div className={`App ${path.includes('login') ? 'pb0' : ''} ${path.includes('admin') ? 'admin' : ''}`}>
         <Wrapper>
 
             {loading && <Loader setLoading={setLoading} />}
@@ -51,6 +54,7 @@ function App() {
 
                     <Route path='/' element={<Home />} />
                     <Route path='/search' element={<Search />} />
+                    <Route path='/searchQ' element={<SearchQ />} />
                     <Route path='/applications' element={<Applications />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/profile/me' element={<MyProfile />} />
@@ -66,7 +70,8 @@ function App() {
                 {/* Admin Routes */}
                 <Route element={<AuthAdmin />}>
 
-                    <Route path='/admin' element={<AdminHome />} />
+                    <Route path='/admin/' element={<AdminHome />} />
+                    <Route path='/admin/other' element={<Other />} />
 
                 </Route>
 
