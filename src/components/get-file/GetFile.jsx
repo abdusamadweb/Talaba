@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getFile } from "../../api/apiResp.js"
 import { Image, Skeleton } from "antd"
 
-const GetFile = ({ id, className, defImg }) => {
+const GetFile = ({ id, className, defImg, odiy }) => {
 
     const { data, isLoading } = useQuery({
         queryKey: ["img", id],
@@ -20,6 +20,8 @@ const GetFile = ({ id, className, defImg }) => {
         )
     ) : isLoading ? (
         <Skeleton.Avatar className={`get-file-sk ${className}`} active shape="circle" />
+    ) : odiy ? (
+        <img className={`get-file-img ${className}`} src={data} alt="img" />
     ) : (
         <Image className={`get-file-img ${className}`} src={data} alt="img" />
     )

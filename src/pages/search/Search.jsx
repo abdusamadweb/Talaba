@@ -48,14 +48,13 @@ const Search = () => {
     const [size, setSize] = useState(10)
     const [q, setQ] = useState('')
     const [sRegion, setSRegion] = useState(null)
-    const [sLang, setSLang] = useState([])
+    const [sLang, setSLang] = useState(null)
     const [sDir, setSDir] = useState(null)
 
     const [ranges, setRanges] = useState({
         from: 5000000,
         to: 100000000,
     })
-
     const changeRange = (val) => {
         return setRanges({from: val[0]*1000000, to: val[1]*1000000})
     }

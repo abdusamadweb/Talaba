@@ -51,7 +51,7 @@ const sendPhoneAuth = async (body) => {
 }
 
 
-// input
+// inputs
 const PassportInput = React.forwardRef(({ value, onChange }, ref) => {
     return (
         <IMaskInput

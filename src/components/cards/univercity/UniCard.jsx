@@ -5,6 +5,8 @@ import {SelectOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 import GetFile from "../../get-file/GetFile.jsx";
 import GetFileDef from "../../get-file/GetFileDef.jsx";
+import defLogo from '../../../assets/images/avatar-uni.svg'
+import defImg from '../../../assets/images/avatar-bg.jpeg'
 
 const UniCard = ({ i }) => {
 
@@ -15,7 +17,7 @@ const UniCard = ({ i }) => {
         <li className='uni-card'>
             <div className="head row align-center r1" onClick={() => navigate(`/university/${i.id}`)}>
                 <div className="head__img">
-                    <GetFile id={i.logo_id} />
+                    <GetFile id={i.logo_id} defImg={defLogo} />
                 </div>
                 <div>
                     <span className='head__name'>{i.name}</span>
@@ -25,7 +27,7 @@ const UniCard = ({ i }) => {
             </div>
             <div className="body">
                 <img className="body__overlay" src={overlay} alt='overlay'/>
-                <GetFileDef className='img' id={i.photo_id} odiy />
+                <GetFileDef className='img' id={i.photo_id} odiy defImg={defImg} />
                 <p className="body__desc">{ i.desc }</p>
             </div>
         </li>

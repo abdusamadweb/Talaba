@@ -12,15 +12,17 @@
     padding-block: 20px;
 
     .imgs {
-      position: relative;
-      height: 140px;
       display: inline-block;
       margin-bottom: 10px;
 
-      .btn {
-        position: absolute;
-        bottom: 0;
-        right: 0;
+      .img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .ant-image-mask {
+        border-radius: 50%;
       }
     }
 

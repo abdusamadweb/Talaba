@@ -25,13 +25,14 @@ const UploadIcon = () => {
     )
 }
 
+
 // upload
 const props = {
     name: 'file',
     action: API_TEST + '/upload-file',
-    headers: {
-        "Content-Type": "multipart/form-data",
-    },
+    // headers: {
+    //     "Content-Type": "multipart/form-data",
+    // },
     onChange(info) {
         if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
@@ -57,6 +58,7 @@ const MyProfileEdit = () => {
 
     const [form] = Form.useForm()
 
+    const [photo, setPhoto] = useState(null)
     const [file1, setFile1] = useState(null)
     const [file2, setFile2] = useState(null)
 
@@ -84,9 +86,11 @@ const MyProfileEdit = () => {
     const onFinish = (values) => {
         const body = {
             ...values,
+            phone_number: values.phone_number.replace(/\s/g, ''),
             birth_date: new Date(values.birth_date).getTime(),
             diploma_file_id: file1 ? file1?.file.response.files[0].id : values?.diploma_file_id,
             passport_file_id: file2 ? file2?.file.response.files[0].id : values?.passport_file_id,
+            ...(photo && { avatar_id: photo?.file.response.files[0].id })
         }
         mutation.mutate(body)
     }
@@ -104,8 +108,12 @@ const MyProfileEdit = () => {
                 <div className="profile-edit__content">
                     <div className="imgs row align-center no-wrap">
                         <div className='relative'>
-                            <GetFile className='img' id={72} defImg={profile} />
-                            <Upload className='camera-upload' {...props}>
+                            <GetFile className='img' id={photo ? photo?.file?.response?.files?.[0]?.id : userData?.avatar_id} defImg={profile} />
+                            <Upload
+                                className='camera-upload'
+                                {...props}
+                                onChange={(e) => setPhoto(e)}
+                            >
                                 <button className='btn'>
                                     <img src={camera} alt="camera"/>
                                 </button>

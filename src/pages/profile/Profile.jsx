@@ -10,6 +10,8 @@ import logout from '../../assets/images/logout-icon.svg'
 import {Link, useNavigate} from "react-router-dom"
 import toast from "react-hot-toast";
 import {Button, Modal} from "antd";
+import profile from "../../assets/images/user-img.svg";
+import GetFile from "../../components/get-file/GetFile.jsx";
 
 const Profile = () => {
 
@@ -40,10 +42,7 @@ const Profile = () => {
             <div className="container">
                 <div className="profile__head">
                     <div className="imgs">
-                        <img className='img' src={profileImg} alt="profile"/>
-                        {/*<button className='btn'>*/}
-                        {/*    <img src={camera} alt="camera"/>*/}
-                        {/*</button>*/}
+                        <GetFile className='img' id={userData?.avatar_id} defImg={profile} />
                     </div>
                     <p className="title">{userData?.first_name} {userData?.last_name}</p>
                 </div>

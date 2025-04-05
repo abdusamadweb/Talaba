@@ -9,6 +9,8 @@ import {Link} from "react-router-dom"
 import toast from "react-hot-toast";
 import GetFile from "../../components/get-file/GetFile.jsx";
 import GetFileDef from "../../components/get-file/GetFileDef.jsx";
+import defImg from '../../assets/images/avatar-bg.jpeg'
+import defLogo from '../../assets/images/avatar-uni.svg'
 
 const app404 = <div className="d404">
             <div className="wrapper">
@@ -40,7 +42,8 @@ const Applications = () => {
     // Fetch regions
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['applications'],
-        queryFn: fetchApps
+        queryFn: fetchApps,
+        keepPreviousData: true,
     })
 
     // reject application
@@ -82,13 +85,13 @@ const Applications = () => {
                                         <li className='apply-card' key={index}>
                                             <div className="apply-card__head">
                                                 <div className="bg-img bg-img2">
-                                                    <GetFileDef id={i.face_photo_id} odiy />
+                                                    <GetFileDef id={i.face_photo_id} odiy defImg={defImg} />
                                                 </div>
                                                 <div className='index'>
                                                     <h3 className="title">{i.university.name}</h3>
                                                     <span className='name'>{i.edu_direction_name}</span>
                                                     <div className='img'>
-                                                        <GetFile id={i.university.logo_id}/>
+                                                        <GetFile id={i.university.logo_id} defImg={defLogo} />
                                                     </div>
                                                 </div>
                                                 <div className='overlay'/>

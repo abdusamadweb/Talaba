@@ -28,8 +28,17 @@ import {$resp} from "./api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
 
 
+// default fetches
 const fetchMe = async () => {
     const { data } = await $resp.get('/get-me')
+    return data
+}
+const fetchApps = async () => {
+    const { data } = await $resp.get('/application/my')
+    return data
+}
+const fetchDirections = async () => {
+    const { data } = await $resp.get('/main-direction/all')
     return data
 }
 
@@ -53,6 +62,19 @@ function App() {
         queryKey: ['me'],
         queryFn: fetchMe,
         keepPreviousData: true,
+        refetchOnWindowFocus: false,
+    })
+    const { data: _ } = useQuery({
+        queryKey: ['directions'],
+        queryFn: fetchDirections,
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+    })
+    const { data: __ } = useQuery({
+        queryKey: ['applications'],
+        queryFn: fetchApps,
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
     })
 
     useEffect(() => {

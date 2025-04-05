@@ -4,7 +4,6 @@ import {Button, Empty, Input, Skeleton} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import UniCard from "../../components/cards/univercity/UniCard.jsx";
 import DirectionCard from "../../components/cards/direction/DirectionCard.jsx";
-import dirimg from "../../assets/images/direction/dir-muhandislik.svg";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
@@ -34,8 +33,8 @@ const Home = () => {
     })
 
     const { data: directions } = useQuery({
-        queryKey: ['directions', size],
-        queryFn: () => fetchDirections(),
+        queryKey: ['directions'],
+        queryFn: fetchDirections,
         keepPreviousData: true
     })
 
@@ -96,7 +95,7 @@ const Home = () => {
                                 directions?.map((i, index) => (
                                     <DirectionCard
                                         key={index}
-                                        img={dirimg}
+                                        flag={i.flag}
                                         txt={i.name}
                                         id={i.id}
                                     />

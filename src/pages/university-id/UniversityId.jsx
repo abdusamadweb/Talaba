@@ -17,6 +17,7 @@ import {formatPrice} from "../../assets/scripts/global.js";
 import successIcon from "../../assets/images/apply-success.svg";
 import toast from "react-hot-toast";
 import {API_TEST} from "../../api/apiConfig.js";
+import defLogo from '../../assets/images/avatar-uni.svg'
 
 
 const UploadIcon = () => {
@@ -218,6 +219,8 @@ const UniversityId = () => {
     const [file1, setFile1] = useState(null)
     const [file2, setFile2] = useState(null)
 
+    const [price, setPrice] = useState(0)
+
     const userData = JSON.stringify('user')
 
 
@@ -288,6 +291,7 @@ const UniversityId = () => {
         setLoading(true)
         mutation.mutate(body)
     }
+    console.log(selectedItem)
 
 
     return (
@@ -310,7 +314,7 @@ const UniversityId = () => {
                         <div className="university__head">
                             <div className="titles row align-center">
                                 <div className="imgs grid-center">
-                                    <GetFile id={data?.data.logo_id} />
+                                    <GetFile id={data?.data.logo_id} defImg={defLogo} />
                                 </div>
                                 <div>
                                     <p className="name fw500">{data?.data.name}</p>
@@ -365,7 +369,7 @@ const UniversityId = () => {
             >
                 <div className='sticky'>
                     <span className='line'/>
-                    <h3 className="title">Boshkang’ich ta’lim</h3>
+                    <h3 className="title">Boshlang’ich ta’lim</h3>
                 </div>
                 <ul className="list row">
                     <li className='item'>
@@ -394,38 +398,28 @@ const UniversityId = () => {
                             }
                         </div>
                     </li>
-                    <li className='item'>
-                        <div className='row align-center'>
-                            <img className='item__img' src={conIcon} alt="icon"/>
-                            <span className='txt'>{ selectedItem?.edu_types?.[0]?.name }</span>
-                        </div>
-                        <span className='item__title'>{ formatPrice(selectedItem?.edu_types?.[0]?.contract_price) } so’mdan boshlab</span>
-                    </li>
-                    <li className='item'>
-                        <div className='row align-center'>
-                            <img className='item__img' src={conIcon} alt="icon"/>
-                            <span className='txt'>{selectedItem?.edu_types?.[1]?.name}</span>
-                        </div>
-                        <span
-                            className='item__title'>{formatPrice(selectedItem?.edu_types?.[1]?.contract_price)} so’mdan boshlab</span>
-                    </li>
 
-                    <li className='item'>
-                        <div className='row align-center'>
-                            <img className='item__img' src={teacherIcon} alt="icon"/>
-                            <span className='txt'>{selectedItem?.edu_types?.[0]?.name}</span>
-                        </div>
-                        <span
-                            className='item__title'>{selectedItem?.edu_types?.[0]?.year} yil</span>
-                    </li>
-                    <li className='item'>
-                        <div className='row align-center'>
-                            <img className='item__img' src={teacherIcon} alt="icon"/>
-                            <span className='txt'>{selectedItem?.edu_types?.[1]?.name}</span>
-                        </div>
-                        <span
-                            className='item__title'>{selectedItem?.edu_types?.[1]?.year} yil</span>
-                    </li>
+                    {
+                        selectedItem?.edu_types?.map((i, index) => (
+                            <React.Fragment key={index}>
+                                <li className='item'>
+                                    <div className='row align-center'>
+                                        <img className='item__img' src={conIcon} alt="icon"/>
+                                        <span className='txt'>{i.name}</span>
+                                    </div>
+                                    <span className='item__title'>{formatPrice(i.contract_price)} so’mdan boshlab</span>
+                                </li>
+
+                                <li className='item'>
+                                    <div className='row align-center'>
+                                        <img className='item__img' src={teacherIcon} alt="icon"/>
+                                        <span className='txt'>{i.name}</span>
+                                    </div>
+                                    <span className='item__title'>{i.year} yil</span>
+                                </li>
+                            </React.Fragment>
+                        ))
+                    }
                 </ul>
                 <div className="titles">
                     <span className='title'>Yo'nalish haqida</span>
@@ -447,7 +441,7 @@ const UniversityId = () => {
                 >
                     <div className="titles">
                         <div className="imgs">
-                            <GetFile id={data?.data?.logo_id} />
+                            <GetFile id={data?.data?.logo_id} defImg={defLogo} />
                         </div>
                         <p className="name">{ data?.data?.name }</p>
                         <p className="desc">{ selectedItem?.name }</p>
@@ -462,7 +456,7 @@ const UniversityId = () => {
                         <Form.Item
                             label="Ta’lim turi"
                             name="type"
-                            // rules={[{required: true}]}
+                            rules={[{required: true}]}
                         >
                             <Select
                                 size='large'
@@ -472,6 +466,10 @@ const UniversityId = () => {
                                     value: i?.id,
                                     label: i?.name
                                 }))}
+                                onChange={(id) => {
+                                    const selected = selectedItem?.edu_types?.find(item => item.id === id)
+                                    setPrice(selected?.contract_price || 0)
+                                }}
                             />
                         </Form.Item>
 
@@ -501,7 +499,7 @@ const UniversityId = () => {
                                 <Input
                                     rootClassName={file1 !== null && 'change-icon'}
                                     size='large'
-                                    suffix={<UploadIcon />}
+                                    suffix={<UploadIcon/>}
                                     prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
@@ -516,13 +514,17 @@ const UniversityId = () => {
                                 <Input
                                     rootClassName={file2 !== null && 'change-icon'}
                                     size='large'
-                                    suffix={<UploadIcon />}
+                                    suffix={<UploadIcon/>}
                                     prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
                                 />
                             </Upload>
                         </Form.Item>
-
-                        <p className='price'> {formatPrice(selectedItem?.contract_price || 0)} UZS</p>
+                        <p className='price'>
+                            {
+                                price ? formatPrice(price || 0) + ' UZS'
+                                    : 'Talim turini tanlang!'
+                            }
+                        </p>
                         <Button
                             className='btn'
                             loading={loading}

@@ -14,6 +14,9 @@ import {useMutation} from "@tanstack/react-query";
 import {$resp} from "../../../api/apiResp.js";
 import GetFile from "../../get-file/GetFile.jsx";
 import GetFileDef from "../../get-file/GetFileDef.jsx";
+import defImg from "../../../assets/images/avatar-bg.jpeg"
+import defLogo from "../../../assets/images/avatar-uni.svg"
+
 
 const Option = ({ txt }) => {
     return (
@@ -120,11 +123,11 @@ const ApplyCard = ({ i, ad }) => {
         !ad ?
             <li className='apply-card'>
                 <div className="apply-card__head">
-                    <GetFileDef className='bg-img' id={72} odiy />
+                    <GetFileDef className='bg-img' id={i.university.photo_id} odiy defImg={defImg} />
                     <div className='index'>
                         <h3 className="title">{i.university.name}</h3>
                         <div className='img'>
-                            <GetFile id={i.university.logo_id} />
+                            <GetFile id={i.university.logo_id} defImg={defLogo} />
                         </div>
                     </div>
                     <div className='overlay'/>
@@ -184,12 +187,11 @@ const ApplyCard = ({ i, ad }) => {
                     footer={false}
                     open={modal}
                     layout="vertical"
-                    // onOk={handleOk}
                     onCancel={() => setModal(false)}
                 >
                     <div className="titles">
                         <div className="imgs">
-                            <GetFile id={i.university.logo_id} />
+                            <GetFile id={i.university.logo_id} defImg={defLogo} />
                         </div>
                         <p className="name">{ i.university.name }</p>
                         <p className="desc">{ i.main_direction.name }</p>
@@ -267,7 +269,6 @@ const ApplyCard = ({ i, ad }) => {
                                 />
                             </Upload>
                         </Form.Item>
-
                         <p className='price'>
                             {
                                 price ? formatPrice(price || 0) + ' UZS'
