@@ -36,8 +36,6 @@ const Applications = () => {
     const [sItem, setSItem] = useState({})
     const [cancelLoad, setCancelLoad] = useState(false)
 
-    const logo = null
-
 
     // Fetch regions
     const { data, isLoading, refetch } = useQuery({
@@ -65,7 +63,6 @@ const Applications = () => {
         setCancelLoad(true)
         mutation.mutate(id)
     }
-    console.log(data?.data)
 
 
     return (
@@ -157,9 +154,6 @@ const Applications = () => {
                 footer={false}
                 onCancel={() => setModal(false)}
             >
-                {/*<div className="imgs grid-center">*/}
-                {/*    <img src={logo} alt="logo"/>*/}
-                {/*</div>*/}
                 <p className="title">Arizani bekor qilish</p>
                 <p className="desc">Sizning arizangiz universitet
                     ma’lumotlar bazasidan o’chiriladi.</p>

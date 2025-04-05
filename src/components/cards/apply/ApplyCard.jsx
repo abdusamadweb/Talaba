@@ -77,6 +77,8 @@ const ApplyCard = ({ i, ad }) => {
     const [file1, setFile1] = useState(null)
     const [file2, setFile2] = useState(null)
 
+    const [price, setPrice] = useState(0)
+
     const userData = JSON.stringify('user')
 
 
@@ -208,10 +210,14 @@ const ApplyCard = ({ i, ad }) => {
                                 size='large'
                                 suffixIcon={<CaretDownOutlined/>}
                                 placeholder="Talim turi"
-                                options={i.edu_type?.map(i => ({
-                                    value: i,
-                                    label: <Option txt={i}/>
+                                options={i.edu_types?.map(i => ({
+                                    value: i.id,
+                                    label: <Option txt={i.name}/>
                                 }))}
+                                onChange={(id) => {
+                                    const selected = i.edu_types?.find(item => item.id === id)
+                                    setPrice(selected?.contract_price || 0)
+                                }}
                             />
                         </Form.Item>
 
@@ -262,7 +268,12 @@ const ApplyCard = ({ i, ad }) => {
                             </Upload>
                         </Form.Item>
 
-                        <p className='price'> {formatPrice(i.contract_price || 0)} UZS</p>
+                        <p className='price'>
+                            {
+                                price ? formatPrice(price || 0) + ' UZS'
+                                    : 'Talim turini tanlang!'
+                            }
+                        </p>
                         <Button
                             className='btn'
                             loading={loading}

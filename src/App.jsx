@@ -12,7 +12,7 @@ import Profile from "./pages/profile/Profile.jsx"
 import UniversityId from "./pages/university-id/UniversityId.jsx"
 import MyProfile from "./pages/profile/MyProfile.jsx"
 import {Toaster} from "react-hot-toast"
-import {useLayoutEffect, useState} from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 import Login from "./pages/login/Login.jsx"
 import Login2 from "./pages/login/Login2.jsx"
 import Auth from "./components/auth/Auth.jsx"
@@ -24,6 +24,14 @@ import AdminHome from "./pages/admin/home/AdminHome.jsx";
 import AdminLogin from "./pages/admin/login/AdminLogin.jsx";
 import SearchQ from "./pages/search/SearchQ.jsx";
 import Other from "./pages/admin/other/Other.jsx";
+import {$resp} from "./api/apiResp.js";
+import {useQuery} from "@tanstack/react-query";
+
+
+const fetchMe = async () => {
+    const { data } = await $resp.get('/get-me')
+    return data
+}
 
 
 const Wrapper = ({ children }) => {
@@ -38,6 +46,18 @@ function App() {
 
     const [loading, setLoading] = useState(true)
     const path = window.location.pathname
+
+
+    // Fetch me
+    const { data } = useQuery({
+        queryKey: ['me'],
+        queryFn: fetchMe,
+        keepPreviousData: true,
+    })
+
+    useEffect(() => {
+        if (data) localStorage.setItem("user", JSON.stringify(data))
+    }, [data])
 
 
     return (

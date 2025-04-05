@@ -160,7 +160,6 @@ const Other = () => {
 
     return (
         <div className="other page">
-            <Calculator modal={modal} setModal={setModal} />
             <div className="container">
                 <Title
                     title='Бошка харажатлар'

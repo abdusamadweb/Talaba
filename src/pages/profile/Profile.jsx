@@ -17,6 +17,8 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [modal, setModal] = useState(false)
 
+    const userData = JSON.parse(localStorage.getItem('user'))
+
     const logOut = () => {
         setIsLoading(true)
 
@@ -43,10 +45,10 @@ const Profile = () => {
                         {/*    <img src={camera} alt="camera"/>*/}
                         {/*</button>*/}
                     </div>
-                    <p className="title">Ism Familya</p>
+                    <p className="title">{userData?.first_name} {userData?.last_name}</p>
                 </div>
                 <div className="profile__body">
-                    <div className='bg'/>
+                <div className='bg'/>
                     <ul className="list">
                         <li>
                             <Link className='link' to='/profile/me'>
@@ -94,10 +96,10 @@ const Profile = () => {
                         </li>
                     </ul>
 
-                    <button className='logout link' onClick={() => setModal(true)}>
-                        <img className='link__prefix' src={logout} alt="icon"/>
-                        <span className='link__txt'>Ilovadan chiqish</span>
-                    </button>
+                    {/*<button className='logout link' onClick={() => setModal(true)}>*/}
+                    {/*    <img className='link__prefix' src={logout} alt="icon"/>*/}
+                    {/*    <span className='link__txt'>Ilovadan chiqish</span>*/}
+                    {/*</button>*/}
                 </div>
             </div>
             <Modal

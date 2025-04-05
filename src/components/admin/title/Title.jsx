@@ -18,11 +18,11 @@ const Title = ({ title, btn, setModal, additional, navigate }) => {
     )
 
     return (
-        <div className='titles'>
-            <h2 className="titles__title">{ title }</h2>
+        <div className='admin-titles'>
+            <h2 className="admin-titles__title">{ title }</h2>
             <div className='row align-center g1'>
                 { additional }
-                <button className='titles__btn' onClick={() => setModal('add')}>
+                <button className='admin-titles__btn' onClick={() => setModal('add')}>
                     <span>Кошиш</span>
                     <i className="fa-solid fa-circle-plus"/>
                 </button>
