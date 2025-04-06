@@ -24,8 +24,8 @@ const props = {
         if (info.file.status === 'done') {
             toast.success(`${info.file.name} yuklandi! ✅`);
         } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik! ❌`);
-            toast.custom(info.response.message);
+            toast.error(`${info.file.name} xatolik!! ❌`);
+            toast.error(info.response.message);
         }
     },
 }
