@@ -109,7 +109,7 @@ const Applications = () => {
                                                         </li>
                                                         <li className='item'>
                                                             <span className='txt'>Ta’lim shakli</span>
-                                                            <span className='item__title'>{i.edu_type}</span>
+                                                            <span className='item__title'>{i.edu_type_name}</span>
                                                         </li>
                                                         <li className='item'>
                                                             <span className='txt'>Kontrakt to’lovi</span>

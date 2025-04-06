@@ -271,6 +271,7 @@ const UniversityId = () => {
 
             setModalSuccess(true)
             setModal(false)
+            setModal2(false)
             setLoading(false)
         },
         onError: (error) => {
@@ -291,7 +292,6 @@ const UniversityId = () => {
         setLoading(true)
         mutation.mutate(body)
     }
-    console.log(selectedItem)
 
 
     return (

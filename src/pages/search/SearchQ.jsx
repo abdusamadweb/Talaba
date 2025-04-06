@@ -59,35 +59,34 @@ const SearchQ = () => {
                 <div className="searchQ__body">
                     <div className="uni-dir">
                         <h3 className="uni-dir__title">Ko’p qidirilgan yo’nalishlar</h3>
-                        <ul className="uni-dir__list">
-                            {
-                                isLoading ? <div className='p1 pb3'>
-                                    <Skeleton active/> <br/>
-                                    <Skeleton active/> <br/>
-                                    <Skeleton active/>
-                                </div>
-                                    : data?.data?.map((i, index) => (
-                                        <li className="item" key={index}>
-                                            <Link className='item__link' to={`/${i.id}`}>{ i?.main_direction.name }</Link>
-                                        </li>
-                                    ))
-                            }
-                        </ul>
+                        <div className='p1 pb3'>
+                            <Skeleton active/> <br/>
+                            <Skeleton active/> <br/>
+                            <Skeleton active/>
+                        </div>
+                        {/*<ul className="uni-dir__list">*/}
+                        {/*    {*/}
+                        {/*        isLoading ? <div className='p1 pb3'>*/}
+                        {/*                <Skeleton active/> <br/>*/}
+                        {/*                <Skeleton active/> <br/>*/}
+                        {/*                <Skeleton active/>*/}
+                        {/*            </div>*/}
+                        {/*            : data?.data?.map((i, index) => (*/}
+                        {/*                <li className="item" key={index}>*/}
+                        {/*                    <Link className='item__link' to={`/${i.id}`}>{i?.name}</Link>*/}
+                        {/*                </li>*/}
+                        {/*            ))*/}
+                        {/*    }*/}
+                        {/*</ul>*/}
                     </div>
-                    <div className="uni-dir">
-                        <h3 className="uni-dir__title">Ko’p qidirilgan OTMlar</h3>
-                        <ul className="uni-dir__list">
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                            <li className="item">
-                                <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>
-                            </li>
-                        </ul>
-                    </div>
+                    {/*<div className="uni-dir">*/}
+                    {/*    <h3 className="uni-dir__title">Ko’p qidirilgan OTMlar</h3>*/}
+                    {/*    <ul className="uni-dir__list">*/}
+                    {/*        <li className="item">*/}
+                    {/*            <Link className='item__link' to='/'>Xalqaro TMC instituti</Link>*/}
+                    {/*        </li>*/}
+                    {/*    </ul>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>
