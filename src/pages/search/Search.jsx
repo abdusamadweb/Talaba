@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Search.scss'
 import {Button, Collapse, Empty, Input, Select, Skeleton, Slider} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
@@ -31,6 +31,14 @@ const fetchLang = async () => {
 }
 const fetchDirection = async () => {
     const { data } = await $api.get('/main-direction/all')
+    return data
+}
+const fetchAdIndex = async () => {
+    const { data } = await $resp.get('/ads/ads')
+    return data
+}
+const fetchAd = async (id) => {
+    const { data } = await $resp.get(`/ads/${id}`)
     return data
 }
 
@@ -133,6 +141,44 @@ const Search = () => {
         refetch()
         setTimeout(() => setIsLoading(false), 1000)
     }
+
+
+    // fetch ad index
+    const { data: adIndex } = useQuery({
+        queryKey: ['ad-index'],
+        queryFn: fetchAdIndex,
+        keepPreviousData: true,
+    })
+    const { data: adList, isLoading: loadingAds } = useQuery({
+        queryKey: ['ad-list', adIndex?.data.id], // следим за id
+        queryFn: async () => {
+            if (!adIndex?.data?.length) return []
+
+            const res = await Promise.all(
+                adIndex.data.map(i => fetchAd(i.id))
+            )
+            return res.map(item => item.data) // забираем data
+        },
+        enabled: !!adIndex?.data.id, // включаем запрос только когда есть id
+        keepPreviousData: true,
+    })
+    console.log(adList, 'adList')
+
+    const [newList, setNewList] = useState([])
+
+    useEffect(() => {
+        if (data?.data && adList?.data) {
+            const listCopy = [...data.data] // копия массива
+            const insertIndex = adList.data.order_index - 1 > listCopy.length
+                ? listCopy.length
+                : adList.data.order_index - 1
+
+            listCopy.splice(insertIndex, 0, adList.data)
+
+            setNewList(listCopy)
+        }
+    }, [data, adList])
+    console.log(newList)
 
 
     return (

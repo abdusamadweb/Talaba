@@ -10,6 +10,7 @@ import {API_TEST} from "../../api/apiConfig.js";
 import {IMaskInput} from "react-imask";
 import {useMutation} from "@tanstack/react-query";
 import {$resp} from "../../api/apiResp.js";
+import {uploadProps} from "../../assets/scripts/global.js";
 
 
 const UploadIcon = () => {
@@ -25,26 +26,6 @@ const UploadIcon = () => {
     )
 }
 
-
-// upload
-const props = {
-    name: 'file',
-    action: API_TEST + '/upload-file',
-    // headers: {
-    //     "Content-Type": "multipart/form-data",
-    // },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-
-        if (info.file.status === 'done') {
-            toast.success(`${info.file.name} yuklandi! ✅`);
-        } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik! ❌`);
-        }
-    },
-}
 
 // fetch
 const updateProfile = async (body) => {
@@ -111,7 +92,7 @@ const MyProfileEdit = () => {
                             <GetFile className='img' id={photo ? photo?.file?.response?.files?.[0]?.id : userData?.avatar_id} defImg={profile} />
                             <Upload
                                 className='camera-upload'
-                                {...props}
+                                {...uploadProps}
                                 onChange={(e) => setPhoto(e)}
                             >
                                 <button className='btn'>
@@ -180,7 +161,7 @@ const MyProfileEdit = () => {
                             name="diploma_file_id"
                         >
                             <Upload
-                                {...props}
+                                {...uploadProps}
                                 onChange={(e) => setFile1(e)}
                                 listType="picture"
                             >
@@ -200,7 +181,7 @@ const MyProfileEdit = () => {
                             name="passport_file_id"
                         >
                             <Upload
-                                {...props}
+                                {...uploadProps}
                                 onChange={(e) => setFile2(e)}
                                 listType="picture"
                             >

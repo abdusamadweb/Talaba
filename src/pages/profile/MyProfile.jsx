@@ -9,27 +9,7 @@ import {Upload} from "antd";
 import {API_TEST} from "../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import GetFile from "../../components/get-file/GetFile.jsx";
-import {formatPhone} from "../../assets/scripts/global.js";
-
-
-// upload
-const props = {
-    name: 'file',
-    action: API_TEST + '/upload-file',
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-
-        if (info.file.status === 'done') {
-            toast.success(`${info.file.name} yuklandi! ✅`);
-        } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik!! ❌`);
-            toast.error(info.response.message);
-        }
-    },
-}
-
+import {formatPhone, uploadProps} from "../../assets/scripts/global.js";
 
 const MyProfile = () => {
 
@@ -101,7 +81,7 @@ const MyProfile = () => {
                     </div>
                     <ul className="files">
                         <li className="item">
-                            <Upload {...props}>
+                            <Upload {...uploadProps}>
                                 <div className="grid between">
                                     <p className="item__title">Sertifikat</p>
                                     <img src={addIcon} alt="icon"/>
@@ -111,7 +91,7 @@ const MyProfile = () => {
                             </Upload>
                         </li>
                         <li className="item">
-                            <Upload {...props}>
+                            <Upload {...uploadProps}>
                                 <div className="grid between">
                                     <p className="item__title">DTM test natijasi</p>
                                     <img src={addIcon} alt="icon"/>
@@ -121,7 +101,7 @@ const MyProfile = () => {
                             </Upload>
                         </li>
                         <li className="item">
-                            <Upload {...props}>
+                            <Upload {...uploadProps}>
                                 <div className="grid between">
                                     <p className="item__title">Ota-onasining to’liq ismi
                                         sharifi va telefon raqami</p>
@@ -132,7 +112,7 @@ const MyProfile = () => {
                             </Upload>
                         </li>
                         <li className="item">
-                            <Upload {...props}>
+                            <Upload {...uploadProps}>
                                 <div className="grid between">
                                     <p className="item__title">Nogironlik haqida
                                         ma'lumotnoma</p>

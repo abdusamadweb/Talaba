@@ -13,7 +13,7 @@ import {$resp} from "../../api/apiResp.js";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import GetFile from "../../components/get-file/GetFile.jsx";
 import GetFileDef from "../../components/get-file/GetFileDef.jsx";
-import {formatPrice} from "../../assets/scripts/global.js";
+import {formatPrice, uploadProps} from "../../assets/scripts/global.js";
 import successIcon from "../../assets/images/apply-success.svg";
 import toast from "react-hot-toast";
 import {API_TEST} from "../../api/apiConfig.js";
@@ -174,28 +174,6 @@ const fetchGallery = async (id) => {
     return data
 }
 
-// upload files
-const uploadProps = {
-    name: 'file',
-    maxCount: 1,
-    action: API_TEST + '/upload-file',
-    headers: {
-        Authorization: localStorage.getItem('token'),
-    },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file);
-        }
-
-        if (info.file.status === 'done') {
-            toast.success(`${info.file.name} yuklandi! ✅`);
-        } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik! ❌`);
-        }
-    },
-}
-
-// fetch
 const createApplication = async (body) => {
     const { data } = await $resp.post('/application/create', body)
     return data

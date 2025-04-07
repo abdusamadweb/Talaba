@@ -10,6 +10,7 @@ import back from "../../assets/images/auth-arrow.svg";
 import {useSearchParams} from "react-router-dom";
 import {$resp} from "../../api/apiResp.js";
 import IMask from "imask";
+import {uploadProps} from "../../assets/scripts/global.js";
 
 const UploadIcon = () => {
     return (
@@ -22,25 +23,6 @@ const UploadIcon = () => {
                 fill="#302E2B"/>
         </svg>
     )
-}
-
-
-// upload files
-const uploadProps = {
-    name: 'file',
-    maxCount: 1,
-    action: API_TEST + '/upload-file',
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file);
-        }
-
-        if (info.file.status === 'done') {
-            toast.success(`${info.file.name} yuklandi! ✅`);
-        } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik! ❌`);
-        }
-    },
 }
 
 

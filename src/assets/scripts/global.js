@@ -1,4 +1,7 @@
 import {$resp} from "../../api/apiResp.js";
+import {API_TEST} from "../../api/apiConfig.js";
+import toast from "react-hot-toast";
+import {Upload} from "antd";
 
 
 // form
@@ -35,6 +38,40 @@ export const formatPhone = (str) => {
         return el
     })
     return formatted.join("")
+}
+
+
+// upload files
+export const uploadProps = {
+    name: 'file',
+    maxCount: 1,
+    action: API_TEST + '/upload-file',
+    beforeUpload: (file) => {
+        const isImageOrPdf = file.type === 'application/pdf' || file.type.startsWith('image/');
+        if (!isImageOrPdf) {
+            toast.error('Faqat rasm yoki PDF yuklash mumkin! ❌');
+            return Upload.LIST_IGNORE;
+        }
+
+        const isLt1M = file.size / 1024 / 1024 < 1;
+        if (!isLt1M) {
+            toast.error('Fayl hajmi 1MB dan kichik bo‘lishi kerak! ❌');
+            return Upload.LIST_IGNORE;
+        }
+
+        return true;
+    },
+    onChange(info) {
+        if (info.file.status !== 'uploading') {
+            console.log(info.file);
+        }
+
+        if (info.file.status === 'done') {
+            toast.success(`${info.file.name} yuklandi! ✅`);
+        } else if (info.file.status === 'error') {
+            toast.error(`${info.file.name} xatolik! ❌`);
+        }
+    },
 }
 
 

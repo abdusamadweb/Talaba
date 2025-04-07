@@ -5,10 +5,9 @@ import eduIcon from '../../../assets/images/book-icon.svg'
 import conIcon from '../../../assets/images/dollar-icon.svg'
 import successIcon from '../../../assets/images/apply-success.svg'
 import {Link} from "react-router-dom"
-import {formatPrice} from "../../../assets/scripts/global.js";
+import {formatPrice, uploadProps} from "../../../assets/scripts/global.js";
 import {Button, Form, Input, Modal, Select, Upload} from "antd";
 import {CaretDownOutlined} from "@ant-design/icons";
-import {API_TEST} from "../../../api/apiConfig.js";
 import toast from "react-hot-toast";
 import {useMutation} from "@tanstack/react-query";
 import {$resp} from "../../../api/apiResp.js";
@@ -42,26 +41,6 @@ const UploadIcon = () => {
     )
 }
 
-// upload files
-const uploadProps = {
-    name: 'file',
-    maxCount: 1,
-    action: API_TEST + '/upload-file',
-    headers: {
-        Authorization: localStorage.getItem('token'),
-    },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file);
-        }
-
-        if (info.file.status === 'done') {
-            toast.success(`${info.file.name} yuklandi! ✅`);
-        } else if (info.file.status === 'error') {
-            toast.error(`${info.file.name} xatolik! ❌`);
-        }
-    },
-}
 
 // fetch
 const createApplication = async (body) => {

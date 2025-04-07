@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import arrowIcon from "../../assets/images/arrow-icon.svg";
-import {Input, Skeleton} from "antd";
+import {Empty, Input, Skeleton} from "antd";
 import searchIcon from "../../assets/images/search-icon.svg";
 import {CloseCircleOutlined} from "@ant-design/icons";
 import {Link, useNavigate} from "react-router-dom";
 import {$resp} from "../../api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
+import {useDebounce} from "use-debounce";
 
 
 const fetchFilteredData = async ({ queryKey }) => {
@@ -29,11 +30,10 @@ const SearchQ = () => {
 
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
+    const [debouncedSearch] = useDebounce(search, 500)
 
-
-    // fetch
     const { data, isLoading } = useQuery({
-        queryKey: ['filteredData', { page: 1, size: 10 }, search, search],
+        queryKey: ['filteredData', { page: 1, size: 10 }, debouncedSearch],
         queryFn: fetchFilteredData,
         keepPreviousData: true,
     })
@@ -58,26 +58,23 @@ const SearchQ = () => {
                 </div>
                 <div className="searchQ__body">
                     <div className="uni-dir">
-                        <h3 className="uni-dir__title">Ko’p qidirilgan yo’nalishlar</h3>
-                        <div className='p1 pb3'>
-                            <Skeleton active/> <br/>
-                            <Skeleton active/> <br/>
-                            <Skeleton active/>
-                        </div>
-                        {/*<ul className="uni-dir__list">*/}
-                        {/*    {*/}
-                        {/*        isLoading ? <div className='p1 pb3'>*/}
-                        {/*                <Skeleton active/> <br/>*/}
-                        {/*                <Skeleton active/> <br/>*/}
-                        {/*                <Skeleton active/>*/}
-                        {/*            </div>*/}
-                        {/*            : data?.data?.map((i, index) => (*/}
-                        {/*                <li className="item" key={index}>*/}
-                        {/*                    <Link className='item__link' to={`/${i.id}`}>{i?.name}</Link>*/}
-                        {/*                </li>*/}
-                        {/*            ))*/}
-                        {/*    }*/}
-                        {/*</ul>*/}
+                        {/*<h3 className="uni-dir__title">Ko’p qidirilgan yo’nalishlar</h3>*/}
+                        <ul className="uni-dir__list">
+                            {
+                                isLoading ? <div className='p1 pb3'>
+                                        <Skeleton active/> <br/>
+                                        <Skeleton active/> <br/>
+                                        <Skeleton active/>
+                                    </div>
+                                    : data?.data?.length ?
+                                        data?.data?.map((i, index) => (
+                                            <li className="item" key={index}>
+                                                <Link className='item__link' to={`/university/${i?.university.id}`}>{i?.university.name} - {i?.name}</Link>
+                                            </li>
+                                        ))
+                                    : <Empty description={false} />
+                            }
+                        </ul>
                     </div>
                     {/*<div className="uni-dir">*/}
                     {/*    <h3 className="uni-dir__title">Ko’p qidirilgan OTMlar</h3>*/}
