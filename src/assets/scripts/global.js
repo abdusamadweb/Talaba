@@ -53,9 +53,9 @@ export const uploadProps = {
             return Upload.LIST_IGNORE;
         }
 
-        const isLt1M = file.size / 1024 / 1024 < 1;
+        const isLt1M = file.size / 5120 / 5120 < 1;
         if (!isLt1M) {
-            toast.error('Fayl hajmi 1MB dan kichik bo‘lishi kerak! ❌');
+            toast.error('Fayl hajmi 5MB dan kichik bo‘lishi kerak! ❌');
             return Upload.LIST_IGNORE;
         }
 
