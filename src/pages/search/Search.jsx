@@ -149,36 +149,45 @@ const Search = () => {
         queryFn: fetchAdIndex,
         keepPreviousData: true,
     })
+    // Получаем данные рекламы по id
     const { data: adList, isLoading: loadingAds } = useQuery({
-        queryKey: ['ad-list', adIndex?.data.id], // следим за id
+        queryKey: ['ad-list', adIndex?.data],
         queryFn: async () => {
             if (!adIndex?.data?.length) return []
 
             const res = await Promise.all(
                 adIndex.data.map(i => fetchAd(i.id))
             )
-            return res.map(item => item.data) // забираем data
+            return res.map((item, idx) => ({
+                ...item.data,
+                index: adIndex.data[idx].index // забираем index из первого запроса
+            }))
         },
-        enabled: !!adIndex?.data.id, // включаем запрос только когда есть id
+        enabled: !!adIndex?.data,
         keepPreviousData: true,
     })
-    console.log(adList, 'adList')
+    console.log(adList, 'ad-list')
 
     const [newList, setNewList] = useState([])
 
+// Вставляем рекламу в список
     useEffect(() => {
-        if (data?.data && adList?.data) {
-            const listCopy = [...data.data] // копия массива
-            const insertIndex = adList.data.order_index - 1 > listCopy.length
-                ? listCopy.length
-                : adList.data.order_index - 1
+        if (data?.data && adList?.length) {
+            let listCopy = [...data.data]
 
-            listCopy.splice(insertIndex, 0, adList.data)
+            adList.forEach(adItem => {
+                const insertIndex = adItem.index - 1 > listCopy.length
+                    ? listCopy.length
+                    : adItem.index - 1
+
+                listCopy.splice(insertIndex, 0, adItem)
+            })
 
             setNewList(listCopy)
         }
     }, [data, adList])
-    console.log(newList)
+
+    console.log(newList, 'new-list')
 
 
     return (
@@ -269,8 +278,12 @@ const Search = () => {
                                 </div>
                                 :
                                 data?.data.length ?
-                                    data?.data.map((i, index) => (
-                                        <ApplyCard key={index} i={i}/>
+                                    newList.map((i, index) => (
+                                        <ApplyCard
+                                            key={index}
+                                            i={i}
+                                            ad={!!i?.index}
+                                        />
                                     ))
                                     : <Empty description={false}/>
                         }

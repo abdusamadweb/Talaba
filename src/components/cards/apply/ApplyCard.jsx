@@ -284,8 +284,9 @@ const ApplyCard = ({ i, ad }) => {
             </li>
             :
             <li className='ad'>
-                <a className='ad__link' href='/'>
-                    <img src={ad} alt="ad-img"/>
+                <a className='ad__link' href={i?.link} target='_blank'>
+                    {i?.name}
+                    <GetFileDef className='bg-img' id={i?.photo_ids[0]} odiy defImg={defImg} />
                 </a>
             </li>
     );

@@ -197,7 +197,7 @@ const Login = () => {
                                     >
                                         <Input.OTP
                                             length={4}
-                                            type='number'
+                                            type='tel'
                                             size='large'
                                             onPaste={(e) => e.preventDefault()}
                                             onCopy={(e) => e.preventDefault()}
