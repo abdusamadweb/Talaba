@@ -6,7 +6,7 @@ import conIcon from '../../../assets/images/dollar-icon.svg'
 import successIcon from '../../../assets/images/apply-success.svg'
 import {Link} from "react-router-dom"
 import {formatPrice, uploadProps} from "../../../assets/scripts/global.js";
-import {Button, Form, Input, Modal, Select, Upload} from "antd";
+import {Button, Carousel, Form, Input, Modal, Select, Upload} from "antd";
 import {CaretDownOutlined} from "@ant-design/icons";
 import toast from "react-hot-toast";
 import {useMutation} from "@tanstack/react-query";
@@ -284,10 +284,20 @@ const ApplyCard = ({ i, ad }) => {
             </li>
             :
             <li className='ad'>
-                <a className='ad__link' href={i?.link} target='_blank'>
-                    {i?.name}
-                    <GetFileDef className='bg-img' id={i?.photo_ids[0]} odiy defImg={defImg} />
-                </a>
+                <Carousel autoplay>
+                    {
+                        i?.photo_ids.map(item => (
+                            <a
+                                className='ad__link'
+                                href={i?.link}
+                                target='_blank'
+                                key={item}
+                            >
+                                <GetFileDef className='bg-img' id={item} odiy defImg={defImg}/>
+                            </a>
+                        ))
+                    }
+                </Carousel>
             </li>
     );
 };
