@@ -26,6 +26,8 @@ import SearchQ from "./pages/search/SearchQ.jsx";
 import Other from "./pages/admin/other/Other.jsx";
 import {$resp} from "./api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
+import {antdConfig} from "./config/antd/antdConfig.js";
+import {ConfigProvider} from "antd";
 
 
 // default fetches
@@ -109,19 +111,26 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/login/auth' element={<Login2 />} />
 
-                {/* Admin Routes */}
-                <Route element={<AuthAdmin />}>
-
-                    <Route path='/admin/' element={<AdminHome />} />
-                    <Route path='/admin/other' element={<Other />} />
-
-                </Route>
-
-                <Route path='/admin/login' element={<AdminLogin />} />
-
             </Routes>
 
+
+            <ConfigProvider theme={antdConfig()}>
+                <Routes>
+                    {/* Admin Routes */}
+                    <Route element={<AuthAdmin />}>
+
+                        <Route path='/admin/' element={<AdminHome />} />
+                        <Route path='/admin/other' element={<Other />} />
+
+                    </Route>
+
+                    <Route path='/admin/login' element={<AdminLogin />} />
+
+                </Routes>
+            </ConfigProvider>
+
             <NavBar />
+
 
             <Toaster
                 position="top-center"

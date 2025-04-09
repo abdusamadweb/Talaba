@@ -150,7 +150,7 @@ const Search = () => {
         keepPreviousData: true,
     })
     // Получаем данные рекламы по id
-    const { data: adList, isLoading: loadingAds } = useQuery({
+    const { data: adList } = useQuery({
         queryKey: ['ad-list', adIndex?.data],
         queryFn: async () => {
             if (!adIndex?.data?.length) return []
@@ -166,11 +166,10 @@ const Search = () => {
         enabled: !!adIndex?.data,
         keepPreviousData: true,
     })
-    console.log(adList, 'ad-list')
 
     const [newList, setNewList] = useState([])
 
-// Вставляем рекламу в список
+    // Вставляем рекламу в список
     useEffect(() => {
         if (data?.data && adList?.length) {
             let listCopy = [...data.data]
@@ -186,8 +185,6 @@ const Search = () => {
             setNewList(listCopy)
         }
     }, [data, adList])
-
-    console.log(newList, 'new-list')
 
 
     return (

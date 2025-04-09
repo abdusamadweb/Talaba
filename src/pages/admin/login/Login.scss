@@ -13,8 +13,16 @@
     }
   }
 
+  &__title {
+    text-align: center;
+    font-weight: 600;
+  }
+
   .ant-form {
 
+    .ant-form-item {
+      margin-bottom: 1rem;
+    }
     .ant-form-item-required {
       font-weight: 600 !important;
       font-size: 16px !important;

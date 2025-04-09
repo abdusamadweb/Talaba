@@ -19,7 +19,7 @@ body {
 .container {
    max-width: 1660px;
    width: 100%;
-   padding: 0 2rem;
+   padding: 0 1rem;
    margin: 0 auto;	
 }
 @media screen and (max-width: 600px) {

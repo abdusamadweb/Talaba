@@ -8,10 +8,6 @@
   font-family: "Poppins", sans-serif !important;
   margin: 0 auto;
   background: $bg-color;
-
-  &.admin {
-    max-width: unset;
-  }
 }
 
 .page {
@@ -73,5 +69,135 @@
       color: #0063F290;
     }
   }
+}
+
+
+// admin
+.admin {
+  max-width: unset;
+
+  .ant-table {
+    &-cell {
+      text-align: center !important;
+    }
+
+    .ant-tag {
+      font-weight: 500;
+      padding: 0 10px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      &__btn {
+        width: 33px;
+        height: 33px;
+        padding: 5px;
+        border-radius: 10px;
+        background: #979da920;
+        transition: opacity 0.3s ease;
+
+        &.view {
+          background: #3e97ff20;
+
+          i {
+            color: #3e97ff;
+          }
+        }
+        &.edit {
+          background: #ffb62c20;
+
+          i {
+            color: #ffb62c;
+          }
+        }
+        &.delete {
+          background: #ed2b4620;
+
+          i {
+            color: #ed2b46;
+          }
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        i {
+          color: #979da9;
+        }
+      }
+    }
+  }
+
+  .ant-pagination {
+    margin-bottom: 0 !important;
+  }
+
+  .ant-select {
+
+    &-item-option-content {
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+}
+
+.admin-modal {
+
+  .ant-modal-title {
+    font-weight: 600 !important;
+    font-size: 22px !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .ant-form {
+
+    .ant-col {
+      padding-bottom: 5px !important;
+    }
+
+    .ant-upload-wrapper {
+      width: 100%;
+    }
+    .ant-upload {
+      width: 100%;
+    }
+    .ant-input-prefix {
+      width: 93%;
+      color: #ccc;
+    }
+    .upload-inp {
+      width: 100%;
+
+       input {
+         display: none;
+       }
+    }
+
+    &-item {
+      margin-bottom: 10px;
+
+      &.age {
+        flex: 1;
+      }
+
+      &-required {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .ant-modal-footer {
+    display: none;
+  }
+}
+
+.main-modal {
+  top: 20px;
+  margin-right: 20px;
 }
 

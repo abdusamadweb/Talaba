@@ -3,6 +3,15 @@ import React, {useState} from 'react';
 import {Button, Form, Input} from "antd";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import {$resp} from "../../../api/apiResp.js";
+import {useMutation} from "@tanstack/react-query";
+
+
+const fetchLogin = async (body) => {
+    const { data } = await $resp.post('/auth/login', body)
+    return data
+}
+
 
 const Auth = () => {
 
@@ -11,53 +20,59 @@ const Auth = () => {
     const [loading, setLoading] = useState(false)
 
 
-    const auth = ({ login, password }) => {
-        setLoading(true)
+    // log in
+    const mutation = useMutation({
+        mutationFn: fetchLogin,
+        onSuccess: (res) => {
+            setLoading(true)
+            toast.success(res.message)
 
-        if (login === 'admin' && password === '1') {
-            localStorage.setItem('admin-token', 1)
-
-            toast.success('Хуш келибсиз!')
-            setTimeout(() => navigate('/admin'), 1500)
-        } else {
-            toast.error('Хато!')
+            localStorage.setItem('admin-token', res?.token)
+            navigate('/admin')
+        },
+        onError: (err) => {
+            toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
             setLoading(false)
         }
+    })
+
+    const onFinish = (values) => {
+        mutation.mutate(values)
     }
 
 
     return (
         <div className="admin-login">
             <div className="admin-login__inner">
-                <h2 className="admin-login__title mb2">Кириш</h2>
+                <h2 className="admin-login__title mb2">Kirish</h2>
                 <Form
                     name="basic"
                     layout='vertical'
-                    onFinish={auth}
+                    onFinish={onFinish}
                 >
                     <Form.Item
-                        label="Логин"
-                        name="login"
+                        label="Telefon raqam"
+                        name="username"
                         rules={[
                             {
                                 required: true,
-                                message: 'Логинни киритинг!',
+                                message: 'Telefon raqamni kiriting!',
                             },
                         ]}
                     >
-                        <Input placeholder='Логин' />
+                        <Input placeholder='Telefon raqam' type='tel' />
                     </Form.Item>
                     <Form.Item
-                        label="Парол"
+                        label="Parol"
                         name="password"
                         rules={[
                             {
                                 required: true,
-                                message: 'Ппаролни киритинг!',
+                                message: 'Parolni kiriting!',
                             },
                         ]}
                     >
-                        <Input.Password placeholder='Парол' />
+                        <Input.Password placeholder='Parol' />
                     </Form.Item>
                     <Button
                         className="login__button"
@@ -66,7 +81,7 @@ const Auth = () => {
                         size='large'
                         loading={loading}
                     >
-                        Тасдиклаш
+                        Tasdiqlash
                     </Button>
                 </Form>
             </div>

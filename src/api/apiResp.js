@@ -10,6 +10,13 @@ export const $resp = axios.create({
         Authorization: "Bearer " + localStorage.getItem('token'),
     }
 })
+export const $adminResp = axios.create({
+    baseURL: API_TEST,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem('admin-token'),
+    }
+})
 
 export const getFile = async (id) => {
     const response = await $api.get(`/get-file/${id}`, {

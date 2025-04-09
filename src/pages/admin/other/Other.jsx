@@ -1,78 +1,73 @@
 import './Other.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Form, Input, Modal, Popconfirm, Table, Tooltip} from "antd";
-import {formatPrice, validateMessages} from "../../../assets/scripts/global.js";
-import $api from "../../../api/apiConfig.js";
-import {addOrEdit, deleteData} from "../../../api/request.js";
-import toast from "react-hot-toast";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {Button, Empty, Form, Input, Modal, Table, Upload} from "antd";
+import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
+import {addOrEdit, deleteData} from "../../../api/crud.js";
+import {useQuery} from "@tanstack/react-query";
+import GetFile from "../../../components/get-file/GetFile.jsx";
+import {$resp} from "../../../api/apiResp.js";
+import {tableCols} from "../../../components/admin/table/columns.js";
+import Actions from "../../../components/admin/table/Actions.jsx";
+import {useCrud} from "../../../hooks/useCrud.jsx";
+import {CloudUploadOutlined} from "@ant-design/icons";
+
+
+// fetches
+const fetchData = async () => {
+    const { data } = await $resp.get('/ads/all')
+    return data
+}
+
 
 const Other = () => {
 
     const [form] = Form.useForm()
 
     const [modal, setModal] = useState('close')
-    const [loading, setLoading] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
 
+    const [file, setFile] = useState(null)
 
-    // fetch data
-    const fetchData = async () => {
-        const { data } = await $api.get('other-expenses')
-        return data.reverse()
-    }
+
+    // fetch
     const { data, refetch } = useQuery({
-        queryKey: ['other-expenses'],
+        queryKey: ['admin-ads'],
         queryFn: fetchData,
         keepPreviousData: true,
-        refetchOnWindowFocus: false
-    });
+    })
 
 
     // add & edit
-    const { mutate } = useMutation({
-        mutationFn: (values) => {
-            setLoading(true)
-            return addOrEdit(
-                'other-expenses',
-                { ...values, date: selectedItem ? selectedItem.date : new Date() },
-                selectedItem?.id || false
-            )
-        },
-        onSuccess: async () => {
-            await refetch()
-            toast.success('Кошилди!')
-
-            setModal('close')
-            setSelectedItem(null)
-            setLoading(false)
-            form.resetFields()
-        },
-        onError: async () => {
-            toast.error('Серверда муаммо!')
-            setLoading(false)
-        }
+    const { addOrEditMutation, deleteMutation } = useCrud('ads', {
+        refetch,
+        form,
+        setModal,
+        setSelectedItem,
+        addOrEdit,
+        deleteData
     })
 
     const onFormSubmit = (values) => {
-        mutate(values)
+        console.log('Form values:', values)
+
+        const body = {
+            ...values,
+            photo_ids: values?.photo_ids?.fileList?.map(i => i?.response?.files[0].id) || []
+        }
+
+        console.log('Final body:', body)
+
+        addOrEditMutation.mutate({
+            values: body,
+            selectedItem
+        })
+        setTimeout(() => setFile(null), 1500)
     }
 
-
-    // delete
-    const { mutate: deleteItem } = useMutation({
-        mutationFn: (id) => {
-            return deleteData('other-expenses', id)
-        },
-        onSuccess: async () => {
-            await refetch()
-            toast.success('Очирилди!')
-        },
-        onError: async () => {
-            toast.error('Серверда муаммо!')
-        }
-    })
+    const deleteItem = (id) => {
+        deleteMutation.mutate(id)
+    }
 
 
     // form
@@ -85,76 +80,61 @@ const Other = () => {
     }, [form, selectedItem])
 
 
-    // calculate expenses
-    const [totalExpenses, setTotalExpenses] = useState(0)
-
-    const calculateTotalExpenses = (expenses) => {
-        const total = expenses.reduce((sum, i) => sum + (i.money || 0), 0)
-        setTotalExpenses(total)
-    }
-
-    useEffect(() => {
-        if (data) {
-            calculateTotalExpenses(data)
-        }
-    }, [data])
-
-
     // table
     const columns = [
+        // {
+        //     ...tableCols.index,
+        //     render: (_, __, index) => <span>{ index+1 }</span>,
+        // },
+        tableCols.id,
+        tableCols.name,
         {
-            title: '№',
-            dataIndex: 'index',
-            key: 'index',
-            width: 50,
-            render: (_, __, index) => <span>{ index+1 }</span>,
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link'
         },
         {
-            title: 'Номи',
-            dataIndex: 'name',
-            key: 'name',
-            render: (_, { name }) => <span>{ name }</span>,
+            title: 'Indeksi',
+            dataIndex: 'order_index',
+            key: 'order_index'
         },
         {
-            title: 'Харажат',
-            dataIndex: 'money',
-            key: 'money',
-            render: (_, { money }) => <span>{ formatPrice(money) } сум</span>,
+            title: 'Korishlar soni',
+            dataIndex: 'view_count',
+            key: 'view_count'
         },
         {
-            className: 'fw500',
-            title: 'Сана',
-            dataIndex: 'date',
-            key: 'date',
-            render: (_, { date }) => <span>{ new Date(date).toLocaleString() }</span>,
-        },
-        {
-            title: 'Амаллар',
-            key: 'actions',
-            width: '150px',
-            render: (_, item) => (
-                <div className="actions">
-                    <button className='actions__btn edit' onClick={() => {
-                        setModal('edit')
-                        setSelectedItem(item)
-                    }}>
-                        <i className="fa-regular fa-pen-to-square"/>
-                    </button>
-                    <Popconfirm
-                        title="Очиришни хохлайсизми?"
-                        description=' '
-                        okText="Ха"
-                        cancelText="Йок"
-                        placement='topRight'
-                        onConfirm={() => deleteItem(item.id)}
-                    >
-                        <button className='actions__btn delete'>
-                            <i className="fa-regular fa-trash-can"/>
-                        </button>
-                    </Popconfirm>
-                </div>
+            title: 'Rasmlar',
+            dataIndex: 'photo_ids',
+            key: 'photo_ids',
+            render: (photo_ids) => (
+                photo_ids?.length ?
+                    <ul className='imgs'>
+                        {photo_ids.map((i) => (
+                            <li><GetFile className='ant-image-img' id={i}/></li>
+                        ))}
+                    </ul>
+                    : <Empty description={false} />
             ),
         },
+        tableCols.status,
+        {
+            ...tableCols.actions,
+            render: (_, i) => <Actions
+                setModal={setModal}
+                setSelectedItem={setSelectedItem}
+                deleteItem={deleteItem}
+                i={i}
+            />
+        },
+    ]
+
+
+    // form fields
+    const fields = [
+        { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
+        { name: 'link', label: 'Link', type: 'text', required: true, placeholder: 'Link' },
+        { name: 'order_index', label: 'Indeksi', type: 'number', required: true, placeholder: 'Indeksi' },
     ]
 
 
@@ -162,31 +142,23 @@ const Other = () => {
         <div className="other page">
             <div className="container">
                 <Title
-                    title='Бошка харажатлар'
-                    btn='Кошиш'
-                    click={() => setModal('add')}
-                    icon={true}
-                    additional={
-                        <Tooltip title='Калькулятор'>
-                            <button className='additional-btn' onClick={() => setModal('calc')}>
-                                <i className="fa-solid fa-calculator"/>
-                            </button>
-                        </Tooltip>
-                    }
+                    title='Reklama ~ ads'
+                    setModal={setModal}
+                    btn
                 />
                 <div className="content">
-                    <h3 className="content__title fw600 mb2">Хаммаси болиб: <span>{ formatPrice(totalExpenses) }</span> сум</h3>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={data?.data}
                         scroll={{ x: 750 }}
                     />
                 </div>
             </div>
             <Modal
+                rootClassName='admin-modal'
                 className='main-modal'
-                title={modal === 'add' ? "Кошиш" : "Озгартириш"}
-                open={modal !== 'close' && modal !== 'calc'}
+                title={modal === 'add' ? "Qoshish" : "Ozgartirish"}
+                open={modal !== 'close'}
                 onCancel={() => {
                     setModal('close')
                     setSelectedItem(null)
@@ -198,23 +170,43 @@ const Other = () => {
                     validateMessages={validateMessages}
                     form={form}
                 >
+                    {fields.map((item) => (
+                        <Form.Item
+                            key={item.name}
+                            name={item.name}
+                            label={item.label}
+                            rules={[{ required: item.required }]}
+                        >
+                            <Input
+                                placeholder={item.placeholder}
+                                type={item.type}
+                            />
+                        </Form.Item>
+                    ))}
                     <Form.Item
-                        name='name'
-                        label="Харажат"
-                        rules={[{ required: true }]}
+                        className='form-inp docs'
+                        label="Rasmlar ( 5mb dan kam bolgan holda! )"
+                        name="photo_ids"
+                        rules={[{required: true, message: ''}]}
                     >
-                        <Input placeholder='Харажат'/>
+                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile(e.file.percent)}>
+                            <Input
+                                rootClassName={`upload-inp ${file !== null && 'change-icon'}`}
+                                size='large'
+                                suffix={<CloudUploadOutlined />}
+                                prefix={file !== null ? file?.toFixed(1) + '%' : 'Yuklash'}
+                            />
+                        </Upload>
                     </Form.Item>
-                    <Form.Item
-                        name='money'
-                        label="Нарх"
-                        rules={[{ required: true }]}
-                    >
-                        <Input placeholder='Нарх' type='number'/>
-                    </Form.Item>
+
                     <div className='end mt1'>
-                        <Button type="primary" htmlType="submit" size='large' loading={loading}>
-                            Тасдиклаш
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            size='large'
+                            loading={addOrEditMutation?.isLoading}
+                        >
+                            Tasdiqlash
                         </Button>
                     </div>
                 </Form>
