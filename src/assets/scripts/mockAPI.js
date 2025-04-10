@@ -6,3 +6,10 @@ export const hiddenRoutes = [
 export const hiddenRoutesNav = [
     '/login', '/admin',
 ]
+
+export const openRoutesAdmin = [
+    '/admin'
+]
+export const hiddenRoutesAdmin = [
+    '/login',
+]

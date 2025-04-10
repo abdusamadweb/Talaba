@@ -28,7 +28,7 @@ const Auth = () => {
             toast.success(res.message)
 
             localStorage.setItem('admin-token', res?.token)
-            navigate('/admin')
+            navigate('/admin/university')
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)

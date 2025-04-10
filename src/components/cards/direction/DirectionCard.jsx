@@ -9,7 +9,7 @@ const flags = Object.keys(images).reduce((acc, path) => {
     return acc
 }, {})
 
-const DirectionCard = ({ id, flag, txt }) => {
+const DirectionCard = ({ flag, txt }) => {
     return (
         <li className='direction-card'>
             <span className='img'>

@@ -1,26 +1,25 @@
-import './Other.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Empty, Form, Input, Modal, Table, Upload} from "antd";
+import {Button, Checkbox, Empty, Form, Input, Modal, Table, Upload} from "antd";
 import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import GetFile from "../../../components/get-file/GetFile.jsx";
 import {$resp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
+import GetFile from "../../../components/get-file/GetFile.jsx";
 import {CloudUploadOutlined} from "@ant-design/icons";
 
 
 // fetches
 const fetchData = async () => {
-    const { data } = await $resp.get('/ads/all')
+    const { data } = await $resp.get('/news/all')
     return data
 }
 
 
-const Other = () => {
+const AdminEduLang = () => {
 
     const [form] = Form.useForm()
 
@@ -32,14 +31,17 @@ const Other = () => {
 
     // fetch
     const { data, refetch } = useQuery({
-        queryKey: ['admin-ads'],
+        queryKey: ['admin-news'],
         queryFn: fetchData,
         keepPreviousData: true,
     })
 
 
     // add & edit
-    const { addOrEditMutation, deleteMutation } = useCrud('ads', {
+    const {
+        addOrEditMutation,
+        deleteMutation
+    } = useCrud('news', {
         refetch,
         form,
         setModal,
@@ -49,14 +51,11 @@ const Other = () => {
     })
 
     const onFormSubmit = (values) => {
-        console.log('Form values:', values)
-
         const body = {
             ...values,
-            photo_ids: values?.photo_ids?.fileList?.map(i => i?.response?.files[0].id) || []
+            photo_ids: values?.photo_ids?.fileList?.map(i => i?.response?.files[0].id),
+            status: values.status ? 'active' : 'inactive'
         }
-
-        console.log('Final body:', body)
 
         addOrEditMutation.mutate({
             values: body,
@@ -73,7 +72,10 @@ const Other = () => {
     // form
     useEffect(() => {
         if (selectedItem) {
-            form.setFieldsValue(selectedItem)
+            form.setFieldsValue({
+                ...selectedItem,
+                photo_ids: selectedItem.attachments?.map(item => item.id)
+            })
         } else {
             form.resetFields()
         }
@@ -87,37 +89,28 @@ const Other = () => {
         //     render: (_, __, index) => <span>{ index+1 }</span>,
         // },
         tableCols.id,
-        tableCols.name,
-        {
-            title: 'Link',
-            dataIndex: 'link',
-            key: 'link'
-        },
-        {
-            title: 'Indeksi',
-            dataIndex: 'order_index',
-            key: 'order_index'
-        },
-        {
-            title: 'Korishlar soni',
-            dataIndex: 'view_count',
-            key: 'view_count'
-        },
+        tableCols.title,
+        tableCols.desc,
         {
             title: 'Rasmlar',
-            dataIndex: 'photo_ids',
-            key: 'photo_ids',
+            dataIndex: 'attachments',
+            key: 'attachments',
             render: (photo_ids) => (
                 photo_ids?.length ?
                     <ul className='imgs'>
                         {photo_ids.map((i) => (
-                            <li><GetFile className='ant-image-img' id={i}/></li>
+                            <li key={i.id}><GetFile className='ant-image-img' id={i.id} /></li>
                         ))}
                     </ul>
                     : <Empty description={false} />
             ),
         },
-        tableCols.status,
+        {
+            ...tableCols.status,
+            render: (_, { status }) => (
+                <span className={` fw500 ${status === 'active' ? 'green' : 'red'}`}>{ status }</span>
+            )
+        },
         {
             ...tableCols.actions,
             render: (_, i) => <Actions
@@ -132,9 +125,8 @@ const Other = () => {
 
     // form fields
     const fields = [
-        { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
-        { name: 'link', label: 'Link', type: 'text', required: true, placeholder: 'Link' },
-        { name: 'order_index', label: 'Indeksi', type: 'number', required: true, placeholder: 'Indeksi' },
+        { name: 'title', label: 'Sarlavxa', type: 'text', required: true, placeholder: 'Sarlavxa' },
+        { name: 'desc', label: 'Tavsif', type: 'text', required: true, placeholder: 'Tavsif' },
     ]
 
 
@@ -142,7 +134,7 @@ const Other = () => {
         <div className="other page">
             <div className="container">
                 <Title
-                    title='Reklama ~ ads'
+                    title='Yangiliklar ~ news'
                     setModal={setModal}
                     btn
                 />
@@ -183,6 +175,7 @@ const Other = () => {
                             />
                         </Form.Item>
                     ))}
+
                     <Form.Item
                         className='form-inp docs'
                         label="Rasmlar ( 5mb dan kam bolgan holda! )"
@@ -199,12 +192,18 @@ const Other = () => {
                         </Upload>
                     </Form.Item>
 
+                    <Form.Item
+                        name='status'
+                        valuePropName="checked"
+                    >
+                        <Checkbox>Status</Checkbox>
+                    </Form.Item>
                     <div className='end mt1'>
                         <Button
                             type="primary"
                             htmlType="submit"
                             size='large'
-                            loading={addOrEditMutation?.isLoading}
+                            loading={addOrEditMutation?.isPending}
                         >
                             Tasdiqlash
                         </Button>
@@ -215,4 +214,4 @@ const Other = () => {
     );
 };
 
-export default Other
+export default AdminEduLang

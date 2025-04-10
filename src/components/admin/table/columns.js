@@ -18,10 +18,31 @@ export const tableCols = {
         dataIndex: 'name',
         key: 'name'
     },
+    title: {
+        title: 'Sarlavha',
+        dataIndex: 'title',
+        key: 'title'
+    },
+    desc: {
+        title: 'Tavsif',
+        dataIndex: 'desc',
+        key: 'desc'
+    },
     status: {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+    },
+
+    createdAt: {
+        title: 'Qoshilgan vaqti',
+        dataIndex: 'created_at',
+        key: 'created_at',
+    },
+    updatedAt: {
+        title: 'Ozgargan vaqti',
+        dataIndex: 'updated_at',
+        key: 'updated_at',
     },
 
     actions: {

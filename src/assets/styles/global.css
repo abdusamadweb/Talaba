@@ -113,13 +113,13 @@ i {
 
 
 .d-block {
-   display: block;
+   display: block !important;
 }
 .d-flex {
    display: flex;
 }
 .d-none {
-   display: none;
+   display: none !important;
 }
 
 

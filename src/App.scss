@@ -76,6 +76,10 @@
 .admin {
   max-width: unset;
 
+  .page {
+    padding-left: 60px;
+  }
+
   .ant-table {
     &-cell {
       text-align: center !important;
@@ -130,6 +134,13 @@
           color: #979da9;
         }
       }
+    }
+
+    .green {
+      color: #00c020;
+    }
+    .red {
+      color: #ed2b46;
     }
   }
 
@@ -188,6 +199,40 @@
       &-required {
         font-weight: 500;
       }
+    }
+
+    .select-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      gap: 10px;
+
+      .item {
+        display: inline-flex;
+        flex-flow: column;
+        align-items: center;
+        padding-block: 12px;
+        border-radius: 10px;
+        border: 2px solid #eee;
+        opacity: 0.7;
+        cursor: pointer;
+        transition: opacity 0.2s ease,
+        border-color 0.2s ease;
+
+        &.active {
+          border-color: $main-color;
+          opacity: 1;
+        }
+
+        img {
+          width: 70%;
+        }
+        label {
+          justify-content: center;
+        }
+      }
+    }
+    .ant-form-item-control-input {
+      min-height: unset;
     }
   }
 

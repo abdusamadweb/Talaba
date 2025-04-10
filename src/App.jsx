@@ -23,11 +23,16 @@ import AuthAdmin from "./components/auth/AuthAdmin.jsx";
 import AdminHome from "./pages/admin/home/AdminHome.jsx";
 import AdminLogin from "./pages/admin/login/AdminLogin.jsx";
 import SearchQ from "./pages/search/SearchQ.jsx";
-import Other from "./pages/admin/other/Other.jsx";
 import {$resp} from "./api/apiResp.js";
 import {useQuery} from "@tanstack/react-query";
 import {antdConfig} from "./config/antd/antdConfig.js";
 import {ConfigProvider} from "antd";
+import AdminAds from "./pages/admin/ads/AdminAds.jsx";
+import AdminEduLang from "./pages/admin/edu-lang/AdminEduLang.jsx";
+import AdminRegions from "./pages/admin/regions/AdminRegions.jsx";
+import AdminMainDir from "./pages/admin/main-direction/AdminMainDir.jsx";
+import AdminNews from "./pages/admin/news/AdminNews.jsx";
+import AdminHeader from "./components/admin/header/AdminHeader.jsx";
 
 
 // default fetches
@@ -115,12 +120,18 @@ function App() {
 
 
             <ConfigProvider theme={antdConfig()}>
+                <AdminHeader />
+
                 <Routes>
                     {/* Admin Routes */}
                     <Route element={<AuthAdmin />}>
 
                         <Route path='/admin/' element={<AdminHome />} />
-                        <Route path='/admin/other' element={<Other />} />
+                        <Route path='/admin/ads' element={<AdminAds />} />
+                        <Route path='/admin/edu-lang' element={<AdminEduLang />} />
+                        <Route path='/admin/regions' element={<AdminRegions />} />
+                        <Route path='/admin/main-direction' element={<AdminMainDir />} />
+                        <Route path='/admin/news' element={<AdminNews />} />
 
                     </Route>
 

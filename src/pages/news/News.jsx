@@ -31,7 +31,7 @@ const News = () => {
         keepPreviousData: true
     })
 
-    // fetch news other
+    // fetch news ads
     const { data: other, isLoading: otherLoading } = useQuery({
         queryKey: ['news-others', id],
         queryFn: () => fetchNewsOther({ page: 1, size: 20, with_out_id: id }),

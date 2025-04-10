@@ -7,7 +7,7 @@ const Title = ({ title, btn, setModal, additional, navigate }) => {
     const navigatee = useNavigate()
 
     if (!btn) return (
-        <div className='page-title row align-center g1'>
+        <div className='page-title row align-center g1 pt1'>
             {
                 navigate && <button className='btn' onClick={() => navigatee(-1)}>
                     <i className="fa-solid fa-arrow-left-long"/>
