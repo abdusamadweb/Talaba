@@ -91,67 +91,60 @@ function App() {
 
     return (
     <div className={`App ${path.includes('login') ? 'pb0' : ''} ${path.includes('admin') ? 'admin' : ''}`}>
-        <Wrapper>
 
-            {loading && <Loader setLoading={setLoading} />}
+        {loading && <Loader setLoading={setLoading} />}
 
-            <Header />
-
-            <Routes>
-
-                <Route element={<Auth />}>
-
-                    <Route path='/' element={<Home />} />
-                    <Route path='/search' element={<Search />} />
-                    <Route path='/searchQ' element={<SearchQ />} />
-                    <Route path='/applications' element={<Applications />} />
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/profile/me' element={<MyProfile />} />
-                    <Route path='/profile/me/edit' element={<MyProfileEdit />} />
-                    <Route path='/university/:id' element={<UniversityId />} />
-                    <Route path='/news/:id' element={<News />} />
-
-                </Route>
-
-                <Route path='/login' element={<Login />} />
-                <Route path='/login/auth' element={<Login2 />} />
-
-            </Routes>
-
-
+        {path.includes('admin') ? (
             <ConfigProvider theme={antdConfig()}>
                 <AdminHeader />
 
                 <Routes>
-                    {/* Admin Routes */}
                     <Route element={<AuthAdmin />}>
-
                         <Route path='/admin/' element={<AdminHome />} />
                         <Route path='/admin/ads' element={<AdminAds />} />
                         <Route path='/admin/edu-lang' element={<AdminEduLang />} />
                         <Route path='/admin/regions' element={<AdminRegions />} />
                         <Route path='/admin/main-direction' element={<AdminMainDir />} />
                         <Route path='/admin/news' element={<AdminNews />} />
-
                     </Route>
 
                     <Route path='/admin/login' element={<AdminLogin />} />
-
                 </Routes>
             </ConfigProvider>
+        ) : (
+            <Wrapper>
+                <Header />
 
-            <NavBar />
+                <Routes>
+                    <Route element={<Auth />}>
+                        <Route path='/' element={<Home />} />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/searchQ' element={<SearchQ />} />
+                        <Route path='/applications' element={<Applications />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/me' element={<MyProfile />} />
+                        <Route path='/profile/me/edit' element={<MyProfileEdit />} />
+                        <Route path='/university/:id' element={<UniversityId />} />
+                        <Route path='/news/:id' element={<News />} />
+                    </Route>
+
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/login/auth' element={<Login2 />} />
+                </Routes>
+
+                <NavBar />
+            </Wrapper>
+        )}
 
 
-            <Toaster
-                position="top-center"
-                reverseOrder={true}
-                toastOptions={{
-                    style: {
-                        borderRadius: '30px'
-                    }}}
-            />
-        </Wrapper>
+        <Toaster
+            position="top-center"
+            reverseOrder={true}
+            toastOptions={{
+                style: {
+                    borderRadius: '30px'
+                }}}
+        />
     </div>
   )
 }
