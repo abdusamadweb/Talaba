@@ -77,7 +77,14 @@
   max-width: unset;
 
   .page {
-    padding-left: 60px;
+    padding-left: 250px;
+
+    @include tablet {
+      padding-left: 60px;
+    }
+    @include mobile {
+      padding-left: 40px;
+    }
   }
 
   .ant-table {
@@ -141,6 +148,9 @@
     }
     .red {
       color: #ed2b46;
+    }
+    .yellow {
+      color: #ffb62c;
     }
   }
 

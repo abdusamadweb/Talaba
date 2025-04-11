@@ -1,45 +1,46 @@
-import './AdminAds.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, Empty, Form, Input, Modal, Table, Upload} from "antd";
-import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
+import {Button, Checkbox, Form, Input, Modal, Table, DatePicker} from "antd";
+import {formatPhone, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import GetFile from "../../../components/get-file/GetFile.jsx";
 import {$resp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
-import {CloudUploadOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
+
+const { RangePicker } = DatePicker
+const { TextArea } = Input
 
 
 // fetches
 const fetchData = async () => {
-    const { data } = await $resp.get('/ads/all')
+    const { data } = await $resp.get('/university/all')
     return data
 }
 
-
-const AdminAds = () => {
+const AdminUni = () => {
 
     const [form] = Form.useForm()
 
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
 
-    const [file, setFile] = useState(null)
-
 
     // fetch
     const { data, refetch } = useQuery({
-        queryKey: ['ads'],
+        queryKey: ['university'],
         queryFn: fetchData,
         keepPreviousData: true,
     })
 
 
     // add & edit
-    const { addOrEditMutation, deleteMutation } = useCrud('ads', {
+    const {
+        addOrEditMutation,
+        deleteMutation
+    } = useCrud('university', {
         refetch,
         form,
         setModal,
@@ -49,17 +50,18 @@ const AdminAds = () => {
     })
 
     const onFormSubmit = (values) => {
+        const { dates, ...rest } = values
         const body = {
-            ...values,
-            photo_ids: values?.photo_ids?.fileList?.map(i => i?.response?.files[0].id),
-            status: values.status ? 'active' : 'inactive'
+            ...rest,
+            status: values.status ? 'active' : 'inactive',
+            application_start: new Date(dates[0].$d)?.getTime(),
+            application_end: new Date(dates[1].$d)?.getTime(),
         }
 
         addOrEditMutation.mutate({
             values: body,
             selectedItem
         })
-        setTimeout(() => setFile(null), 1500)
     }
 
     const deleteItem = (id) => {
@@ -79,42 +81,48 @@ const AdminAds = () => {
 
     // table
     const columns = [
-        // {
-        //     ...tableCols.index,
-        //     render: (_, __, index) => <span>{ index+1 }</span>,
-        // },
         tableCols.id,
-        tableCols.name,
         {
-            title: 'Link',
-            dataIndex: 'link',
-            key: 'link'
+            ...tableCols.name,
+            render: (_, item) => (
+                <Link to={`/admin/university/${item.id}`}>{ item.name }</Link>
+            )
         },
         {
-            title: 'Indeksi',
-            dataIndex: 'order_index',
-            key: 'order_index'
+            ...tableCols.phone,
+            render: (_, { phone_number }) => (
+                <span>{ formatPhone(phone_number) }</span>
+            )
         },
         {
-            title: 'Korishlar soni',
-            dataIndex: 'view_count',
-            key: 'view_count'
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
-            title: 'Rasmlar',
-            dataIndex: 'photo_ids',
-            key: 'photo_ids',
-            render: (photo_ids) => (
-                photo_ids?.length ?
-                    <ul className='imgs'>
-                        {photo_ids.map((i) => (
-                            <li key={i}><GetFile className='ant-image-img' id={i}/></li>
-                        ))}
-                    </ul>
-                    : <Empty description={false} />
-            ),
+            title: 'Ariza boshlanishi',
+            dataIndex: 'application_start',
+            key: 'application_start',
+            render: (_, { application_start }) => (
+                <span>{new Date(application_start).toLocaleDateString()}</span>
+            )
         },
-        tableCols.status,
+        {
+            title: 'Ariza tugashi',
+            dataIndex: 'application_end',
+            key: 'application_end',
+            render: (_, { application_end }) => (
+                <span>{new Date(application_end).toLocaleDateString()}</span>
+            )
+        },
+        {
+            ...tableCols.status,
+            render: (_, { status }) => (
+                <span className={
+                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
+                }>{ status }</span>
+            )
+        },
         {
             ...tableCols.actions,
             render: (_, i) => <Actions
@@ -130,8 +138,12 @@ const AdminAds = () => {
     // form fields
     const fields = [
         { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
-        { name: 'link', label: 'Link', type: 'text', required: true, placeholder: 'Link' },
-        { name: 'order_index', label: 'Indeksi', type: 'number', required: true, placeholder: 'Indeksi' },
+        { name: 'phone_number', label: 'Telefon', type: 'text', required: true, placeholder: 'Telefon' },
+        { name: 'site', label: 'Sayt', type: 'text', required: true, placeholder: 'Sayt' },
+        { name: 'email', label: 'Email', type: 'text', required: true, placeholder: 'Email' },
+        { name: 'address', label: 'Manzil', type: 'text', required: true, placeholder: 'Manzil' },
+        { name: 'longitude', label: 'Longitude', type: 'text', required: true, placeholder: 'Longitude' },
+        { name: 'latitude', label: 'Latitude', type: 'text', required: true, placeholder: 'Latitude' },
     ]
 
 
@@ -139,7 +151,7 @@ const AdminAds = () => {
         <div className="other page">
             <div className="container">
                 <Title
-                    title='Reklama ~ ads'
+                    title='Universitetlar ~ university'
                     setModal={setModal}
                     btn
                 />
@@ -181,20 +193,15 @@ const AdminAds = () => {
                         </Form.Item>
                     ))}
 
-                    <Form.Item
-                        className='form-inp docs'
-                        label="Rasmlar ( 5mb dan kam bolgan holda! )"
-                        name="photo_ids"
-                        rules={[{required: true, message: ''}]}
-                    >
-                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile(e.file.percent)}>
-                            <Input
-                                rootClassName={`upload-inp ${file !== null && 'change-icon'}`}
-                                size='large'
-                                suffix={<CloudUploadOutlined />}
-                                prefix={file !== null ? file?.toFixed(1) + '%' : 'Yuklash'}
-                            />
-                        </Upload>
+                    <Form.Item name='desc' label='Tavsif' rules={[{ required: true }]}>
+                        <TextArea rows={3} placeholder='Tavsif' />
+                    </Form.Item>
+                    <Form.Item name='grands' label='Grandlar' rules={[{ required: true }]}>
+                        <TextArea rows={3} placeholder='Grandlar' />
+                    </Form.Item>
+
+                    <Form.Item name='dates'>
+                        <RangePicker size='large' />
                     </Form.Item>
 
                     <Form.Item
@@ -219,4 +226,4 @@ const AdminAds = () => {
     );
 };
 
-export default AdminAds
+export default AdminUni

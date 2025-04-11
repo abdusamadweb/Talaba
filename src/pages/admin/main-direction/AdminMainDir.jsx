@@ -29,7 +29,7 @@ const AdminMainDir = () => {
 
     // fetch
     const { data, refetch } = useQuery({
-        queryKey: ['admin-main-direction'],
+        queryKey: ['main-direction'],
         queryFn: fetchData,
         keepPreviousData: true,
     })
@@ -105,9 +105,9 @@ const AdminMainDir = () => {
         {
             ...tableCols.status,
             render: (_, { status }) => (
-                <span className={` fw500 ${status === 'active' ? 'green' : 'red'}`}>
-                    { status }
-                </span>
+                <span className={
+                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
+                }>{ status }</span>
             )
         },
         {
@@ -177,7 +177,7 @@ const AdminMainDir = () => {
                         name='status'
                         valuePropName="checked"
                     >
-                        <Checkbox>Status</Checkbox>
+                        <Checkbox className='no-copy'>Status</Checkbox>
                     </Form.Item>
 
                     <ul className="select-imgs row">

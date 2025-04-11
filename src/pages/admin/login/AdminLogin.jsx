@@ -15,8 +15,6 @@ const fetchLogin = async (body) => {
 
 const Auth = () => {
 
-    const navigate = useNavigate()
-
     const [loading, setLoading] = useState(false)
 
 
@@ -27,8 +25,8 @@ const Auth = () => {
             setLoading(true)
             toast.success(res.message)
 
-            localStorage.setItem('admin-token', res?.token)
-            navigate('/admin/university')
+            localStorage.setItem('admin-token', res.token)
+            window.location.href = '/admin/university'
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)

@@ -28,6 +28,11 @@ export const tableCols = {
         dataIndex: 'desc',
         key: 'desc'
     },
+    phone: {
+        title: 'Telefon',
+        dataIndex: 'phone_number',
+        key: 'phone_number'
+    },
     status: {
         title: 'Status',
         dataIndex: 'status',

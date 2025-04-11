@@ -1,45 +1,43 @@
-import './AdminAds.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, Empty, Form, Input, Modal, Table, Upload} from "antd";
-import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
+import {Button, Checkbox, Form, Input, Modal, Table} from "antd";
+import {validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import GetFile from "../../../components/get-file/GetFile.jsx";
 import {$resp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
-import {CloudUploadOutlined} from "@ant-design/icons";
+import {useParams} from "react-router-dom";
 
 
-// fetches
-const fetchData = async () => {
-    const { data } = await $resp.get('/ads/all')
-    return data
-}
+const AdminUniId = () => {
 
-
-const AdminAds = () => {
+    const { id } = useParams()
 
     const [form] = Form.useForm()
 
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
 
-    const [file, setFile] = useState(null)
-
 
     // fetch
+    const fetchData = async () => {
+        const { data } = await $resp.get(`/university/get/${id}`)
+        return data
+    }
     const { data, refetch } = useQuery({
-        queryKey: ['ads'],
+        queryKey: ['university-id', id],
         queryFn: fetchData,
         keepPreviousData: true,
     })
 
 
     // add & edit
-    const { addOrEditMutation, deleteMutation } = useCrud('ads', {
+    const {
+        addOrEditMutation,
+        deleteMutation
+    } = useCrud('university', {
         refetch,
         form,
         setModal,
@@ -51,7 +49,6 @@ const AdminAds = () => {
     const onFormSubmit = (values) => {
         const body = {
             ...values,
-            photo_ids: values?.photo_ids?.fileList?.map(i => i?.response?.files[0].id),
             status: values.status ? 'active' : 'inactive'
         }
 
@@ -59,7 +56,6 @@ const AdminAds = () => {
             values: body,
             selectedItem
         })
-        setTimeout(() => setFile(null), 1500)
     }
 
     const deleteItem = (id) => {
@@ -86,35 +82,25 @@ const AdminAds = () => {
         tableCols.id,
         tableCols.name,
         {
-            title: 'Link',
-            dataIndex: 'link',
-            key: 'link'
+            ...tableCols.createdAt,
+            render: (_, { created_at }) => (
+                <span>{new Date(created_at).toLocaleDateString()}</span>
+            )
         },
         {
-            title: 'Indeksi',
-            dataIndex: 'order_index',
-            key: 'order_index'
+            ...tableCols.updatedAt,
+            render: (_, { updated_at }) => (
+                <span>{new Date(updated_at).toLocaleDateString()}</span>
+            )
         },
         {
-            title: 'Korishlar soni',
-            dataIndex: 'view_count',
-            key: 'view_count'
+            ...tableCols.status,
+            render: (_, { status }) => (
+                <span className={
+                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
+                }>{ status }</span>
+            )
         },
-        {
-            title: 'Rasmlar',
-            dataIndex: 'photo_ids',
-            key: 'photo_ids',
-            render: (photo_ids) => (
-                photo_ids?.length ?
-                    <ul className='imgs'>
-                        {photo_ids.map((i) => (
-                            <li key={i}><GetFile className='ant-image-img' id={i}/></li>
-                        ))}
-                    </ul>
-                    : <Empty description={false} />
-            ),
-        },
-        tableCols.status,
         {
             ...tableCols.actions,
             render: (_, i) => <Actions
@@ -130,8 +116,6 @@ const AdminAds = () => {
     // form fields
     const fields = [
         { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
-        { name: 'link', label: 'Link', type: 'text', required: true, placeholder: 'Link' },
-        { name: 'order_index', label: 'Indeksi', type: 'number', required: true, placeholder: 'Indeksi' },
     ]
 
 
@@ -139,14 +123,14 @@ const AdminAds = () => {
         <div className="other page">
             <div className="container">
                 <Title
-                    title='Reklama ~ ads'
+                    title='Talim tili ~ edu-lang'
                     setModal={setModal}
                     btn
                 />
                 <div className="content">
                     <Table
                         columns={columns}
-                        dataSource={data?.data}
+                        dataSource={data}
                         scroll={{ x: 750 }}
                     />
                 </div>
@@ -180,29 +164,13 @@ const AdminAds = () => {
                             />
                         </Form.Item>
                     ))}
-
-                    <Form.Item
-                        className='form-inp docs'
-                        label="Rasmlar ( 5mb dan kam bolgan holda! )"
-                        name="photo_ids"
-                        rules={[{required: true, message: ''}]}
-                    >
-                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile(e.file.percent)}>
-                            <Input
-                                rootClassName={`upload-inp ${file !== null && 'change-icon'}`}
-                                size='large'
-                                suffix={<CloudUploadOutlined />}
-                                prefix={file !== null ? file?.toFixed(1) + '%' : 'Yuklash'}
-                            />
-                        </Upload>
-                    </Form.Item>
-
                     <Form.Item
                         name='status'
                         valuePropName="checked"
                     >
                         <Checkbox className='no-copy'>Status</Checkbox>
                     </Form.Item>
+
                     <div className='end mt1'>
                         <Button
                             type="primary"
@@ -219,4 +187,4 @@ const AdminAds = () => {
     );
 };
 
-export default AdminAds
+export default AdminUniId

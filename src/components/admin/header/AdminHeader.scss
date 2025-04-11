@@ -37,8 +37,9 @@
     margin-bottom: 25px;
   }
   &__logo {
-    font-size: 24px;
-    letter-spacing: -1px;
+    font-weight: 600;
+    font-size: 28px;
+    padding-left: 12px;
     margin: 0;
     color: $txt-color;
     transition: font-size 0.2s ease;
@@ -120,7 +121,7 @@
     }
     &__link {
       width: 100%;
-      font-weight: 600;
+      font-weight: 500;
       padding: 12px;
       border-radius: 10px;
       color: $txt-color;

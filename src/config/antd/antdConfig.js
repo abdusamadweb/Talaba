@@ -5,7 +5,7 @@ export const antdConfig = () => {
         token: {
             fontFamily: "Poppins",
             colorPrimary: '#0063F2',
-            colorText: '#222',
+            colorText: '#222222',
         },
         components: {
             Input: {

@@ -1,7 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
+import {useNavigate} from "react-router-dom";
 
 export const useCrud = (key, options) => {
+
     const {
         refetch,
         form,
@@ -10,6 +12,8 @@ export const useCrud = (key, options) => {
         addOrEdit,
         deleteData
     } = options
+
+    const navigate = useNavigate()
 
     const addOrEditMutation = useMutation({
         mutationFn: ({ values, selectedItem }) => {
@@ -30,6 +34,11 @@ export const useCrud = (key, options) => {
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
+
+            if (err.status === 403) {
+                localStorage.removeItem('admin-token')
+                setTimeout(() => navigate('/admin/login'), 1000)
+            }
         }
     })
 
@@ -41,6 +50,11 @@ export const useCrud = (key, options) => {
         },
         onError: (err) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
+
+            if (err.status === 403) {
+                localStorage.removeItem('admin-token')
+                setTimeout(() => navigate('/admin/login'), 1000)
+            }
         }
     })
 

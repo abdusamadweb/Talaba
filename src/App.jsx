@@ -33,6 +33,8 @@ import AdminRegions from "./pages/admin/regions/AdminRegions.jsx";
 import AdminMainDir from "./pages/admin/main-direction/AdminMainDir.jsx";
 import AdminNews from "./pages/admin/news/AdminNews.jsx";
 import AdminHeader from "./components/admin/header/AdminHeader.jsx";
+import AdminUni from "./pages/admin/university/AdminUni.jsx";
+import AdminUniId from "./pages/admin/university/AdminUniId.jsx";
 
 
 // default fetches
@@ -101,6 +103,8 @@ function App() {
                 <Routes>
                     <Route element={<AuthAdmin />}>
                         <Route path='/admin/' element={<AdminHome />} />
+                        <Route path='/admin/university' element={<AdminUni />} />
+                        <Route path='/admin/university/:id' element={<AdminUniId />} />
                         <Route path='/admin/ads' element={<AdminAds />} />
                         <Route path='/admin/edu-lang' element={<AdminEduLang />} />
                         <Route path='/admin/regions' element={<AdminRegions />} />

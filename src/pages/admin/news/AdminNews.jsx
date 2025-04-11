@@ -31,7 +31,7 @@ const AdminEduLang = () => {
 
     // fetch
     const { data, refetch } = useQuery({
-        queryKey: ['admin-news'],
+        queryKey: ['news'],
         queryFn: fetchData,
         keepPreviousData: true,
     })
@@ -108,7 +108,9 @@ const AdminEduLang = () => {
         {
             ...tableCols.status,
             render: (_, { status }) => (
-                <span className={` fw500 ${status === 'active' ? 'green' : 'red'}`}>{ status }</span>
+                <span className={
+                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
+                }>{ status }</span>
             )
         },
         {
@@ -196,7 +198,7 @@ const AdminEduLang = () => {
                         name='status'
                         valuePropName="checked"
                     >
-                        <Checkbox>Status</Checkbox>
+                        <Checkbox className='no-copy'>Status</Checkbox>
                     </Form.Item>
                     <div className='end mt1'>
                         <Button
