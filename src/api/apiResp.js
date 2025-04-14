@@ -3,6 +3,7 @@ import $api, {API_TEST} from "./apiConfig"
 
 export const userLang = navigator.language || navigator.userLanguage
 
+
 export const $resp = axios.create({
     baseURL: API_TEST,
     headers: {
@@ -10,6 +11,7 @@ export const $resp = axios.create({
         Authorization: "Bearer " + localStorage.getItem('token'),
     }
 })
+
 export const $adminResp = axios.create({
     baseURL: API_TEST,
     headers: {
@@ -17,6 +19,7 @@ export const $adminResp = axios.create({
         Authorization: "Bearer " + localStorage.getItem('admin-token'),
     }
 })
+
 
 export const getFile = async (id) => {
     const response = await $api.get(`/get-file/${id}`, {

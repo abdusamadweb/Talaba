@@ -1,28 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, DatePicker, Form, Input, Modal, Table} from "antd";
-import {formatPhone, validateMessages} from "../../../assets/scripts/global.js";
-import {addOrEdit, deleteData} from "../../../api/crud.js";
+import Title from "../../../../components/admin/title/Title.jsx";
+import {Button, Checkbox, Form, Input, Modal, Table} from "antd";
+import {validateMessages} from "../../../../assets/scripts/global.js";
+import {addOrEdit, deleteData} from "../../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$adminResp} from "../../../api/apiResp.js";
-import {tableCols} from "../../../components/admin/table/columns.js";
-import Actions from "../../../components/admin/table/Actions.jsx";
-import {useCrud} from "../../../hooks/useCrud.jsx";
-import {Link} from "react-router-dom";
-import {fields} from "./formFields.js";
-
-const { RangePicker } = DatePicker
-const { TextArea } = Input
+import {$adminResp} from "../../../../api/apiResp.js";
+import {tableCols} from "../../../../components/admin/table/columns.js";
+import Actions from "../../../../components/admin/table/Actions.jsx";
+import {useCrud} from "../../../../hooks/useCrud.jsx";
 
 
-// fetches
-const fetchData = async () => {
-    const { data } = await $adminResp.get('/university/all')
-    return data
-}
-
-
-const AdminUni = () => {
+const AdminDir = ({ id }) => {
 
     const [form] = Form.useForm()
 
@@ -31,18 +19,20 @@ const AdminUni = () => {
 
 
     // fetch
+    const fetchData = async () => {
+        const { data } = await $adminResp.get(`/edu-direction/all-by-unv/${id}`)
+        return data
+    }
     const { data, refetch } = useQuery({
-        queryKey: ['university'],
+        queryKey: ['edu-direction', id],
         queryFn: fetchData,
         keepPreviousData: true,
     })
 
 
     // add & edit
-    const {
-        addOrEditMutation,
-        deleteMutation
-    } = useCrud('university', {
+    const { addOrEditMutation, deleteMutation }
+        = useCrud('edu-direction', {
         refetch,
         form,
         setModal,
@@ -52,16 +42,10 @@ const AdminUni = () => {
     })
 
     const onFormSubmit = (values) => {
-        const { dates, ...rest } = values
         const body = {
-            ...rest,
-            status: values.status ? 'active' : 'inactive',
-            // application_start: new Date(dates[0].$d)?.getTime(),
-            // application_end: new Date(dates[1].$d)?.getTime(),
-            application_start: new Date(dates[0].$d).getTime(),
-            application_end: new Date(dates[1].$d),
+            ...values,
+            status: values.status ? 'active' : 'inactive'
         }
-        console.log(body)
 
         addOrEditMutation.mutate({
             values: body,
@@ -87,39 +71,7 @@ const AdminUni = () => {
     // table
     const columns = [
         tableCols.id,
-        {
-            ...tableCols.name,
-            render: (_, item) => (
-                <Link to={`/admin/university/${item.id}`}>{ item.name }</Link>
-            )
-        },
-        {
-            ...tableCols.phone,
-            render: (_, { phone_number }) => (
-                <span>{ formatPhone(phone_number) }</span>
-            )
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-        },
-        {
-            title: 'Ariza boshlanishi',
-            dataIndex: 'application_start',
-            key: 'application_start',
-            render: (_, { application_start }) => (
-                <span>{new Date(application_start).toLocaleDateString()}</span>
-            )
-        },
-        {
-            title: 'Ariza tugashi',
-            dataIndex: 'application_end',
-            key: 'application_end',
-            render: (_, { application_end }) => (
-                <span>{new Date(application_end).toLocaleDateString()}</span>
-            )
-        },
+        tableCols.name,
         {
             ...tableCols.status,
             render: (_, { status }) => (
@@ -140,21 +92,26 @@ const AdminUni = () => {
     ]
 
 
+    // form fields
+    const fields = [
+        { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
+    ]
+
+
     return (
-        <div className="other page">
-            <div className="container">
-                <Title
-                    title='Universitetlar ~ university'
-                    setModal={setModal}
-                    btn
+        <div className="tab-content">
+            <Title
+                title='Talim yonalishi ~ edu-direction'
+                setModal={setModal}
+                className='d-flex'
+                btn
+            />
+            <div className="content">
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    scroll={{ x: 750 }}
                 />
-                <div className="content">
-                    <Table
-                        columns={columns}
-                        dataSource={data?.data}
-                        scroll={{ x: 750 }}
-                    />
-                </div>
             </div>
             <Modal
                 rootClassName='admin-modal'
@@ -186,17 +143,6 @@ const AdminUni = () => {
                         </Form.Item>
                     ))}
 
-                    <Form.Item name='desc' label='Tavsif' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Tavsif' />
-                    </Form.Item>
-                    <Form.Item name='grands' label='Grandlar' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Grandlar' />
-                    </Form.Item>
-
-                    <Form.Item name='dates' label='Ariza sanasi'>
-                        <RangePicker size='large' />
-                    </Form.Item>
-
                     <Form.Item
                         name='status'
                         valuePropName="checked"
@@ -219,4 +165,4 @@ const AdminUni = () => {
     );
 };
 
-export default AdminUni
+export default AdminDir

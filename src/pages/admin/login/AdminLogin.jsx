@@ -1,7 +1,6 @@
 import './Login.scss'
 import React, {useState} from 'react';
 import {Button, Form, Input} from "antd";
-import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import {$resp} from "../../../api/apiResp.js";
 import {useMutation} from "@tanstack/react-query";
@@ -36,6 +35,7 @@ const Auth = () => {
 
     const onFinish = (values) => {
         mutation.mutate(values)
+        setTimeout(() => setLoading(false), 3000)
     }
 
 

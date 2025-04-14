@@ -4,7 +4,7 @@ import {Button, Checkbox, Empty, Form, Input, Modal, Table, Upload} from "antd";
 import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$resp} from "../../../api/apiResp.js";
+import {$adminResp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
@@ -14,7 +14,7 @@ import {CloudUploadOutlined} from "@ant-design/icons";
 
 // fetches
 const fetchData = async () => {
-    const { data } = await $resp.get('/news/all')
+    const { data } = await $adminResp.get('/news/all')
     return data
 }
 

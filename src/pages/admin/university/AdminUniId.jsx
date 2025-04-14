@@ -1,14 +1,23 @@
+import './style.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, Form, Input, Modal, Table} from "antd";
-import {validateMessages} from "../../../assets/scripts/global.js";
+import {Button, Checkbox, DatePicker, Form, Input, Modal, Tabs} from "antd";
+import {formatPrice, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$resp} from "../../../api/apiResp.js";
-import {tableCols} from "../../../components/admin/table/columns.js";
+import {$adminResp} from "../../../api/apiResp.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
 import {useParams} from "react-router-dom";
+import {fields} from "./formFields.js";
+import GetFile from "../../../components/get-file/GetFile.jsx";
+import GetFileDef from "../../../components/get-file/GetFileDef.jsx";
+import AdminDirGroup from "./tabs/AdminDirGroup.jsx";
+import AdminGallery from "./tabs/AdminGallery.jsx";
+import AdminDir from "./tabs/AdminDir.jsx";
+
+const { RangePicker } = DatePicker
+const { TextArea } = Input
 
 
 const AdminUniId = () => {
@@ -23,14 +32,15 @@ const AdminUniId = () => {
 
     // fetch
     const fetchData = async () => {
-        const { data } = await $resp.get(`/university/get/${id}`)
+        const { data } = await $adminResp.get(`/university/get/${id}`)
         return data
     }
-    const { data, refetch } = useQuery({
+    const { data: uni, refetch } = useQuery({
         queryKey: ['university-id', id],
         queryFn: fetchData,
         keepPreviousData: true,
     })
+    const data = uni?.data
 
 
     // add & edit
@@ -73,66 +83,130 @@ const AdminUniId = () => {
     }, [form, selectedItem])
 
 
-    // table
-    const columns = [
-        // {
-        //     ...tableCols.index,
-        //     render: (_, __, index) => <span>{ index+1 }</span>,
-        // },
-        tableCols.id,
-        tableCols.name,
+    // tab items
+    const items = [
         {
-            ...tableCols.createdAt,
-            render: (_, { created_at }) => (
-                <span>{new Date(created_at).toLocaleDateString()}</span>
-            )
+            key: '1',
+            label: 'Talim turi',
+            children: <AdminDirGroup id={id} />,
         },
         {
-            ...tableCols.updatedAt,
-            render: (_, { updated_at }) => (
-                <span>{new Date(updated_at).toLocaleDateString()}</span>
-            )
+            key: '2',
+            label: 'Talim yonalishi',
+            children: <AdminDir id={id} />,
         },
         {
-            ...tableCols.status,
-            render: (_, { status }) => (
-                <span className={
-                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
-                }>{ status }</span>
-            )
+            key: '3',
+            label: 'Arizalar',
+            children: 'Content of Tab Pane 3',
         },
         {
-            ...tableCols.actions,
-            render: (_, i) => <Actions
-                setModal={setModal}
-                setSelectedItem={setSelectedItem}
-                deleteItem={deleteItem}
-                i={i}
-            />
+            key: '4',
+            label: 'Galereya',
+            children: <AdminGallery id={id} />,
         },
-    ]
-
-
-    // form fields
-    const fields = [
-        { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
     ]
 
 
     return (
-        <div className="other page">
+        <div className="admin-uni other page">
             <div className="container">
                 <Title
-                    title='Talim tili ~ edu-lang'
+                    title={data?.name}
                     setModal={setModal}
+                    additional={<Actions
+                        setModal={setModal}
+                        setSelectedItem={setSelectedItem}
+                        deleteItem={deleteItem}
+                        i={data}
+                    />}
+                    navigate
                     btn
                 />
                 <div className="content">
-                    <Table
-                        columns={columns}
-                        dataSource={data}
-                        scroll={{ x: 750 }}
-                    />
+                    <div className="content__head">
+                        <div className="titles row align-center">
+                            <div className="imgs">
+                                <GetFile className='img' id={data?.logo_id} />
+                                <button className='btn'>
+                                    <i className="fa-regular fa-pen-to-square"/>
+                                </button>
+                            </div>
+                            <div>
+                                <h3 className="title">{ data?.name }</h3>
+                                <span className='txt'>{ data?.address }</span>
+                            </div>
+                        </div>
+                        <div className="labels">
+                            <div className='item'>
+                                <span className='title'>Qoshilgan sanasi:</span>
+                                <span className='txt'>{ new Date(data?.created_at).toLocaleDateString() }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Ozgartirilgan sanasi:</span>
+                                <span className='txt'>{ new Date(data?.updated_at).toLocaleDateString() }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Ariza boshlanishi:</span>
+                                <span className='txt'>{ new Date(data?.application_start).toLocaleDateString() }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Ariza tugashi:</span>
+                                <span className='txt'>{ new Date(data?.application_end).toLocaleDateString() }</span>
+                            </div>
+
+                            <div className='item'>
+                                <span className='title'>Telefon raqam:</span>
+                                <span className='txt'>{ formatPrice(data?.phone_number) }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Email:</span>
+                                <span className='txt'>{ data?.email }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Sayt:</span>
+                                <span className='txt'>{ data?.site }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Region:</span>
+                                <span className='txt'>{ data?.region.name }</span>
+                            </div>
+
+                            <div className='item'>
+                                <span className='title'>Latitude:</span>
+                                <span className='txt'>{ data?.latitude }</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Longitude:</span>
+                                <span className='txt'>{ data?.longitude }</span>
+                            </div>
+                        </div>
+                        <div className='descs'>
+                            <div className='item'>
+                                <span className='title'>Tavsif:</span>
+                                <span className='txt'>{data?.desc}</span>
+                            </div>
+                            <div className='item'>
+                                <span className='title'>Grandlar:</span>
+                                <span className='txt'>{data?.grands}</span>
+                            </div>
+                            <div className="imgs item">
+                                <span className='title'>Rasmi:</span>
+                                <GetFileDef className='img' id={data?.photo_id}/>
+                                <button className='btn'>
+                                    <i className="fa-regular fa-pen-to-square"/>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="content__body">
+                        <Tabs
+                            rootClassName='no-copy'
+                            defaultActiveKey="1"
+                            items={items}
+                            size='large'
+                        />
+                    </div>
                 </div>
             </div>
             <Modal
@@ -164,6 +238,18 @@ const AdminUniId = () => {
                             />
                         </Form.Item>
                     ))}
+
+                    <Form.Item name='desc' label='Tavsif' rules={[{ required: true }]}>
+                        <TextArea rows={3} placeholder='Tavsif' />
+                    </Form.Item>
+                    <Form.Item name='grands' label='Grandlar' rules={[{ required: true }]}>
+                        <TextArea rows={3} placeholder='Grandlar' />
+                    </Form.Item>
+
+                    <Form.Item name='dates'>
+                        <RangePicker size='large' />
+                    </Form.Item>
+
                     <Form.Item
                         name='status'
                         valuePropName="checked"

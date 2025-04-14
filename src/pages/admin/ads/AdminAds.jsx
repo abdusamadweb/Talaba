@@ -6,7 +6,7 @@ import {uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
 import GetFile from "../../../components/get-file/GetFile.jsx";
-import {$resp} from "../../../api/apiResp.js";
+import {$adminResp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../hooks/useCrud.jsx";
@@ -15,7 +15,7 @@ import {CloudUploadOutlined} from "@ant-design/icons";
 
 // fetches
 const fetchData = async () => {
-    const { data } = await $resp.get('/ads/all')
+    const { data } = await $adminResp.get('/ads/all')
     return data
 }
 
@@ -39,7 +39,8 @@ const AdminAds = () => {
 
 
     // add & edit
-    const { addOrEditMutation, deleteMutation } = useCrud('ads', {
+    const { addOrEditMutation, deleteMutation }
+        = useCrud('ads', {
         refetch,
         form,
         setModal,
@@ -79,10 +80,6 @@ const AdminAds = () => {
 
     // table
     const columns = [
-        // {
-        //     ...tableCols.index,
-        //     render: (_, __, index) => <span>{ index+1 }</span>,
-        // },
         tableCols.id,
         tableCols.name,
         {
@@ -114,7 +111,14 @@ const AdminAds = () => {
                     : <Empty description={false} />
             ),
         },
-        tableCols.status,
+        {
+            ...tableCols.status,
+            render: (_, { status }) => (
+                <span className={
+                    `fw500 ${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'yellow'}`
+                }>{ status }</span>
+            )
+        },
         {
             ...tableCols.actions,
             render: (_, i) => <Actions
