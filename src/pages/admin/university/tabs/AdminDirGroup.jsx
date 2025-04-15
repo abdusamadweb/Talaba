@@ -44,7 +44,8 @@ const AdminDirGroup = ({ id }) => {
     const onFormSubmit = (values) => {
         const body = {
             ...values,
-            status: values.status ? 'active' : 'inactive'
+            status: values.status ? 'active' : 'inactive',
+            university_id: id
         }
 
         addOrEditMutation.mutate({

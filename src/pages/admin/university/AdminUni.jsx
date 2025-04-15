@@ -56,12 +56,9 @@ const AdminUni = () => {
         const body = {
             ...rest,
             status: values.status ? 'active' : 'inactive',
-            // application_start: new Date(dates[0].$d)?.getTime(),
-            // application_end: new Date(dates[1].$d)?.getTime(),
-            application_start: new Date(dates[0].$d).getTime(),
-            application_end: new Date(dates[1].$d),
+            application_start: dates ? dates?.[0]?.valueOf() : new Date(selectedItem?.application_start).getTime(),
+            application_end: dates ? dates?.[1]?.valueOf() : new Date(selectedItem?.application_end).getTime(),
         }
-        console.log(body)
 
         addOrEditMutation.mutate({
             values: body,
@@ -193,7 +190,13 @@ const AdminUni = () => {
                         <TextArea rows={3} placeholder='Grandlar' />
                     </Form.Item>
 
-                    <Form.Item name='dates' label='Ariza sanasi'>
+                    <Form.Item
+                        name='dates'
+                        rules={[{ required: true }]}
+                        label={`Ariza sanasi:
+                         ${new Date(selectedItem?.application_start).toLocaleDateString()}
+                         ~ ${new Date(selectedItem?.application_end).toLocaleDateString()}`}
+                    >
                         <RangePicker size='large' />
                     </Form.Item>
 

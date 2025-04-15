@@ -23,6 +23,9 @@ importers:
       axios:
         specifier: ^1.8.2
         version: 1.8.2
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       imask:
         specifier: ^7.6.1
         version: 7.6.1

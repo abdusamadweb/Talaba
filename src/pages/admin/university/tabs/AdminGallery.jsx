@@ -69,10 +69,13 @@ const AdminGallery = ({ id }) => {
     useEffect(() => {
         if (selectedItem) {
             form.setFieldsValue(selectedItem)
+            setYt(selectedItem.is_youtube)
         } else {
             form.resetFields()
         }
     }, [form, selectedItem])
+
+    const [yt, setYt] = useState(false)
 
 
     // table
@@ -124,11 +127,6 @@ const AdminGallery = ({ id }) => {
     ]
 
 
-    // form fields
-    const [link, setLink] = useState(false)
-    useEffect(() => setLink(selectedItem?.link), [selectedItem])
-
-
     return (
         <div className="tab-content">
             <Title
@@ -152,7 +150,7 @@ const AdminGallery = ({ id }) => {
                 onCancel={() => {
                     setModal('close')
                     setSelectedItem(null)
-                    setLink(false)
+                    setYt(false)
                 }}
             >
                 <Form
@@ -161,23 +159,28 @@ const AdminGallery = ({ id }) => {
                     validateMessages={validateMessages}
                     form={form}
                 >
-                    {
-                        !selectedItem?.photo_id & file === null ?
-                        <Form.Item
-                            name='link'
-                            label="Link"
-                            onChange={(e) => setLink(e.target.value)}
-                        >
-                            <Input placeholder="Link" />
-                        </Form.Item> : <></>
-                    }
+                    <Form.Item
+                        name='is_youtube'
+                        valuePropName="checked"
+                        onChange={(e) => setYt(e.target.checked)}
+                    >
+                        <Checkbox className='no-copy'>Youtube?</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                        name='link'
+                        label="Link"
+                        rules={[{ required: true }]}
+                    >
+                        <Input placeholder="Link" />
+                    </Form.Item>
 
                     {
-                        !link &&
+                        !yt &&
                         <Form.Item
                             className='form-inp docs'
                             label="Rasmlar ( 5mb dan kam bolgan holda! )"
                             name="photo_id"
+                            rules={[{ required: !yt, message: '' }]}
                         >
                             <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile(e.file.percent)}>
                                 <Input
