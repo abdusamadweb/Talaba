@@ -88,6 +88,15 @@
   }
 
   .ant-table {
+
+    .korish-btn {
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 10px;
+      color: #4b4646;
+      background: #3e97ff30;
+    }
+
     &-cell {
       text-align: center !important;
     }
@@ -252,7 +261,105 @@
 }
 
 .main-modal {
-  top: 20px;
-  margin-right: 20px;
+  position: relative;
+  top: 1rem;
+  margin-right: 1rem;
+
+  .edu-add-btn {
+    position: absolute;
+    top: 20px;
+    right: 55px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-block: 18px;
+    border: none;
+    color: #fff;
+    background: $main-color;
+
+    &:hover {
+      color: #fff !important;
+      background: $main-color !important;
+    }
+  }
+
+  .ant-table {
+
+    &-cell {
+      text-align: center !important;
+    }
+
+    .ant-tag {
+      font-weight: 500;
+      padding: 0 10px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      &__btn {
+        width: 33px;
+        height: 33px;
+        padding: 5px;
+        border-radius: 10px;
+        background: #979da920;
+        transition: opacity 0.3s ease;
+
+        &.view {
+          background: #3e97ff20;
+
+          i {
+            color: #3e97ff;
+          }
+        }
+        &.edit {
+          background: #ffb62c20;
+
+          i {
+            color: #ffb62c;
+          }
+        }
+        &.delete {
+          background: #ed2b4620;
+
+          i {
+            color: #ed2b46;
+          }
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        i {
+          color: #979da9;
+        }
+      }
+    }
+
+    .green {
+      color: #00c020;
+    }
+    .red {
+      color: #ed2b46;
+    }
+    .yellow {
+      color: #ffb62c;
+    }
+  }
+
+  .ant-pagination {
+    margin-bottom: 0 !important;
+  }
+
+  .ant-select {
+
+    &-item-option-content {
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
 }
 

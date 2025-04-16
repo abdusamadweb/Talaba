@@ -6,7 +6,7 @@ import {Upload} from "antd";
 
 // form
 export const validateMessages = {
-    required: '${label} толдирилиши шарт!',
+    required: '${label} toldirilishi shart!',
 }
 
 
