@@ -69,6 +69,7 @@ const AdminUni = () => {
     const deleteItem = (id) => {
         deleteMutation.mutate(id)
     }
+    console.log(selectedItem?.application_start)
 
 
     // form
@@ -192,7 +193,7 @@ const AdminUni = () => {
 
                     <Form.Item
                         name='dates'
-                        rules={[{ required: true }]}
+                        rules={[{ required: !selectedItem }]}
                         label={`Ariza sanasi:
                          ${new Date(selectedItem?.application_start).toLocaleDateString()}
                          ~ ${new Date(selectedItem?.application_end).toLocaleDateString()}`}

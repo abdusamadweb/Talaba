@@ -1,8 +1,8 @@
 import './style.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, DatePicker, Form, Input, Modal, Tabs} from "antd";
-import {formatPrice, validateMessages} from "../../../assets/scripts/global.js";
+import {Button, Checkbox, DatePicker, Form, Input, Modal, Tabs, Upload} from "antd";
+import {formatPhone, formatPrice, uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
 import {$adminResp} from "../../../api/apiResp.js";
@@ -15,6 +15,7 @@ import GetFileDef from "../../../components/get-file/GetFileDef.jsx";
 import AdminDirGroup from "./tabs/AdminDirGroup.jsx";
 import AdminGallery from "./tabs/AdminGallery.jsx";
 import AdminDir from "./tabs/AdminDir.jsx";
+import toast from "react-hot-toast";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
@@ -28,6 +29,9 @@ const AdminUniId = () => {
 
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
+
+    const [file, setFile] = useState(null)
+    const [data1, setData1] = useState()
 
 
     // fetch
@@ -57,9 +61,12 @@ const AdminUniId = () => {
     })
 
     const onFormSubmit = (values) => {
+        const { dates, ...rest } = values
         const body = {
-            ...values,
-            status: values.status ? 'active' : 'inactive'
+            ...rest,
+            status: values.status ? 'active' : 'inactive',
+            application_start: dates ? dates?.[0]?.valueOf() : new Date(selectedItem?.application_start).getTime(),
+            application_end: dates ? dates?.[1]?.valueOf() : new Date(selectedItem?.application_end).getTime(),
         }
 
         addOrEditMutation.mutate({
@@ -108,6 +115,28 @@ const AdminUniId = () => {
     ]
 
 
+    // img upload
+    const onLogoChange = (info) => {
+        if (info.file.status === 'uploading') return;
+
+        if (info.file.status === 'done') {
+            const newLogoId = info.file.response?.files?.[0]?.id;
+
+            if (newLogoId) {
+                setData1(prev => ({ ...prev, logo_id: newLogoId }));
+                toast.success('Logo yangilandi ✅');
+            } else {
+                toast.error('Fayl ID topilmadi ❌');
+            }
+
+            setFile(null); // сбрасываем загрузку
+        } else if (info.file.status === 'error') {
+            toast.error('Yuklashda xatolik ❌');
+        }
+    };
+
+
+
     return (
         <div className="admin-uni other page">
             <div className="container">
@@ -130,6 +159,9 @@ const AdminUniId = () => {
                                 <GetFile className='img' id={data?.logo_id} />
                                 <button className='btn'>
                                     <i className="fa-regular fa-pen-to-square"/>
+                                    <Upload {...uploadProps} onChange={onLogoChange}>
+                                        <Input />
+                                    </Upload>
                                 </button>
                             </div>
                             <div>
@@ -157,7 +189,7 @@ const AdminUniId = () => {
 
                             <div className='item'>
                                 <span className='title'>Telefon raqam:</span>
-                                <span className='txt'>{ formatPrice(data?.phone_number) }</span>
+                                <span className='txt'>{ formatPhone(data?.phone_number) }</span>
                             </div>
                             <div className='item'>
                                 <span className='title'>Email:</span>
@@ -246,7 +278,13 @@ const AdminUniId = () => {
                         <TextArea rows={3} placeholder='Grandlar' />
                     </Form.Item>
 
-                    <Form.Item name='dates'>
+                    <Form.Item
+                        name='dates'
+                        rules={[{ required: !selectedItem }]}
+                        label={`Ariza sanasi:
+                         ${new Date(selectedItem?.application_start).toLocaleDateString()}
+                         ~ ${new Date(selectedItem?.application_end).toLocaleDateString()}`}
+                    >
                         <RangePicker size='large' />
                     </Form.Item>
 

@@ -105,7 +105,6 @@ const AdminDir = ({ id }) => {
             contract_price: values.contract_price | 0,
             university_id: id,
         }
-        console.log(body)
 
         addOrEditMutation.mutate({
             values: body,
