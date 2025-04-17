@@ -75,10 +75,7 @@ const News = () => {
                                     other?.data.map((i, index) => (
                                         <NewsCard
                                             key={index}
-                                            id={i?.id}
-                                            txt={1}
-                                            desc={1}
-                                            img={1}
+                                            i={i}
                                         />
                                     ))
                                     : <Empty description={false}/>
