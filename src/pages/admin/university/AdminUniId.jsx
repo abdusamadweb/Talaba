@@ -15,8 +15,8 @@ import GetFileDef from "../../../components/get-file/GetFileDef.jsx";
 import AdminDirGroup from "./tabs/AdminDirGroup.jsx";
 import AdminGallery from "./tabs/AdminGallery.jsx";
 import AdminDir from "./tabs/AdminDir.jsx";
-import toast from "react-hot-toast";
 import {CloudUploadOutlined} from "@ant-design/icons";
+import AdminApps from "./tabs/AdminApps.jsx";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
@@ -110,7 +110,7 @@ const AdminUniId = () => {
         {
             key: '3',
             label: 'Arizalar',
-            children: 'Content of Tab Pane 3',
+            children: <AdminApps id={id} />,
         },
         {
             key: '4',

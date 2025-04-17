@@ -1,16 +1,27 @@
 import React from 'react';
 import {Popconfirm} from "antd";
 
-const Actions = ({ i, setModal, setSelectedItem, deleteItem }) => {
+const Actions = ({ i, setModal, setSelectedItem, deleteItem, view }) => {
 
     return (
         <div className="actions">
-            <button className='actions__btn edit' onClick={() => {
-                setModal('edit')
-                setSelectedItem(i)
-            }}>
-                <i className="fa-regular fa-pen-to-square"/>
-            </button>
+            {
+                view ?
+                    <button className='actions__btn view' onClick={() => {
+                        setModal('view')
+                        setSelectedItem(i)
+                    }}>
+                        <i className="fa-solid fa-eye"/>
+                    </button>
+                    :
+                    <button className='actions__btn edit' onClick={() => {
+                        setModal('edit')
+                        setSelectedItem(i)
+                    }}>
+                        <i className="fa-regular fa-pen-to-square"/>
+                    </button>
+            }
+
             <Popconfirm
                 title="Ochirishni xolisizmi?"
                 description=' '
