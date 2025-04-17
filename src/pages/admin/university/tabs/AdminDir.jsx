@@ -127,8 +127,9 @@ const AdminDir = ({ id }) => {
     })
 
     const onFormSubmit2 = (values) => {
+        const { year: _, ...rest } = values
         const body = {
-            ...values,
+            ...rest,
             years: values.year,
             type: values.name,
             status: values.status ? 'active' : 'inactive',

@@ -2,7 +2,7 @@ import './style.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
 import {Button, Checkbox, DatePicker, Form, Input, Modal, Tabs, Upload} from "antd";
-import {formatPhone, formatPrice, uploadProps, validateMessages} from "../../../assets/scripts/global.js";
+import {formatPhone, uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
 import {$adminResp} from "../../../api/apiResp.js";
@@ -16,6 +16,7 @@ import AdminDirGroup from "./tabs/AdminDirGroup.jsx";
 import AdminGallery from "./tabs/AdminGallery.jsx";
 import AdminDir from "./tabs/AdminDir.jsx";
 import toast from "react-hot-toast";
+import {CloudUploadOutlined} from "@ant-design/icons";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
@@ -30,8 +31,9 @@ const AdminUniId = () => {
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
 
-    const [file, setFile] = useState(null)
-    const [data1, setData1] = useState()
+    const [file1, setFile1] = useState(null)
+    const [file2, setFile2] = useState(null)
+
 
 
     // fetch
@@ -65,9 +67,12 @@ const AdminUniId = () => {
         const body = {
             ...rest,
             status: values.status ? 'active' : 'inactive',
-            application_start: dates ? dates?.[0]?.valueOf() : new Date(selectedItem?.application_start).getTime(),
-            application_end: dates ? dates?.[1]?.valueOf() : new Date(selectedItem?.application_end).getTime(),
+            application_start: dates?.[0]?.valueOf() || selectedItem?.application_start,
+            application_end: dates?.[1]?.valueOf() || selectedItem?.application_end,
+            logo_id: values.logo_id?.file?.response?.files[0]?.id || selectedItem?.logo_id,
+            photo_id: values.photo_id?.file?.response?.files[0]?.id || selectedItem?.photo_id,
         }
+        console.log(body)
 
         addOrEditMutation.mutate({
             values: body,
@@ -115,27 +120,6 @@ const AdminUniId = () => {
     ]
 
 
-    // img upload
-    const onLogoChange = (info) => {
-        if (info.file.status === 'uploading') return;
-
-        if (info.file.status === 'done') {
-            const newLogoId = info.file.response?.files?.[0]?.id;
-
-            if (newLogoId) {
-                setData1(prev => ({ ...prev, logo_id: newLogoId }));
-                toast.success('Logo yangilandi ✅');
-            } else {
-                toast.error('Fayl ID topilmadi ❌');
-            }
-
-            setFile(null); // сбрасываем загрузку
-        } else if (info.file.status === 'error') {
-            toast.error('Yuklashda xatolik ❌');
-        }
-    };
-
-
 
     return (
         <div className="admin-uni other page">
@@ -157,12 +141,6 @@ const AdminUniId = () => {
                         <div className="titles row align-center">
                             <div className="imgs">
                                 <GetFile className='img' id={data?.logo_id} />
-                                <button className='btn'>
-                                    <i className="fa-regular fa-pen-to-square"/>
-                                    <Upload {...uploadProps} onChange={onLogoChange}>
-                                        <Input />
-                                    </Upload>
-                                </button>
                             </div>
                             <div>
                                 <h3 className="title">{ data?.name }</h3>
@@ -225,9 +203,6 @@ const AdminUniId = () => {
                             <div className="imgs item">
                                 <span className='title'>Rasmi:</span>
                                 <GetFileDef className='img' id={data?.photo_id}/>
-                                <button className='btn'>
-                                    <i className="fa-regular fa-pen-to-square"/>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -257,6 +232,35 @@ const AdminUniId = () => {
                     validateMessages={validateMessages}
                     form={form}
                 >
+                    <Form.Item
+                        className='form-inp docs'
+                        label="Logo ( 5mb dan kam bolgan holda! )"
+                        name="logo_id"
+                    >
+                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile1(e.file.percent)}>
+                            <Input
+                                rootClassName={`upload-inp ${file1 !== null && 'change-icon'}`}
+                                size='large'
+                                suffix={<CloudUploadOutlined/>}
+                                prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
+                            />
+                        </Upload>
+                    </Form.Item>
+                    <Form.Item
+                        className='form-inp docs'
+                        label="Rasm ( 5mb dan kam bolgan holda! )"
+                        name="photo_id"
+                    >
+                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile2(e.file.percent)}>
+                            <Input
+                                rootClassName={`upload-inp ${file2 !== null && 'change-icon'}`}
+                                size='large'
+                                suffix={<CloudUploadOutlined/>}
+                                prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
+                            />
+                        </Upload>
+                    </Form.Item>
+
                     {fields.map((item) => (
                         <Form.Item
                             key={item.name}

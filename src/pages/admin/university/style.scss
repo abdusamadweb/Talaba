@@ -132,20 +132,11 @@
           width: 100%;
           height: 100%;
 
-          .btn {
-            position: absolute;
-            right: 15px;
-            bottom: 0;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            border: 1px solid $main-color;
-            background: #fff;
-
-            i {
-              font-size: 12px;
-              color: #555;
-            }
+          .ant-image, .ant-image-img, .ant-image-mask {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            object-fit: contain;
           }
         }
       }

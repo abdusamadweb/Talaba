@@ -27,6 +27,7 @@ export const formatPrice = (price) => {
 // format phone number
 export const formatPhone = (str) => {
     const mask = "+### ## ### ## ##"
+    if (!str) return mask
     if (!mask) return str
     const numeric = str?.replaceAll(/[^\d]/g, "")
     let idx = 0
