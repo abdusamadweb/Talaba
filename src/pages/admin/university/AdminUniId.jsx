@@ -189,7 +189,7 @@ const AdminUniId = () => {
 
                             <div className='item'>
                                 <span className='title'>Telefon raqam:</span>
-                                <span className='txt'>{ formatPhone(data?.phone_number) }</span>
+                                <span className='txt'>{ data ? formatPhone(data?.phone_number) : 0 }</span>
                             </div>
                             <div className='item'>
                                 <span className='title'>Email:</span>
