@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Title from "../../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, Form, Input, Modal, Table} from "antd";
-import {formatPhone, validateMessages} from "../../../../assets/scripts/global.js";
+import {Button, Checkbox, Form, Input, Modal, Select, Slider, Table} from "antd";
+import {formatPhone, formatPrice, validateMessages} from "../../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$adminResp, $resp} from "../../../../api/apiResp.js";
+import {$adminResp} from "../../../../api/apiResp.js";
 import {tableCols} from "../../../../components/admin/table/columns.js";
 import Actions from "../../../../components/admin/table/Actions.jsx";
 import {useCrud} from "../../../../hooks/useCrud.jsx";
@@ -14,7 +14,7 @@ import GetFile from "../../../../components/get-file/GetFile.jsx";
 
 const fetchApps = async ({ queryKey }) => {
     const [, params, body] = queryKey
-    const { data } = await $resp.post('/application/all', body, { params })
+    const { data } = await $adminResp.post('/application/all', body, { params })
     return data
 }
 
@@ -25,22 +25,51 @@ const AdminApps = ({ id }) => {
 
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    const [selUni, setSelUni] = useState(null)
+    const [selDir, setSelDir] = useState(null)
+    const [selType, setSelType] = useState(null)
+    const [q, setQ] = useState('')
+    const [status, setStatus] = useState('inactive')
 
 
     // filter data
     const [params, setParams] = useState({ page: 1, size: 20 })
     const [body, setBody] = useState({
         search: '',
-        university_id: id,
+        university_id: null,
+        main_direction_id: null,
         edu_type: null,
-        main_direction_id: null
+        status: null,
+
+        fromPrice: null,
+        toPrice: null
     })
 
-    const { data, isLoading: loading, refetch } = useQuery({
+    const { data, refetch } = useQuery({
         queryKey: ['filteredData', params, body],
         queryFn: fetchApps,
         keepPreviousData: true,
     })
+
+    const updateFilters = () => {
+        setLoading(true)
+
+        setParams({ page: 1, size: 20 })
+        setBody({
+            search: q,
+            university_id: selUni,
+            main_direction_id: selDir,
+            edu_type: selType,
+            status: status,
+
+            fromPrice: ranges.from,
+            toPrice: ranges.to
+        })
+        refetch()
+        setTimeout(() => setLoading(false), 1000)
+    }
 
 
     // add & edit
@@ -155,7 +184,47 @@ const AdminApps = ({ id }) => {
     const fields = [
         { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
     ]
-    console.log(selectedItem)
+
+
+    // fetch for select
+    const fetchUni = async () => {
+        const { data } = await $adminResp.get(`/university/all`)
+        return data
+    }
+    const { data: uni } = useQuery({
+        queryKey: ['university'],
+        queryFn: fetchUni,
+        keepPreviousData: true,
+    })
+
+    const fetchDir = async () => {
+        const { data } = await $adminResp.get(`/main-direction/all`)
+        return data
+    }
+    const { data: dir } = useQuery({
+        queryKey: ['main-direction'],
+        queryFn: fetchDir,
+        keepPreviousData: true,
+    })
+
+    const fetchType = async () => {
+        const { data } = await $adminResp.get(`/edu-d-group/all-by-unv/${selUni}`)
+        return data
+    }
+    const { data: type } = useQuery({
+        queryKey: ['edu-type-id', selUni],
+        queryFn: fetchType,
+        enabled: !!selUni,
+        keepPreviousData: true,
+    })
+
+    const [ranges, setRanges] = useState({
+        from: 5000000,
+        to: 100000000,
+    })
+    const changeRange = (val) => {
+        return setRanges({from: val[0]*1000000, to: val[1]*1000000})
+    }
 
 
     return (
@@ -166,10 +235,81 @@ const AdminApps = ({ id }) => {
                 className='d-flex'
             />
             <div className="content">
+                <div className='filters'>
+                    <div>
+                        <div className="row">
+                            <Select
+                                showSearch
+                                placeholder="Universitet tanlang"
+                                optionFilterProp="label"
+                                options={uni?.data?.map(i => ({
+                                    value: i.id,
+                                    label: i.name
+                                }))}
+                                onChange={(e) => setSelUni(e)}
+                            />
+                            <Select
+                                showSearch
+                                placeholder="Asosiy yonalish tanlang"
+                                optionFilterProp="label"
+                                options={dir?.map(i => ({
+                                    value: i.id,
+                                    label: i.name
+                                }))}
+                                onChange={(e) => setSelDir(e)}
+                            />
+                            <Select
+                                showSearch
+                                placeholder="Talim darajasi tanlang"
+                                optionFilterProp="label"
+                                options={type?.map(i => ({
+                                    value: i.id,
+                                    label: i.name
+                                }))}
+                                onChange={(e) => setSelType(e)}
+                            />
+                            <div className="range">
+                                <Slider
+                                    range
+                                    step={5}
+                                    defaultValue={[5, 100]}
+                                    onChange={changeRange}
+                                />
+                                <div className="row between">
+                                    <span className='txt'>{formatPrice(ranges.from) || 0} UZS</span>
+                                    <span className='txt'>{formatPrice(ranges.to) || 0} UZS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="d-flex align-center">
+                            <Input
+                                className='inp'
+                                size='large'
+                                suffix={<i className="fa-solid fa-magnifying-glass"/>}
+                                placeholder='Qidirish . . .'
+                                onChange={(e) => setQ(e.target.value)}
+                            />
+                            <Checkbox
+                                className='no-copy'
+                                onChange={e => setStatus(e.target.checked ? 'active' : 'inactive')}
+                            >
+                                Status
+                            </Checkbox>
+                        </div>
+                    </div>
+                    <Button
+                        className='btn'
+                        type="primary"
+                        onClick={updateFilters}
+                        loading={loading}
+                    >
+                        Qidirish
+                    </Button>
+                </div>
                 <Table
                     columns={columns}
                     dataSource={data?.data}
-                    scroll={{ x: 750 }}
+                    scroll={{x: 750}}
                 />
             </div>
             <Modal
@@ -193,7 +333,7 @@ const AdminApps = ({ id }) => {
                             key={item.name}
                             name={item.name}
                             label={item.label}
-                            rules={[{ required: item.required }]}
+                            rules={[{required: item.required}]}
                         >
                             <Input
                                 placeholder={item.placeholder}

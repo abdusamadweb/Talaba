@@ -99,7 +99,7 @@ const AdminUniId = () => {
     const items = [
         {
             key: '1',
-            label: 'Talim turi',
+            label: 'Talim darajasi',
             children: <AdminDirGroup id={id} />,
         },
         {
@@ -179,7 +179,7 @@ const AdminUniId = () => {
                             </div>
                             <div className='item'>
                                 <span className='title'>Region:</span>
-                                <span className='txt'>{ data?.region.name }</span>
+                                <span className='txt'>{ data?.region?.name }</span>
                             </div>
 
                             <div className='item'>

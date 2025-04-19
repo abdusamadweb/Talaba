@@ -160,6 +160,28 @@
 
     .content {
       padding-top: 0;
+
+      .filters {
+        margin-bottom: 1rem;
+
+        .range {
+          width: 40%;
+          padding-inline: 10px;
+        }
+
+        .row {
+          gap: 10px;
+        }
+        .d-flex {
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+
+        .inp {
+          width: 100%;
+          font-size: 14px;
+        }
+      }
     }
   }
 }

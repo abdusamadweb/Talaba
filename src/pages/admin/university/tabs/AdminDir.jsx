@@ -83,7 +83,6 @@ const AdminDir = ({ id }) => {
         enabled: !!selectedType?.id, // ✅ запустится только если есть ID
         keepPreviousData: true,
     })
-    console.log(eduType)
 
 
     // add & edit
@@ -100,9 +99,7 @@ const AdminDir = ({ id }) => {
     const onFormSubmit = (values) => {
         const body = {
             ...values,
-            edu_type: [values.edu_type],
             status: values.status ? 'active' : 'inactive',
-            contract_price: values.contract_price | 0,
             university_id: id,
         }
 
@@ -174,6 +171,20 @@ const AdminDir = ({ id }) => {
         tableCols.id,
         tableCols.name,
         {
+            title: "Talim tili",
+            dataIndex: 'edu_langs',
+            key: 'edu_langs',
+            render: (_, { edu_langs }) => (
+                <ul className='row center' style={{gap: '5px 10px'}}>
+                    {
+                        edu_langs?.map(i => (
+                            <li key={i.id}>{i.name}</li>
+                        ))
+                    }
+                </ul>
+            )
+        },
+        {
             title: 'Talim shakli',
             dataIndex: 'year',
             key: 'year',
@@ -241,7 +252,6 @@ const AdminDir = ({ id }) => {
     // form fields
     const fields = [
         { name: 'name', label: 'Nomi', type: 'text', required: true, placeholder: 'Nomi' },
-        { name: 'contract_price', label: 'Kontrakt narxi', type: 'number', required: true, placeholder: 'Kontrakt narxi' },
     ]
     const fields2 = [
         { name: 'year', label: 'Yili', type: 'number', required: true, placeholder: 'Yili' },
@@ -314,12 +324,12 @@ const AdminDir = ({ id }) => {
                     </Form.Item>
                     <Form.Item
                         name='main_direction_id'
-                        label='Talim yonalishi'
+                        label='Asosiy talim yonalishi ( Filter uchun )'
                         rules={[{ required: true }]}
                     >
                         <Select
                             size="large"
-                            placeholder="Talim yonalishi"
+                            placeholder="Asosiy talim yonalishi ( Filter uchun )"
                             options={mainDirs?.map(i => ({
                                 value: i.id,
                                 label: i.name,
@@ -347,6 +357,7 @@ const AdminDir = ({ id }) => {
                         rules={[{ required: true }]}
                     >
                         <Select
+                            mode="multiple"
                             size="large"
                             placeholder="Talim shakli"
                             options={[
