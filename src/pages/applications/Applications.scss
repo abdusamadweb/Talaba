@@ -144,6 +144,16 @@
 
 .cancel-modal {
 
+  &.admin-cancel-modal {
+
+    .title {
+      margin-bottom: 1rem;
+    }
+    .ant-modal-content {
+      padding-bottom: 1rem;
+    }
+  }
+
   .ant-modal {
     max-width: calc(100vw - 30px);
 

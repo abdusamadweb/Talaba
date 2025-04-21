@@ -7,7 +7,7 @@ import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
 import {$adminResp} from "../../../api/apiResp.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
-import {useCrud} from "../../../hooks/useCrud.jsx";
+import {getRequest, useCrud} from "../../../hooks/useCrud.jsx";
 import {useParams} from "react-router-dom";
 import {fields} from "./formFields.js";
 import GetFile from "../../../components/get-file/GetFile.jsx";
@@ -37,10 +37,7 @@ const AdminUniId = () => {
 
 
     // fetch
-    const fetchData = async () => {
-        const { data } = await $adminResp.get(`/university/get/${id}`)
-        return data
-    }
+    const fetchData = () => getRequest(`/university/get/${id}`)
     const { data: uni, refetch } = useQuery({
         queryKey: ['university-id', id],
         queryFn: fetchData,

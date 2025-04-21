@@ -4,17 +4,13 @@ import {Button, Checkbox, Form, Input, Modal, Table} from "antd";
 import {validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$adminResp} from "../../../api/apiResp.js";
 import {tableCols} from "../../../components/admin/table/columns.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
-import {useCrud} from "../../../hooks/useCrud.jsx";
+import {getRequest, useCrud} from "../../../hooks/useCrud.jsx";
 
 
 // fetches
-const fetchData = async () => {
-    const { data } = await $adminResp.get('/regions/all')
-    return data
-}
+const fetchData = () => getRequest(`/regions/all`)
 
 
 const AdminRegions = () => {

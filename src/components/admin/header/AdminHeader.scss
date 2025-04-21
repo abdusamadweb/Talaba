@@ -28,7 +28,22 @@
   }
 
   .container {
+    height: 100%;
     padding-inline: 1rem;
+  }
+
+  .log-out {
+    width: 50px;
+    font-size: 22px;
+
+    @include tablet {
+      position: relative;
+      right: 12px;
+    }
+    @include mobile {
+      font-size: 18px;
+      right: 22px;
+    }
   }
 
   &__logos {

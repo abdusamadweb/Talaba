@@ -1,6 +1,26 @@
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-hot-toast'
-import {useNavigate} from "react-router-dom";
+import {useMutation} from '@tanstack/react-query'
+import {toast} from 'react-hot-toast'
+import {$adminResp} from "../api/apiResp.js";
+
+export const logout = () => {
+    localStorage.clear()
+    setTimeout(() => window.location.href = '/admin/login', 1000)
+}
+
+export const getRequest = async (url, config = {}) => {
+    try {
+        const { data } = await $adminResp.get(url, config)
+        return data
+    } catch (error) {
+        if (error?.response?.status === 403) {
+            toast.error("Sessiya tugagan. Qayta kiring.")
+            logout()
+        } else {
+            toast.error("Xatolik yuz berdi")
+        }
+        throw error
+    }
+}
 
 export const useCrud = (key, options) => {
 
@@ -12,8 +32,6 @@ export const useCrud = (key, options) => {
         addOrEdit,
         deleteData
     } = options
-
-    const navigate = useNavigate()
 
     const addOrEditMutation = useMutation({
         mutationFn: ({ values, selectedItem }) => {
@@ -36,8 +54,7 @@ export const useCrud = (key, options) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
 
             if (err.status === 403) {
-                localStorage.removeItem('admin-token')
-                setTimeout(() => navigate('/admin/login'), 1000)
+                logout()
             }
         }
     })
@@ -52,8 +69,7 @@ export const useCrud = (key, options) => {
             toast.error(`Ошибка: ${err.response?.data?.message || err.message}`)
 
             if (err.status === 403) {
-                localStorage.removeItem('admin-token')
-                setTimeout(() => navigate('/admin/login'), 1000)
+                logout()
             }
         }
     })
