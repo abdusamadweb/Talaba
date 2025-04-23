@@ -27,7 +27,6 @@ const AdminApps = ({ id }) => {
     const [selectedItem, setSelectedItem] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    const [selUni, setSelUni] = useState(null)
     const [selDir, setSelDir] = useState(null)
     const [selType, setSelType] = useState(null)
     const [q, setQ] = useState('')
@@ -59,7 +58,7 @@ const AdminApps = ({ id }) => {
         setParams({ page: 1, size: 20 })
         setBody({
             search: q,
-            university_id: selUni,
+            university_id: id,
             main_direction_id: selDir,
             edu_type: selType,
             status: status,
@@ -115,14 +114,6 @@ const AdminApps = ({ id }) => {
     const columns = [
         tableCols.id,
         {
-            title: 'Universitet nomi',
-            dataIndex: 'university',
-            key: 'university',
-            render: (_, item) => (
-                <span>{ item.university.name }</span>
-            )
-        },
-        {
             title: 'Yonalishi',
             dataIndex: 'edu_direction_name',
             key: 'edu_direction_name',
@@ -160,6 +151,15 @@ const AdminApps = ({ id }) => {
             )
         },
         {
+            title: 'Hujjat',
+            dataIndex: 'diploma_file_id',
+            key: 'diploma_file_id',
+            render: (diploma_file_id) => (
+                diploma_file_id ? <GetFile className='ant-image-img' id={diploma_file_id}/>
+                    : <span>_</span>
+            ),
+        },
+        {
             ...tableCols.status,
             render: (_, { status }) => (
                 <span className={
@@ -187,16 +187,6 @@ const AdminApps = ({ id }) => {
 
 
     // fetch for select
-    const fetchUni = async () => {
-        const { data } = await $adminResp.get(`/university/all`)
-        return data
-    }
-    const { data: uni } = useQuery({
-        queryKey: ['university'],
-        queryFn: fetchUni,
-        keepPreviousData: true,
-    })
-
     const fetchDir = async () => {
         const { data } = await $adminResp.get(`/main-direction/all`)
         return data
@@ -208,13 +198,13 @@ const AdminApps = ({ id }) => {
     })
 
     const fetchType = async () => {
-        const { data } = await $adminResp.get(`/edu-d-group/all-by-unv/${selUni}`)
+        const { data } = await $adminResp.get(`/edu-d-group/all-by-unv/${id}`)
         return data
     }
     const { data: type } = useQuery({
-        queryKey: ['edu-type-id', selUni],
+        queryKey: ['edu-type-id', id],
         queryFn: fetchType,
-        enabled: !!selUni,
+        enabled: !!id,
         keepPreviousData: true,
     })
 
@@ -238,16 +228,6 @@ const AdminApps = ({ id }) => {
                 <div className='filters'>
                     <div>
                         <div className="row">
-                            <Select
-                                showSearch
-                                placeholder="Universitet tanlang"
-                                optionFilterProp="label"
-                                options={uni?.data?.map(i => ({
-                                    value: i.id,
-                                    label: i.name
-                                }))}
-                                onChange={(e) => setSelUni(e)}
-                            />
                             <Select
                                 showSearch
                                 placeholder="Asosiy yonalish tanlang"
@@ -390,12 +370,20 @@ const AdminApps = ({ id }) => {
                     <div className='content__body'>
                         <div>
                             <div className="items">
-                                <span className='title'>Passport seriyasi:</span>
-                                <span className="txt">{ selectedItem?.user?.passport_code }</span>
+                                <span className='title'>Regestratsiyadan otkan sanasi:</span>
+                                <span
+                                    className="txt">{new Date(selectedItem?.user?.created_at).toLocaleDateString()}</span>
                             </div>
                             <div className="items">
-                                <span className='title'>Regestratsiyadan otkan sanasi:</span>
-                                <span className="txt">{ new Date(selectedItem?.user?.created_at).toLocaleDateString() }</span>
+                                <span className='title'>Passport seriyasi:</span>
+                                <span className="txt">{selectedItem?.user?.passport_code}</span>
+                            </div>
+                            <div className="items">
+                                <span className="title">Dokumentlar:</span>
+                                <div className="row g1">
+                                    <GetFile id={selectedItem?.user?.diploma_file_id} />
+                                    <GetFile id={selectedItem?.user?.passport_file_id} />
+                                </div>
                             </div>
                         </div>
                     </div>

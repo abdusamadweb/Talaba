@@ -164,13 +164,18 @@
       .filters {
         margin-bottom: 1rem;
 
+        .ant-select-selector {
+          width: 200px;
+        }
+
         .range {
-          width: 40%;
+          width: 45%;
           padding-inline: 10px;
         }
 
         .row {
           gap: 10px;
+          margin-bottom: 5px;
         }
         .d-flex {
           gap: 10px;

@@ -5,6 +5,10 @@ const AdminNavBar = ({ openMenu, setOpenMenu }) => {
 
     const nav = [
         {
+            name: 'Statistika',
+            link: '/admin/dashboard'
+        },
+        {
             name: 'Universitetlar',
             link: '/admin/university'
         },
@@ -27,6 +31,18 @@ const AdminNavBar = ({ openMenu, setOpenMenu }) => {
         {
             name: 'Regionlar',
             link: '/admin/regions'
+        },
+        {
+            name: 'Tizim userlari',
+            link: '/admin/system-users'
+        },
+        {
+            name: 'Bot userlari',
+            link: '/admin/bot-users'
+        },
+        {
+            name: 'Xabar',
+            link: '/admin/sms'
         },
     ]
 

@@ -35,6 +35,9 @@ import AdminNews from "./pages/admin/news/AdminNews.jsx";
 import AdminHeader from "./components/admin/header/AdminHeader.jsx";
 import AdminUni from "./pages/admin/university/AdminUni.jsx";
 import AdminUniId from "./pages/admin/university/AdminUniId.jsx";
+import SystemUsers from "./pages/admin/system-users/SystemUsers.jsx";
+import BotUsers from "./pages/admin/bot-users/BotUsers.jsx";
+import Sms from "./pages/admin/sms/Sms.jsx";
 
 
 // default fetches
@@ -102,7 +105,7 @@ function App() {
 
                 <Routes>
                     <Route element={<AuthAdmin />}>
-                        <Route path='/admin/' element={<AdminHome />} />
+                        <Route path='/admin/dashboard' element={<AdminHome />} />
                         <Route path='/admin/university' element={<AdminUni />} />
                         <Route path='/admin/university/:id' element={<AdminUniId />} />
                         <Route path='/admin/ads' element={<AdminAds />} />
@@ -110,6 +113,10 @@ function App() {
                         <Route path='/admin/regions' element={<AdminRegions />} />
                         <Route path='/admin/main-direction' element={<AdminMainDir />} />
                         <Route path='/admin/news' element={<AdminNews />} />
+
+                        <Route path='/admin/system-users' element={<SystemUsers />} />
+                        <Route path='/admin/bot-users' element={<BotUsers />} />
+                        <Route path='/admin/sms' element={<Sms />} />
                     </Route>
 
                     <Route path='/admin/login' element={<AdminLogin />} />
