@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import Title from "../../../../components/admin/title/Title.jsx";
+import Title from "../../../components/admin/title/Title.jsx";
 import {Button, Checkbox, Form, Input, Modal, Select, Slider, Table} from "antd";
-import {formatPhone, formatPrice, validateMessages} from "../../../../assets/scripts/global.js";
-import {addOrEdit, deleteData} from "../../../../api/crud.js";
+import {formatPhone, formatPrice, validateMessages} from "../../../assets/scripts/global.js";
+import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$adminResp} from "../../../../api/apiResp.js";
-import {tableCols} from "../../../../components/admin/table/columns.js";
-import Actions from "../../../../components/admin/table/Actions.jsx";
-import {useCrud} from "../../../../hooks/useCrud.jsx";
-import profile from "../../../../assets/images/user-img.svg";
-import GetFile from "../../../../components/get-file/GetFile.jsx";
+import {$adminResp} from "../../../api/apiResp.js";
+import {tableCols} from "../../../components/admin/table/columns.js";
+import Actions from "../../../components/admin/table/Actions.jsx";
+import {useCrud} from "../../../hooks/useCrud.jsx";
+import profile from "../../../assets/images/user-img.svg";
+import GetFile from "../../../components/get-file/GetFile.jsx";
 
 
 const fetchApps = async ({ queryKey }) => {
@@ -19,7 +19,7 @@ const fetchApps = async ({ queryKey }) => {
 }
 
 
-const AdminApps = ({ id }) => {
+const AdminApps = () => {
 
     const [form] = Form.useForm()
 
@@ -27,6 +27,7 @@ const AdminApps = ({ id }) => {
     const [selectedItem, setSelectedItem] = useState(null)
     const [loading, setLoading] = useState(false)
 
+    const [selUni, setSelUni] = useState(null)
     const [selDir, setSelDir] = useState(null)
     const [selType, setSelType] = useState(null)
     const [q, setQ] = useState('')
@@ -58,7 +59,7 @@ const AdminApps = ({ id }) => {
         setParams({ page: 1, size: 20 })
         setBody({
             search: q,
-            university_id: id,
+            university_id: selUni,
             main_direction_id: selDir,
             edu_type: selType,
             status: status,
@@ -86,7 +87,7 @@ const AdminApps = ({ id }) => {
         const body = {
             ...values,
             status: values.status ? 'active' : 'inactive',
-            university_id: id
+            // university_id: id
         }
 
         addOrEditMutation.mutate({
@@ -113,6 +114,14 @@ const AdminApps = ({ id }) => {
     // table
     const columns = [
         tableCols.id,
+        {
+            title: 'Universitet nomi',
+            dataIndex: 'university',
+            key: 'university',
+            render: (_, item) => (
+                <span>{ item.university.name }</span>
+            )
+        },
         {
             title: 'Yonalishi',
             dataIndex: 'edu_direction_name',
@@ -151,15 +160,6 @@ const AdminApps = ({ id }) => {
             )
         },
         {
-            title: 'Hujjat',
-            dataIndex: 'diploma_file_id',
-            key: 'diploma_file_id',
-            render: (diploma_file_id) => (
-                diploma_file_id ? <GetFile className='ant-image-img' id={diploma_file_id}/>
-                    : <span>_</span>
-            ),
-        },
-        {
             ...tableCols.status,
             render: (_, { status }) => (
                 <span className={
@@ -187,6 +187,16 @@ const AdminApps = ({ id }) => {
 
 
     // fetch for select
+    const fetchUni = async () => {
+        const { data } = await $adminResp.get(`/university/all`)
+        return data
+    }
+    const { data: uni } = useQuery({
+        queryKey: ['university'],
+        queryFn: fetchUni,
+        keepPreviousData: true,
+    })
+
     const fetchDir = async () => {
         const { data } = await $adminResp.get(`/main-direction/all`)
         return data
@@ -198,13 +208,13 @@ const AdminApps = ({ id }) => {
     })
 
     const fetchType = async () => {
-        const { data } = await $adminResp.get(`/edu-d-group/all-by-unv/${id}`)
+        const { data } = await $adminResp.get(`/edu-d-group/all-by-unv/${selUni}`)
         return data
     }
     const { data: type } = useQuery({
-        queryKey: ['edu-type-id', id],
+        queryKey: ['edu-type-id', selUni],
         queryFn: fetchType,
-        enabled: !!id,
+        enabled: !!selUni,
         keepPreviousData: true,
     })
 
@@ -218,85 +228,100 @@ const AdminApps = ({ id }) => {
 
 
     return (
-        <div className="tab-content">
-            <Title
-                title='Arizalar ~ applications'
-                setModal={setModal}
-                className='d-flex'
-            />
-            <div className="content">
-                <div className='filters'>
-                    <div>
-                        <div className="row">
-                            <Select
-                                showSearch
-                                placeholder="Asosiy yonalish tanlang"
-                                optionFilterProp="label"
-                                options={[
-                                    { value: null, label: 'Tanlanmadi' },
-                                    ...(dir?.map(i => ({
-                                        value: i.id,
-                                        label: i.name
-                                    })) || [])
-                                ]}
-                                onChange={(e) => setSelDir(e)}
-                            />
-                            <Select
-                                showSearch
-                                placeholder="Talim darajasi tanlang"
-                                optionFilterProp="label"
-                                options={[
-                                    { value: null, label: 'Tanlanmadi' },
-                                    ...(type?.map(i => ({
-                                        value: i.id,
-                                        label: i.name
-                                    })) || [])
-                                ]}
-                                onChange={(e) => setSelType(e)}
-                            />
-                            <div className="range">
-                                <Slider
-                                    range
-                                    step={5}
-                                    defaultValue={[5, 100]}
-                                    onChange={changeRange}
+        <div className="tab-content admin-apps other page">
+            <div className="container">
+                <Title
+                    title='Arizalar ~ applications'
+                    setModal={setModal}
+                    className='d-flex'
+                />
+                <div className="content">
+                    <div className='filters'>
+                        <div>
+                            <div className="row g10">
+                                <Select
+                                    showSearch
+                                    placeholder="Universitet tanlang"
+                                    optionFilterProp="label"
+                                    options={[
+                                        { value: null, label: 'Tanlanmadi' },
+                                        ...(uni?.data?.map(i => ({
+                                            value: i.id,
+                                            label: i.name
+                                        })) || [])
+                                    ]}
+                                    onChange={(e) => setSelUni(e)}
                                 />
-                                <div className="row between">
-                                    <span className='txt'>{formatPrice(ranges.from) || 0} UZS</span>
-                                    <span className='txt'>{formatPrice(ranges.to) || 0} UZS</span>
+                                <Select
+                                    showSearch
+                                    placeholder="Asosiy yonalish tanlang"
+                                    optionFilterProp="label"
+                                    options={[
+                                        { value: null, label: 'Tanlanmadi' },
+                                        ...(dir?.map(i => ({
+                                            value: i.id,
+                                            label: i.name
+                                        })) || [])
+                                    ]}
+                                    onChange={(e) => setSelDir(e)}
+                                />
+                                <Select
+                                    showSearch
+                                    placeholder="Talim darajasi tanlang"
+                                    optionFilterProp="label"
+                                    options={[
+                                        { value: null, label: 'Tanlanmadi' },
+                                        ...(type?.map(i => ({
+                                            value: i.id,
+                                            label: i.name
+                                        })) || [])
+                                    ]}
+                                    onChange={(e) => setSelType(e)}
+                                />
+                                <div className="range">
+                                    <Slider
+                                        range
+                                        step={5}
+                                        defaultValue={[5, 100]}
+                                        onChange={changeRange}
+                                    />
+                                    <div className="row between">
+                                        <span className='txt'>{formatPrice(ranges.from) || 0} UZS</span>
+                                        <span className='txt'>{formatPrice(ranges.to) || 0} UZS</span>
+                                    </div>
                                 </div>
                             </div>
+                            <div className="d-flex align-center g10">
+                                <Input
+                                    className='inp'
+                                    size='large'
+                                    suffix={<i className="fa-solid fa-magnifying-glass"/>}
+                                    placeholder='Qidirish . . .'
+                                    onChange={(e) => setQ(e.target.value)}
+                                />
+                                <Checkbox
+                                    className='no-copy'
+                                    onChange={e => setStatus(e.target.checked ? 'active' : 'inactive')}
+                                >
+                                    Status
+                                </Checkbox>
+                            </div>
                         </div>
-                        <div className="d-flex align-center">
-                            <Input
-                                className='inp'
-                                size='large'
-                                suffix={<i className="fa-solid fa-magnifying-glass"/>}
-                                placeholder='Qidirish . . .'
-                                onChange={(e) => setQ(e.target.value)}
-                            />
-                            <Checkbox
-                                className='no-copy'
-                                onChange={e => setStatus(e.target.checked ? 'active' : 'inactive')}
-                            >
-                                Status
-                            </Checkbox>
-                        </div>
+                        <Button
+                            className='btn'
+                            type="primary"
+                            onClick={updateFilters}
+                            loading={loading}
+                        >
+                            Qidirish
+                        </Button>
                     </div>
-                    <Button
-                        className='btn'
-                        type="primary"
-                        onClick={updateFilters}
-                        loading={loading}
-                    >
-                        Qidirish
-                    </Button>
+                    <Table
+                        columns={columns}
+                        dataSource={data?.data}
+                        scroll={{x: 750}}
+                    />
                 </div>
-                <Table
-                    columns={columns}
-                    dataSource={data?.data}
-                    scroll={{x: 750}}
-                />
             </div>
             <Modal
                 rootClassName='admin-modal'
@@ -371,7 +396,7 @@ const AdminApps = ({ id }) => {
                                     className='name'>{new Date(selectedItem?.user?.birth_date).toLocaleDateString()}</span>
                             </div>
                         </div>
-                        <span>chat_id: { selectedItem?.user?.chat_id }</span>
+                        <span>chat_id: {selectedItem?.user?.chat_id}</span>
                     </div>
                     <div className='content__body'>
                         <div>
@@ -387,8 +412,8 @@ const AdminApps = ({ id }) => {
                             <div className="items">
                                 <span className="title">Dokumentlar:</span>
                                 <div className="row g1">
-                                    <GetFile id={selectedItem?.user?.diploma_file_id} />
-                                    <GetFile id={selectedItem?.user?.passport_file_id} />
+                                    <GetFile id={selectedItem?.user?.diploma_file_id}/>
+                                    <GetFile id={selectedItem?.user?.passport_file_id}/>
                                 </div>
                             </div>
                         </div>

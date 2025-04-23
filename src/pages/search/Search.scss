@@ -301,6 +301,44 @@
       }
     }
   }
+
+  &.aloqa-modal {
+
+    .ant-drawer-content-wrapper {
+      height: 250px !important;
+      border-radius: 25px 25px 0 0;
+    }
+
+    .ant-drawer-body {
+      padding: 15px;
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .content {
+
+      .link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        color: #fff;
+        background: $main-color;
+      }
+
+      .btn {
+        font-weight: 500;
+        border: 2px solid $main-color;
+        color: $main-color;
+        background: transparent;
+      }
+    }
+  }
 }
 
 .select {

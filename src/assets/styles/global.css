@@ -491,6 +491,9 @@ i {
 .g3 {
    gap: 3rem;
 }
+.g10 {
+   gap: 10px;
+}
 
 .gy0 {
    row-gap: 0;
@@ -504,6 +507,9 @@ i {
 .gy3 {
    row-gap: 3rem;
 }
+.gy10 {
+   row-gap: 10px;
+}
 
 .gx0 {
    column-gap: 0;
@@ -516,6 +522,9 @@ i {
 }
 .gx3 {
    column-gap: 3rem;
+}
+.gx10 {
+   column-gap: 10px;
 }
 
 

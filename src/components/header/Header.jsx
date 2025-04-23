@@ -68,10 +68,12 @@ const Header = () => {
                         <img src={tel} alt="icon"/>
                         <span>+998 99 899 97 77</span>
                     </a>
-                    <a className='link' href="https://t.me/nmadr" target='_blank'>
-                        <img src={tg} alt="icon"/>
-                        <span>Telegram orqali bog’lanish</span>
-                    </a>
+                    <div>
+                        <a className='link' href="https://t.me/nmadr" target='_blank'>
+                            <img src={tg} alt="icon"/>
+                            <span>Telegram orqali bog’lanish</span>
+                        </a>
+                    </div>
                     <Link className='btn' to='/applications'>Hujjat topshirish</Link>
                 </div>
             </Drawer>

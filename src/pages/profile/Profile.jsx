@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
 import './Profile.scss'
-import profileImg from '../../assets/images/user-img.svg'
+import profile from '../../assets/images/user-img.svg'
 import userIcon from '../../assets/images/user-icon.svg'
 import arrow from '../../assets/images/arrow-menu-icon.svg'
 import clipboardIcon from '../../assets/images/clipboard-icon.svg'
 import aloqaIcon from '../../assets/images/aloqa.svg'
 import iIcon from '../../assets/images/i-icon.svg'
-import logout from '../../assets/images/logout-icon.svg'
 import {Link, useNavigate} from "react-router-dom"
 import toast from "react-hot-toast";
-import {Button, Modal} from "antd";
-import profile from "../../assets/images/user-img.svg";
+import {Button, Drawer, Modal} from "antd";
 import GetFile from "../../components/get-file/GetFile.jsx";
+import tel from "../../assets/images/tel-icon.svg";
+import tg from "../../assets/images/tg-icon.svg";
 
 const Profile = () => {
 
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
     const [modal, setModal] = useState(false)
+
+    const [info, setInfo] = useState(false)
 
     const userData = JSON.parse(localStorage.getItem('user'))
 
@@ -61,7 +63,7 @@ const Profile = () => {
                             </Link>
                         </li>
                         <li>
-                        <Link className='link' to=''>
+                        <Link className='link' to='/applications'>
                                 <div className="row">
                                     <div className='width grid-center'>
                                         <img className='link__prefix' src={clipboardIcon} alt="icon"/>
@@ -72,7 +74,7 @@ const Profile = () => {
                             </Link>
                         </li>
                         <li>
-                        <Link className='link' to=''>
+                            <button className='link' onClick={() => setInfo(true)}>
                                 <div className="row">
                                     <div className='width grid-center'>
                                         <img className='link__prefix' src={aloqaIcon} alt="icon"/>
@@ -80,15 +82,15 @@ const Profile = () => {
                                     <span className='link__txt'>Aloqa markazi</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
-                            </Link>
+                            </button>
                         </li>
                         <li>
-                        <Link className='link' to=''>
+                            <Link className='link' to=''>
                                 <div className="row">
                                     <div className='width grid-center'>
                                         <img className='link__prefix' src={iIcon} alt="icon"/>
                                     </div>
-                                    <span className='link__txt'>Ilova haqida</span>
+                                    <span className='link__txt'>Biz haqimizda</span>
                                 </div>
                                 <img className='link__suffix' src={arrow} alt="icon"/>
                             </Link>
@@ -122,6 +124,29 @@ const Profile = () => {
                     </Button>
                 </div>
             </Modal>
+            <Drawer
+                rootClassName='filter-modal-up aloqa-modal'
+                className='filter-modal about-modal'
+                placement='bottom'
+                closable={false}
+                onClose={() => setInfo(false)}
+                open={info}
+            >
+                <div className="title">Aloqa markazi</div>
+                <div className='content'>
+                    <a className='link' href="tel:+998998999777">
+                        <img src={tel} alt="icon"/>
+                        <span>+998 99 899 97 77</span>
+                    </a>
+                    <div>
+                        <a className='link' href="https://t.me/nmadr" target='_blank'>
+                            <img src={tg} alt="icon"/>
+                            <span>Telegram orqali bog’lanish</span>
+                        </a>
+                    </div>
+                    <Link className='link btn' to='/applications'>Hujjat topshirish</Link>
+                </div>
+            </Drawer>
         </div>
     );
 };

@@ -13,6 +13,10 @@ const AdminNavBar = ({ openMenu, setOpenMenu }) => {
             link: '/admin/university'
         },
         {
+            name: 'Arizalar',
+            link: '/admin/applications'
+        },
+        {
             name: 'Asosiy yonalishlar',
             link: '/admin/main-direction'
         },

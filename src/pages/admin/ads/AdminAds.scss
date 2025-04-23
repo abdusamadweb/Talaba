@@ -26,4 +26,24 @@
       }
     }
   }
+  
+  &.admin-apps {
+
+    .filters {
+      .ant-select-selector {
+        width: 180px;
+      }
+
+      .range {
+        width: 50%;
+      }
+      .d-flex {
+        margin-block: 10px;
+      }
+
+      .btn {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }

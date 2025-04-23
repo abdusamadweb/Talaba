@@ -38,6 +38,7 @@ import AdminUniId from "./pages/admin/university/AdminUniId.jsx";
 import SystemUsers from "./pages/admin/system-users/SystemUsers.jsx";
 import BotUsers from "./pages/admin/bot-users/BotUsers.jsx";
 import Sms from "./pages/admin/sms/Sms.jsx";
+import AdminApps from "./pages/admin/applications/AdminApps.jsx";
 
 
 // default fetches
@@ -108,6 +109,7 @@ function App() {
                         <Route path='/admin/dashboard' element={<AdminHome />} />
                         <Route path='/admin/university' element={<AdminUni />} />
                         <Route path='/admin/university/:id' element={<AdminUniId />} />
+                        <Route path='/admin/applications' element={<AdminApps />} />
                         <Route path='/admin/ads' element={<AdminAds />} />
                         <Route path='/admin/edu-lang' element={<AdminEduLang />} />
                         <Route path='/admin/regions' element={<AdminRegions />} />
