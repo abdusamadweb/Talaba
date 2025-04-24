@@ -163,7 +163,7 @@ const AdminApps = () => {
             ...tableCols.status,
             render: (_, { status }) => (
                 <span className={
-                    `fw500 ${status === 'active' ? 'green' : status === 'Bekor qilindi' ? 'red' : 'yellow'}`
+                    `fw500 ${status === 'Qabul qilindi' ? 'green' : status === 'Bekor qilindi' ? 'red' : 'yellow'}`
                 }>{ status }</span>
             )
         },
@@ -240,6 +240,7 @@ const AdminApps = () => {
                         <div>
                             <div className="row g10">
                                 <Select
+                                    size='large'
                                     showSearch
                                     placeholder="Universitet tanlang"
                                     optionFilterProp="label"
@@ -253,6 +254,7 @@ const AdminApps = () => {
                                     onChange={(e) => setSelUni(e)}
                                 />
                                 <Select
+                                    size='large'
                                     showSearch
                                     placeholder="Asosiy yonalish tanlang"
                                     optionFilterProp="label"
@@ -266,6 +268,7 @@ const AdminApps = () => {
                                     onChange={(e) => setSelDir(e)}
                                 />
                                 <Select
+                                    size='large'
                                     showSearch
                                     placeholder="Talim darajasi tanlang"
                                     optionFilterProp="label"

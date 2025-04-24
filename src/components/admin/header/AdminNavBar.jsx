@@ -36,14 +36,14 @@ const AdminNavBar = ({ openMenu, setOpenMenu }) => {
             name: 'Regionlar',
             link: '/admin/regions'
         },
-        {
-            name: 'Tizim userlari',
-            link: '/admin/system-users'
-        },
-        {
-            name: 'Bot userlari',
-            link: '/admin/bot-users'
-        },
+        // {
+        //     name: 'Tizim userlari',
+        //     link: '/admin/system-users'
+        // },
+        // {
+        //     name: 'Bot userlari',
+        //     link: '/admin/bot-users'
+        // },
         {
             name: 'Xabar',
             link: '/admin/sms'

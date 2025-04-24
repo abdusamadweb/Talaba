@@ -2,4 +2,61 @@
 
 .admin-home {
 
+  .stc {
+
+    .ant-statistic-title {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .ant-statistic-content-prefix {
+      margin-right: 10px;
+    }
+  }
+
+  .top-uni {
+
+    .ant-card-body {
+      padding: 14px 0 14px 1rem;
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .list {
+      height: 250px;
+      display: flex;
+      flex-flow: column;
+      gap: 10px;
+      padding-right: 1rem;
+      overflow-y: auto;
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+
+        &__index {
+          min-width: 22px;
+        }
+        &__title {
+          font-weight: 500;
+        }
+        &__count {
+          font-weight: 500;
+        }
+
+        .dots {
+          height: 10px;
+          flex: 1;
+          margin-inline: 1rem;
+          border-bottom: 1px dashed #ccc;
+        }
+      }
+    }
+  }
 }

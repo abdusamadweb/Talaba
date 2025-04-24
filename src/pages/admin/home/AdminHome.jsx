@@ -1,39 +1,72 @@
+import './Home.scss'
 import React from 'react';
-import {Card, Col, Progress, Statistic} from "antd";
-import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
+import {Card, Col, Progress, Row, Statistic} from "antd";
+import {getRequest} from "../../../hooks/useCrud.jsx";
+import {useQuery} from "@tanstack/react-query";
+import Title from "../../../components/admin/title/Title.jsx";
 
 const AdminHome = () => {
+
+
+    // fetches
+    const fetchData = () => getRequest(`/statistic/main-statistics`)
+    const { data } = useQuery({
+        queryKey: ['main-statistics'],
+        queryFn: fetchData,
+        keepPreviousData: true,
+    })
+
+
     return (
-        <div className="admin-home page py2">
+        <div className='admin-home other page'>
             <div className="container">
-                <h2>Dashboard</h2>
-                <div className="row flex-column p2 g1">
-                    <Progress percent={50} status="active" />
-                    <Col span={12}>
-                        <Card variant="borderless">
-                            <Statistic
-                                title="Active"
-                                value={11.28}
-                                precision={2}
-                                valueStyle={{ color: '#3f8600' }}
-                                prefix={<ArrowUpOutlined />}
-                                suffix="%"
-                            />
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card variant="borderless">
-                            <Statistic
-                                title="Idle"
-                                value={9.3}
-                                precision={2}
-                                valueStyle={{ color: '#cf1322' }}
-                                prefix={<ArrowDownOutlined />}
-                                suffix="%"
-                            />
-                        </Card>
-                    </Col>
-                    <Statistic title="Active Users" value={112893} loading />
+                <Title title='Dashboard' />
+                <div className="row flex-column pt2 g1">
+                    <Progress percent={50} status="active"/>
+
+                    <Row gutter={[16, 16]}>
+                        <Col span={6}>
+                            <Card className='stc' variant="borderless">
+                                <Statistic
+                                    title="Bot userlar soni:"
+                                    value={data?.main_stc?.[0]?.bot_users}
+                                    valueStyle={{color: '#3f8600'}}
+                                    prefix={<i className="fa-solid fa-users-rays"/>}
+                                    suffix="ta"
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={6}>
+                            <Card className='stc' variant="borderless">
+                                <Statistic
+                                    title="Umumiy arizalar soni:"
+                                    value={data?.main_stc?.[0]?.applications}
+                                    valueStyle={{color: '#3f8600'}}
+                                    prefix={<i className="fa-solid fa-graduation-cap"/>}
+                                    suffix="ta"
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={12}>
+                            <Card className='top-uni' variant='borderless'>
+                                <span className="title">Top ariza qoldirilgan universitetlar:</span>
+                                <ul className='list'>
+                                    {data?.data?.university_statistic?.map((i, index) => (
+                                        <li className='item' key={index}>
+                                            <div className='d-flex align-center g10'>
+                                                <span className='item__index'>{index + 1}</span>
+                                                <span className='item__title'>{i.university_name}</span>
+                                            </div>
+                                            <span className='dots'/>
+                                            <span className='item__count'>{i.application_count}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                    <Statistic title="Active Users" value={1128293}/>
                 </div>
             </div>
         </div>
