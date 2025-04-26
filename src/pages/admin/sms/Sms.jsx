@@ -109,12 +109,12 @@ const Sms = () => {
                                 />
                             </Form.Item>
                             <Form.Item
-                                name='link'
-                                label='Link'
+                                name='buttons'
+                                label='Tugmalar'
                                 rules={[{ required: true }]}
                             >
                                 <Input
-                                    placeholder='Link'
+                                    placeholder='Tugmalar'
                                     type='text'
                                 />
                             </Form.Item>
