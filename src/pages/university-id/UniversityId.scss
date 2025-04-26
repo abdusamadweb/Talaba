@@ -148,6 +148,7 @@
 
       .tab {
         padding-inline: 15px;
+        padding-bottom: 2rem;
       }
 
       .about {
@@ -276,9 +277,10 @@
 
       .gallery {
 
-        .iframe {
-          height: 100%;
-          border-radius: 10px;
+        .iframe iframe {
+          width: 100%;
+          height: 30vh;
+          border-radius: 15px;
         }
 
         .about__info {

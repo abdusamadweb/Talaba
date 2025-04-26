@@ -18,6 +18,7 @@ import successIcon from "../../assets/images/apply-success.svg";
 import toast from "react-hot-toast";
 import {API_TEST} from "../../api/apiConfig.js";
 import defLogo from '../../assets/images/avatar-uni.svg'
+import YouTube from "./YouTube.jsx";
 
 
 const UploadIcon = () => {
@@ -143,13 +144,8 @@ const Gallery = ({data}) => {
                             {
                                 data?.data.map((i, index) =>
                                     i.is_youtube ?
-                                        <iframe className='iframe'
-                                                src={i.link}
-                                                title="YouTube video player" frameBorder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                referrerPolicy="strict-origin-when-cross-origin"
-                                                allowFullScreen/>
-                                        : <GetFileDef key={index} id={i.id} />
+                                        <YouTube url={i.link} />
+                                        : <GetFileDef key={index} id={i.photo_id} />
                                 )
                             }
                         </Carousel>

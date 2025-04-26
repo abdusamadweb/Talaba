@@ -2,6 +2,21 @@
 
 .admin-home {
 
+  .page-title {
+    justify-content: space-between;
+
+    .navigate-btn {
+      width: 40px;
+      height: unset;
+      padding: 8px;
+      border-radius: 12px;
+
+      i {
+        color: #4b4747;
+      }
+    }
+  }
+
   .stc {
 
     .ant-statistic-title {

@@ -20,7 +20,14 @@ const AdminHome = () => {
     return (
         <div className='admin-home other page'>
             <div className="container">
-                <Title title='Dashboard' />
+                <Title
+                    title='Dashboard'
+                    additional={
+                        <button className='navigate-btn' title='Excel formatida yuklab olish.'>
+                            <i className="fa-solid fa-file-excel"/>
+                        </button>
+                    }
+                />
                 <div className="row flex-column pt2 g1">
                     <Progress percent={50} status="active"/>
 

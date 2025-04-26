@@ -50,6 +50,7 @@ const AdminGallery = ({ id }) => {
             ...values,
             photo_id: values?.photo_id?.fileList?.[0]?.response?.files[0].id,
             status: values.status ? 'active' : 'inactive',
+            is_youtube: yt,
             university_id: id
         }
 

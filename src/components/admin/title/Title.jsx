@@ -14,6 +14,7 @@ const Title = ({ title, btn, setModal, additional, navigate, className }) => {
                 </button>
             }
             <h2>{title}</h2>
+            { additional }
         </div>
     )
 
