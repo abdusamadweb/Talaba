@@ -295,7 +295,6 @@ const Search = () => {
                                 Ko'proq ko'rsatish
                             </Button>
                         }
-                        <ApplyCard ad={adImg}/>
                     </ul>
                 </div>
             </div>
