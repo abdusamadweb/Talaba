@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, DatePicker, Form, Input, Modal, Table} from "antd";
+import {Button, Checkbox, DatePicker, Form, Input, Modal, Select, Table} from "antd";
 import {formatPhone, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
@@ -9,6 +9,8 @@ import Actions from "../../../components/admin/table/Actions.jsx";
 import {getRequest, useCrud} from "../../../hooks/useCrud.jsx";
 import {Link} from "react-router-dom";
 import {fields} from "./formFields.js";
+import $api from "../../../api/apiConfig.js";
+import {CaretDownOutlined} from "@ant-design/icons";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
@@ -16,6 +18,11 @@ const { TextArea } = Input
 
 // fetches
 const fetchData = () => getRequest(`/university/all`)
+
+const fetchRegions = async () => {
+    const { data } = await $api.get('/regions/all')
+    return data
+}
 
 
 const AdminUni = () => {
@@ -30,6 +37,11 @@ const AdminUni = () => {
     const { data, refetch } = useQuery({
         queryKey: ['university'],
         queryFn: fetchData,
+        keepPreviousData: true,
+    })
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: fetchRegions,
         keepPreviousData: true,
     })
 
@@ -152,6 +164,7 @@ const AdminUni = () => {
             <Modal
                 rootClassName='admin-modal'
                 className='main-modal'
+                width={800}
                 title={modal === 'add' ? "Qoshish" : "Ozgartirish"}
                 open={modal !== 'close'}
                 onCancel={() => {
@@ -160,48 +173,68 @@ const AdminUni = () => {
                 }}
             >
                 <Form
+                    className='main-modal-form'
                     onFinish={onFormSubmit}
                     layout='vertical'
                     validateMessages={validateMessages}
                     form={form}
                 >
-                    {fields.map((item) => (
-                        <Form.Item
-                            key={item.name}
-                            name={item.name}
-                            label={item.label}
-                            rules={[{ required: item.required }]}
-                        >
-                            <Input
-                                placeholder={item.placeholder}
-                                type={item.type}
-                            />
-                        </Form.Item>
-                    ))}
+                    <div className='content'>
+                        <div>
+                            {fields.map((item) => (
+                                <Form.Item
+                                    key={item.name}
+                                    name={item.name}
+                                    label={item.label}
+                                    rules={[{required: item.required}]}
+                                >
+                                    <Input
+                                        placeholder={item.placeholder}
+                                        type={item.type}
+                                    />
+                                </Form.Item>
+                            ))}
+                        </div>
 
-                    <Form.Item name='desc' label='Tavsif' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Tavsif' />
-                    </Form.Item>
-                    <Form.Item name='grands' label='Grandlar' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Grandlar' />
-                    </Form.Item>
+                        <div>
+                            <Form.Item name='region_id' label='Hududni tanlang' rules={[{required: true}]}>
+                                <Select
+                                    size='large'
+                                    suffixIcon={<CaretDownOutlined/>}
+                                    placeholder="Hududni tanlang"
+                                    options={regions?.regions?.map(i => (
+                                        {
+                                            value: i.id,
+                                            label: i.name
+                                        }
+                                    ))}
+                                />
+                            </Form.Item>
+                            <Form.Item name='desc' label='Tavsif' rules={[{required: true}]}>
+                                <TextArea rows={3} placeholder='Tavsif'/>
+                            </Form.Item>
+                            <Form.Item name='grands' label='Grandlar' rules={[{required: true}]}>
+                                <TextArea rows={3} placeholder='Grandlar'/>
+                            </Form.Item>
 
-                    <Form.Item
-                        name='dates'
-                        rules={[{ required: !selectedItem }]}
-                        label={`Ariza sanasi:
+                            <Form.Item
+                                name='dates'
+                                rules={[{required: !selectedItem}]}
+                                label={`Ariza sanasi:
                          ${new Date(selectedItem?.application_start).toLocaleDateString()}
                          ~ ${new Date(selectedItem?.application_end).toLocaleDateString()}`}
-                    >
-                        <RangePicker size='large' />
-                    </Form.Item>
+                            >
+                                <RangePicker size='large'/>
+                            </Form.Item>
 
-                    <Form.Item
-                        name='status'
-                        valuePropName="checked"
-                    >
-                        <Checkbox className='no-copy'>Status</Checkbox>
-                    </Form.Item>
+                            <Form.Item
+                                name='status'
+                                valuePropName="checked"
+                            >
+                                <Checkbox className='no-copy'>Status</Checkbox>
+                            </Form.Item>
+                        </div>
+                    </div>
                     <div className='end mt1'>
                         <Button
                             type="primary"

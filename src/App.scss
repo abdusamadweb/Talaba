@@ -275,6 +275,14 @@
   top: 1rem;
   margin-right: 1rem;
 
+  .main-modal-form {
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+  }
+
   .edu-add-btn {
     position: absolute;
     top: 20px;

@@ -61,11 +61,11 @@ const AdminHome = () => {
                                     {data?.data?.university_statistic?.map((i, index) => (
                                         <li className='item' key={index}>
                                             <div className='d-flex align-center g10'>
-                                                <span className='item__index'>{index + 1}</span>
+                                                <span className='item__index'>{index + 1}.</span>
                                                 <span className='item__title'>{i.university_name}</span>
                                             </div>
                                             <span className='dots'/>
-                                            <span className='item__count'>{i.application_count}</span>
+                                            <span className='item__count'>{i.application_count} ta</span>
                                         </li>
                                     ))}
                                 </ul>

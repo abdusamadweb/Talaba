@@ -1,11 +1,10 @@
 import './style.scss'
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, DatePicker, Form, Input, Modal, Tabs, Upload} from "antd";
+import {Button, Checkbox, DatePicker, Form, Input, Modal, Select, Tabs, Upload} from "antd";
 import {formatPhone, uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
-import {$adminResp} from "../../../api/apiResp.js";
 import Actions from "../../../components/admin/table/Actions.jsx";
 import {getRequest, useCrud} from "../../../hooks/useCrud.jsx";
 import {useParams} from "react-router-dom";
@@ -15,11 +14,19 @@ import GetFileDef from "../../../components/get-file/GetFileDef.jsx";
 import AdminDirGroup from "./tabs/AdminDirGroup.jsx";
 import AdminGallery from "./tabs/AdminGallery.jsx";
 import AdminDir from "./tabs/AdminDir.jsx";
-import {CloudUploadOutlined} from "@ant-design/icons";
+import {CaretDownOutlined, CloudUploadOutlined} from "@ant-design/icons";
 import AdminApps from "./tabs/AdminApps.jsx";
+import $api from "../../../api/apiConfig.js";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
+
+
+// fetch
+const fetchRegions = async () => {
+    const { data } = await $api.get('/regions/all')
+    return data
+}
 
 
 const AdminUniId = () => {
@@ -44,6 +51,12 @@ const AdminUniId = () => {
         keepPreviousData: true,
     })
     const data = uni?.data
+
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: fetchRegions,
+        keepPreviousData: true,
+    })
 
 
     // add & edit
@@ -216,6 +229,7 @@ const AdminUniId = () => {
             <Modal
                 rootClassName='admin-modal'
                 className='main-modal'
+                width={800}
                 title={modal === 'add' ? "Qoshish" : "Ozgartirish"}
                 open={modal !== 'close'}
                 onCancel={() => {
@@ -224,77 +238,99 @@ const AdminUniId = () => {
                 }}
             >
                 <Form
+                    className='main-modal-form'
                     onFinish={onFormSubmit}
                     layout='vertical'
                     validateMessages={validateMessages}
                     form={form}
                 >
-                    <Form.Item
-                        className='form-inp docs'
-                        label="Logo ( 5mb dan kam bolgan holda! )"
-                        name="logo_id"
-                    >
-                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile1(e.file.percent)}>
-                            <Input
-                                rootClassName={`upload-inp ${file1 !== null && 'change-icon'}`}
-                                size='large'
-                                suffix={<CloudUploadOutlined/>}
-                                prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
-                            />
-                        </Upload>
-                    </Form.Item>
-                    <Form.Item
-                        className='form-inp docs'
-                        label="Rasm ( 5mb dan kam bolgan holda! )"
-                        name="photo_id"
-                    >
-                        <Upload {...uploadProps} maxCount={4} multiple={true} onChange={(e) => setFile2(e.file.percent)}>
-                            <Input
-                                rootClassName={`upload-inp ${file2 !== null && 'change-icon'}`}
-                                size='large'
-                                suffix={<CloudUploadOutlined/>}
-                                prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
-                            />
-                        </Upload>
-                    </Form.Item>
+                    <div className='content'>
+                        <div>
+                            {fields.map((item) => (
+                                <Form.Item
+                                    key={item.name}
+                                    name={item.name}
+                                    label={item.label}
+                                    rules={[{required: item.required}]}
+                                >
+                                    <Input
+                                        placeholder={item.placeholder}
+                                        type={item.type}
+                                    />
+                                </Form.Item>
+                            ))}
+                        </div>
 
-                    {fields.map((item) => (
-                        <Form.Item
-                            key={item.name}
-                            name={item.name}
-                            label={item.label}
-                            rules={[{ required: item.required }]}
-                        >
-                            <Input
-                                placeholder={item.placeholder}
-                                type={item.type}
-                            />
-                        </Form.Item>
-                    ))}
+                        <div>
+                            <Form.Item
+                                className='form-inp docs'
+                                label="Logo ( 5mb dan kam bolgan holda! )"
+                                name="logo_id"
+                            >
+                                <Upload {...uploadProps} maxCount={4} multiple={true}
+                                        onChange={(e) => setFile1(e.file.percent)}>
+                                    <Input
+                                        rootClassName={`upload-inp ${file1 !== null && 'change-icon'}`}
+                                        size='large'
+                                        suffix={<CloudUploadOutlined/>}
+                                        prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
+                                    />
+                                </Upload>
+                            </Form.Item>
+                            <Form.Item
+                                className='form-inp docs'
+                                label="Rasm ( 5mb dan kam bolgan holda! )"
+                                name="photo_id"
+                            >
+                                <Upload {...uploadProps} maxCount={4} multiple={true}
+                                        onChange={(e) => setFile2(e.file.percent)}>
+                                    <Input
+                                        rootClassName={`upload-inp ${file2 !== null && 'change-icon'}`}
+                                        size='large'
+                                        suffix={<CloudUploadOutlined/>}
+                                        prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
+                                    />
+                                </Upload>
+                            </Form.Item>
 
-                    <Form.Item name='desc' label='Tavsif' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Tavsif' />
-                    </Form.Item>
-                    <Form.Item name='grands' label='Grandlar' rules={[{ required: true }]}>
-                        <TextArea rows={3} placeholder='Grandlar' />
-                    </Form.Item>
+                            <Form.Item name='region_id' label='Hududni tanlang' rules={[{required: true}]}>
+                                <Select
+                                    size='large'
+                                    suffixIcon={<CaretDownOutlined/>}
+                                    placeholder="Hududni tanlang"
+                                    options={regions?.regions?.map(i => (
+                                        {
+                                            value: i.id,
+                                            label: i.name
+                                        }
+                                    ))}
+                                />
+                            </Form.Item>
+                            <Form.Item name='desc' label='Tavsif' rules={[{required: true}]}>
+                                <TextArea rows={3} placeholder='Tavsif'/>
+                            </Form.Item>
+                            <Form.Item name='grands' label='Grandlar' rules={[{required: true}]}>
+                                <TextArea rows={3} placeholder='Grandlar'/>
+                            </Form.Item>
 
-                    <Form.Item
-                        name='dates'
-                        rules={[{ required: !selectedItem }]}
-                        label={`Ariza sanasi:
+                            <Form.Item
+                                name='dates'
+                                rules={[{required: !selectedItem}]}
+                                label={`Ariza sanasi:
                          ${new Date(selectedItem?.application_start).toLocaleDateString()}
                          ~ ${new Date(selectedItem?.application_end).toLocaleDateString()}`}
-                    >
-                        <RangePicker size='large' />
-                    </Form.Item>
+                            >
+                                <RangePicker size='large'/>
+                            </Form.Item>
 
-                    <Form.Item
-                        name='status'
-                        valuePropName="checked"
-                    >
-                        <Checkbox className='no-copy'>Status</Checkbox>
-                    </Form.Item>
+                            <Form.Item
+                                name='status'
+                                valuePropName="checked"
+                            >
+                                <Checkbox className='no-copy'>Status</Checkbox>
+                            </Form.Item>
+                        </div>
+                    </div>
 
                     <div className='end mt1'>
                         <Button
