@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Title from "../../../components/admin/title/Title.jsx";
-import {Button, Checkbox, DatePicker, Form, Input, Modal, Select, Table} from "antd";
-import {formatPhone, validateMessages} from "../../../assets/scripts/global.js";
+import {Button, Checkbox, DatePicker, Form, Input, Modal, Select, Table, Upload} from "antd";
+import {formatPhone, uploadProps, validateMessages} from "../../../assets/scripts/global.js";
 import {addOrEdit, deleteData} from "../../../api/crud.js";
 import {useQuery} from "@tanstack/react-query";
 import {tableCols} from "../../../components/admin/table/columns.js";
@@ -10,7 +10,7 @@ import {getRequest, useCrud} from "../../../hooks/useCrud.jsx";
 import {Link} from "react-router-dom";
 import {fields} from "./formFields.js";
 import $api from "../../../api/apiConfig.js";
-import {CaretDownOutlined} from "@ant-design/icons";
+import {CaretDownOutlined, CloudUploadOutlined} from "@ant-design/icons";
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input
@@ -31,6 +31,9 @@ const AdminUni = () => {
 
     const [modal, setModal] = useState('close')
     const [selectedItem, setSelectedItem] = useState(null)
+
+    const [file1, setFile1] = useState(null)
+    const [file2, setFile2] = useState(null)
 
 
     // fetch
@@ -66,6 +69,8 @@ const AdminUni = () => {
             status: values.status ? 'active' : 'inactive',
             application_start: dates ? dates?.[0]?.valueOf() : new Date(selectedItem?.application_start).getTime(),
             application_end: dates ? dates?.[1]?.valueOf() : new Date(selectedItem?.application_end).getTime(),
+            logo_id: values.logo_id?.file?.response?.files[0]?.id || selectedItem?.logo_id,
+            photo_id: values.photo_id?.file?.response?.files[0]?.id || selectedItem?.photo_id,
         }
 
         addOrEditMutation.mutate({
@@ -197,6 +202,36 @@ const AdminUni = () => {
                         </div>
 
                         <div>
+                            <Form.Item
+                                className='form-inp docs'
+                                label="Logo ( 5mb dan kam bolgan holda! )"
+                                name="logo_id"
+                            >
+                                <Upload {...uploadProps} maxCount={4} multiple={true}
+                                        onChange={(e) => setFile1(e.file.percent)}>
+                                    <Input
+                                        rootClassName={`upload-inp ${file1 !== null && 'change-icon'}`}
+                                        size='large'
+                                        suffix={<CloudUploadOutlined/>}
+                                        prefix={file1 !== null ? file1?.toFixed(1) + '%' : 'Yuklash'}
+                                    />
+                                </Upload>
+                            </Form.Item>
+                            <Form.Item
+                                className='form-inp docs'
+                                label="Rasm ( 5mb dan kam bolgan holda! )"
+                                name="photo_id"
+                            >
+                                <Upload {...uploadProps} maxCount={4} multiple={true}
+                                        onChange={(e) => setFile2(e.file.percent)}>
+                                    <Input
+                                        rootClassName={`upload-inp ${file2 !== null && 'change-icon'}`}
+                                        size='large'
+                                        suffix={<CloudUploadOutlined/>}
+                                        prefix={file2 !== null ? file2?.toFixed(1) + '%' : 'Yuklash'}
+                                    />
+                                </Upload>
+                            </Form.Item>
                             <Form.Item name='region_id' label='Hududni tanlang' rules={[{required: true}]}>
                                 <Select
                                     size='large'
