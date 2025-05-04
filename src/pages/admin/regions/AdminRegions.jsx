@@ -71,10 +71,6 @@ const AdminRegions = () => {
 
     // table
     const columns = [
-        // {
-        //     ...tableCols.index,
-        //     render: (_, __, index) => <span>{ index+1 }</span>,
-        // },
         tableCols.id,
         tableCols.name,
         {
@@ -109,6 +105,7 @@ const AdminRegions = () => {
                 <Title
                     title='Regionlar ~ regions'
                     setModal={setModal}
+                    btn
                 />
                 <div className="content">
                     <Table
